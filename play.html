@@ -631,6 +631,44 @@ let pts   = [0,0,0,0];
 let ptInp = [0,0,0,0];
 let activePlayers = 2;
 
+const DB_URL = 'https://seno-game-default-rtdb.firebaseio.com';
+
+// Firebase REST API: read count
+async function fetchGlobalCount() {
+  try {
+    const res = await fetch(DB_URL + '/globalCount.json');
+    const val = await res.json();
+    if (val !== null) {
+      globalCount = val;
+      updateGlobal();
+    }
+  } catch(e) {}
+}
+
+// Firebase REST API: increment count
+async function incrementGlobalCount() {
+  try {
+    // Use transaction-like approach: read then write
+    const res = await fetch(DB_URL + '/globalCount.json');
+    const val = await res.json();
+    const newVal = (val || 0) + 1;
+    await fetch(DB_URL + '/globalCount.json', {
+      method: 'PUT',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify(newVal)
+    });
+    globalCount = newVal;
+    updateGlobal();
+  } catch(e) {
+    // fallback local
+    globalCount++;
+    updateGlobal();
+  }
+}
+
+// Poll Firebase every 5 seconds to sync with other players
+setInterval(fetchGlobalCount, 5000);
+
 const locs = ['Tokyo','Osaka','Seoul','London','NYC','Berlin','Paris','Sydney','Bangkok','Taipei'];
 const msgs = ['せーの！','LUCK で逆転！','POT 総取り！','VANISH...','Trust your luck!','5勝達成','連勝中','あいこで蓄積','最後のLUCKを切った'];
 
@@ -699,8 +737,7 @@ function addWin(p) {
   tEl.textContent = pts[p-1];
   wEl.classList.remove('pop'); void wEl.offsetWidth; wEl.classList.add('pop');
 
-  globalCount++;
-  updateGlobal();
+  incrementGlobalCount();
   const name = document.getElementById('pname'+p).value || 'PLAYER '+p;
   addShout(name, `WIN! +${rndPts > 0 ? rndPts+'pts' : '1'}`, 'just now');
 
@@ -771,7 +808,7 @@ function spawnConfetti(lv) {
   }
 }
 
-updateGlobal();
+fetchGlobalCount();
 initFeed();
 </script>
 </body>
