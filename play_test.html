@@ -302,50 +302,88 @@ header a { text-decoration:none; }
   position:absolute;
   inset:0;
   background:
-    radial-gradient(circle at 50% 34%,rgba(255,120,160,.08),transparent 26%),
-    radial-gradient(circle at 24% 38%,rgba(80,190,255,.06),transparent 30%),
-    radial-gradient(circle at 78% 36%,rgba(255,92,0,.08),transparent 30%),
-    linear-gradient(180deg,rgba(12,24,48,.11),transparent 68%);
+    radial-gradient(circle at 50% 34%,rgba(255,92,0,.075),transparent 26%),
+    radial-gradient(circle at 24% 38%,rgba(245,183,0,.052),transparent 30%),
+    radial-gradient(circle at 78% 36%,rgba(232,0,58,.045),transparent 30%),
+    linear-gradient(180deg,rgba(255,122,26,.038),transparent 68%);
   animation:vegasFlash 3.55s ease-out forwards;
 }
 .fw-marquee {
   position:absolute;
   left:50%;
-  bottom:12%;
-  transform:translateX(-50%);
-  color:rgba(255,210,160,.58);
+  top:50%;
+  transform:translate(-50%,-50%);
+  width:min(86vw,520px);
+  padding:24px 16px;
+  text-align:center;
+  color:rgba(255,229,190,.92);
   font-family:'Rajdhani',sans-serif;
   font-weight:700;
-  font-size:clamp(34px,8vw,96px);
-  letter-spacing:8px;
-  text-shadow:0 0 10px rgba(255,92,0,.45),0 0 24px rgba(255,0,128,.22);
+  background:radial-gradient(ellipse at center,rgba(0,0,0,.58),rgba(0,0,0,.22) 58%,transparent 76%);
+  text-shadow:0 0 12px rgba(0,0,0,.96),0 0 24px rgba(255,92,0,.34);
   opacity:0;
   animation:vegasMarquee 3.45s ease-out forwards;
+  z-index:10;
+  pointer-events:none;
+}
+.fw-marquee::before {
+  content:"";
+  position:absolute;
+  inset:0;
+  z-index:-1;
+  background:radial-gradient(ellipse at center,rgba(0,0,0,.78),rgba(0,0,0,.34) 48%,transparent 72%);
+  filter:blur(3px);
+}
+.fw-player {
+  display:block;
+  color:rgba(250,247,240,.92);
+  font-size:clamp(16px,4.2vw,31px);
+  line-height:1;
+  letter-spacing:5px;
+  white-space:nowrap;
+}
+.fw-win-count {
+  display:block;
+  margin-top:8px;
+  color:var(--orange);
+  font-size:clamp(62px,18vw,132px);
+  line-height:.82;
+  letter-spacing:3px;
+  text-shadow:0 0 14px rgba(255,92,0,.52),0 0 34px rgba(255,178,42,.22),0 0 4px rgba(0,0,0,.95);
+  white-space:nowrap;
+}
+.fw-copy {
+  display:block;
+  margin-top:16px;
+  color:rgba(255,226,166,.94);
+  font-size:clamp(15px,4vw,28px);
+  line-height:1;
+  letter-spacing:6px;
   white-space:nowrap;
 }
 @keyframes vegasFlash {
   0% { opacity:0; }
-  8% { opacity:.28; }
-  38% { opacity:.16; }
+  8% { opacity:.14; }
+  38% { opacity:.075; }
   100% { opacity:0; }
 }
 @keyframes vegasMarquee {
-  0%,12% { opacity:0; transform:translateX(-50%) translateY(18px) scale(.94); }
-  24%,70% { opacity:.58; transform:translateX(-50%) translateY(0) scale(1); }
-  100% { opacity:0; transform:translateX(-50%) translateY(-10px) scale(1.02); }
+  0%,12% { opacity:0; transform:translate(-50%,-46%) scale(.94); }
+  24%,72% { opacity:1; transform:translate(-50%,-50%) scale(1); }
+  100% { opacity:0; transform:translate(-50%,-54%) scale(1.02); }
 }
 .fw-haze {
   position:absolute;
   inset:auto 0 0;
   height:42%;
-  background:linear-gradient(180deg,transparent,rgba(24,64,104,.10),rgba(255,122,26,.045));
+  background:linear-gradient(180deg,transparent,rgba(255,92,0,.052),rgba(245,183,0,.032));
   filter:blur(12px);
-  opacity:.46;
+  opacity:.24;
   animation:vegasHaze 3.6s ease-out forwards;
 }
 @keyframes vegasHaze {
   0% { opacity:0; transform:translateY(18px); }
-  18%,70% { opacity:.26; transform:translateY(0); }
+  18%,70% { opacity:.13; transform:translateY(0); }
   100% { opacity:0; transform:translateY(12px); }
 }
 .fw-burst {
@@ -2041,15 +2079,93 @@ function maybeFireWinMilestone(p) {
 function launchWinFireworks(p, value) {
   const wrap = document.getElementById('fireworksWrap');
   if (!wrap) return;
+  const level = value >= 20 ? 4 : value >= 15 ? 3 : value >= 10 ? 2 : 1;
+  const levelCopy = ['','NICE PLAY.','INCREDIBLE.','UNBELIEVABLE.','LEGENDARY.'][level];
+  const levelConfig = {
+    1: {
+      duration: 2000,
+      hideAfter: 2250,
+      trailAlpha: .28,
+      dotAlpha: .16,
+      glitterAlpha: .13,
+      cometAlpha: .36,
+      sparkleRatio: .045,
+      showerRatio: .025,
+      bursts: [
+        [0, .30, .27, 42, .72], [220, .70, .27, 46, .76],
+        [760, .50, .38, 34, .62]
+      ]
+    },
+    2: {
+      duration: 2400,
+      hideAfter: 2700,
+      trailAlpha: .34,
+      dotAlpha: .19,
+      glitterAlpha: .16,
+      cometAlpha: .42,
+      sparkleRatio: .06,
+      showerRatio: .04,
+      bursts: [
+        [0, .28, .25, 54, .82], [120, .72, .24, 58, .84],
+        [440, .50, .34, 44, .72], [900, .20, .43, 34, .60],
+        [1020, .80, .42, 34, .60], [1480, .58, .20, 54, .78]
+      ]
+    },
+    3: {
+      duration: 2900,
+      hideAfter: 3000,
+      trailAlpha: .39,
+      dotAlpha: .22,
+      glitterAlpha: .19,
+      cometAlpha: .48,
+      sparkleRatio: .08,
+      showerRatio: .055,
+      bursts: [
+        [0, .25, .25, 62, .86], [120, .74, .23, 66, .88],
+        [360, .50, .31, 54, .78], [760, .18, .43, 42, .66],
+        [880, .82, .42, 42, .66], [1240, .40, .18, 58, .82],
+        [1360, .62, .19, 58, .82], [1980, .50, .24, 70, .88]
+      ]
+    },
+    4: {
+      duration: 3000,
+      hideAfter: 3050,
+      trailAlpha: .44,
+      dotAlpha: .24,
+      glitterAlpha: .21,
+      cometAlpha: .52,
+      sparkleRatio: .095,
+      showerRatio: .065,
+      bursts: [
+        [0, .23, .25, 68, .90], [80, .77, .24, 70, .92],
+        [320, .50, .31, 58, .82], [620, .16, .43, 46, .70],
+        [740, .84, .42, 46, .70], [1020, .38, .18, 64, .86],
+        [1120, .63, .18, 64, .86], [1620, .30, .34, 52, .76],
+        [1700, .70, .33, 52, .76], [2180, .50, .22, 76, .92]
+      ]
+    }
+  }[level];
+  const escapeHtml = (text) => String(text).replace(/[&<>"']/g, ch => ({
+    '&':'&amp;',
+    '<':'&lt;',
+    '>':'&gt;',
+    '"':'&quot;',
+    "'":'&#39;'
+  }[ch]));
   wrap.innerHTML = '';
+  wrap.classList.remove('fw-level-1', 'fw-level-2', 'fw-level-3', 'fw-level-4');
   wrap.classList.remove('hidden');
+  wrap.classList.add('fw-level-' + level);
   const flash = document.createElement('div');
   flash.className = 'fw-flash';
   const haze = document.createElement('div');
   haze.className = 'fw-haze';
   const marquee = document.createElement('div');
-  marquee.className = 'fw-marquee';
-  marquee.textContent = getPlayerName(p).toUpperCase() + ' / ' + value + ' WINS';
+  marquee.className = 'fw-marquee fw-marquee-level-' + level;
+  marquee.innerHTML =
+    '<span class="fw-player">' + escapeHtml(getPlayerName(p).toUpperCase()) + '</span>' +
+    '<span class="fw-win-count">' + value + 'WIN</span>' +
+    '<span class="fw-copy">' + levelCopy + '</span>';
   const canvas = document.createElement('canvas');
   canvas.className = 'fw-canvas';
   wrap.appendChild(canvas);
@@ -2068,13 +2184,10 @@ function launchWinFireworks(p, value) {
   };
   resize();
 
-  const palette = ['#ff7a1a', '#f5b700', '#ffd166', '#ff3b1f', '#ff4aa2', '#54d7ff', '#6fffd2', '#b58cff'];
-  const bursts = [
-    [0, .31, .25, 58, .82], [120, .69, .24, 64, .86],
-    [420, .50, .34, 48, .76], [760, .22, .45, 36, .62], [840, .78, .44, 36, .62],
-    [1220, .39, .18, 56, .78], [1320, .63, .19, 56, .78],
-    [1860, .50, .23, 72, .88]
-  ];
+  const basePalette = ['#ff5c00', '#ff7a1a', '#f5b700', '#ffd166', '#ff3b1f', '#e8003a', '#ffb22a', '#ffe0aa'];
+  const palette = level >= 3 ? basePalette.concat(['#ff2d72']) : basePalette;
+  const cometPalette = ['#ff5c00', '#ff7a1a', '#f5b700', '#ff3b1f', '#e8003a'];
+  const bursts = levelConfig.bursts.map(b => b.slice());
   const comets = [];
   const particles = [];
   let started = performance.now();
@@ -2088,7 +2201,7 @@ function launchWinFireworks(p, value) {
       ty:window.innerHeight * targetY,
       life:0,
       max:32 + Math.random() * 18,
-      color:palette[Math.floor(Math.random() * palette.length)],
+      color:cometPalette[Math.floor(Math.random() * cometPalette.length)],
       trail:[]
     });
   }
@@ -2115,7 +2228,7 @@ function launchWinFireworks(p, value) {
         glitter:Math.random() > .50
       });
     }
-    for (let i=0; i<Math.floor(count * .06); i++) {
+    for (let i=0; i<Math.floor(count * levelConfig.sparkleRatio); i++) {
       particles.push({
         x:cx + (Math.random() - .5) * 28,
         y:cy + (Math.random() - .5) * 28,
@@ -2130,7 +2243,7 @@ function launchWinFireworks(p, value) {
         glitter:true
       });
     }
-    for (let i=0; i<Math.floor(count * .04); i++) {
+    for (let i=0; i<Math.floor(count * levelConfig.showerRatio); i++) {
       const side = Math.random() > .5 ? 1 : -1;
       particles.push({
         x:cx + (Math.random() - .5) * 42,
@@ -2156,7 +2269,7 @@ function launchWinFireworks(p, value) {
         addBurst(b[1], b[2], b[3], b[4]);
       }
     });
-    ctx.fillStyle = 'rgba(2,4,10,.34)';
+    ctx.fillStyle = 'rgba(5,3,1,.34)';
     ctx.fillRect(0, 0, window.innerWidth, window.innerHeight);
     ctx.globalCompositeOperation = 'lighter';
     comets.forEach(comet => {
@@ -2168,7 +2281,7 @@ function launchWinFireworks(p, value) {
       if (comet.trail.length > 16) comet.trail.shift();
       comet.x = comet.x + (comet.tx - comet.x) * .095;
       comet.y = comet.y + (comet.ty - comet.y) * .12 - 1.8 * (1 - ease);
-      ctx.globalAlpha = .44 * (1 - t);
+      ctx.globalAlpha = levelConfig.cometAlpha * (1 - t);
       ctx.strokeStyle = comet.color;
       ctx.lineWidth = 1.05;
       ctx.beginPath();
@@ -2192,7 +2305,7 @@ function launchWinFireworks(p, value) {
       let alpha = Math.max(0, 1 - spark.life / spark.max);
       if (spark.flicker) alpha *= .55 + Math.random() * .65;
       ctx.strokeStyle = spark.color;
-      ctx.globalAlpha = alpha * .34;
+      ctx.globalAlpha = alpha * levelConfig.trailAlpha;
       ctx.lineWidth = spark.size;
       ctx.beginPath();
       spark.trail.forEach((pt, index) => {
@@ -2200,27 +2313,27 @@ function launchWinFireworks(p, value) {
         else ctx.lineTo(pt[0], pt[1]);
       });
       ctx.stroke();
-      ctx.globalAlpha = alpha * .20;
+      ctx.globalAlpha = alpha * levelConfig.dotAlpha;
       ctx.fillStyle = spark.color;
       ctx.beginPath();
       ctx.arc(spark.x, spark.y, Math.max(.45, spark.size * .72), 0, Math.PI * 2);
       ctx.fill();
       if (spark.glitter && spark.life % 13 === 0) {
-        ctx.globalAlpha = alpha * .18;
+        ctx.globalAlpha = alpha * levelConfig.glitterAlpha;
         ctx.fillStyle = '#ffe8bc';
         ctx.fillRect(spark.x - .45, spark.y - .45, .9, .9);
       }
       if (spark.life > spark.max) particles.splice(i, 1);
     }
     ctx.globalAlpha = 1;
-    if (elapsed < 3000 || particles.length) requestAnimationFrame(tick);
+    if (elapsed < levelConfig.duration || particles.length) requestAnimationFrame(tick);
   }
 
   requestAnimationFrame(tick);
   setTimeout(() => {
     wrap.classList.add('hidden');
     wrap.innerHTML = '';
-  }, 3300);
+  }, levelConfig.hideAfter);
 }
 function registerWin(p, pointsArray, label) {
   storeSnapshot(label);
