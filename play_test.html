@@ -39,14 +39,36 @@ header a { text-decoration:none; }
 /* ── TABS ── */
 .tabs {
   display:flex; position:sticky; top:49px; z-index:49;
-  background:var(--black); border-bottom:1px solid var(--border);
+  background:linear-gradient(180deg,#101010,#090909);
+  border-top:1px solid #191919;
+  border-bottom:1px solid #2a2a2a;
+  padding:0 10px;
+  gap:4px;
 }
 .tab {
-  flex:1; padding:12px 4px; text-align:center;
-  font-size:10px; letter-spacing:2px; font-weight:700; text-transform:uppercase;
-  color:var(--dim); cursor:pointer; border-bottom:2px solid transparent; transition:all .2s;
+  flex:1; padding:14px 4px 13px; text-align:center;
+  font-family:'Rajdhani',sans-serif;
+  font-size:12px; letter-spacing:3px; font-weight:700; text-transform:uppercase;
+  color:#aaa7a0; cursor:pointer;
+  border-bottom:3px solid transparent;
+  position:relative;
+  transition:color .18s, border-color .18s, background .18s;
 }
-.tab.active { color:var(--orange); border-bottom-color:var(--orange); }
+.tab:hover { color:var(--white); background:rgba(255,255,255,.025); }
+.tab.active {
+  color:var(--orange);
+  border-bottom-color:var(--orange);
+  background:linear-gradient(180deg,rgba(255,92,0,.07),rgba(255,92,0,.018));
+}
+.tab.active::before {
+  content:"";
+  position:absolute;
+  left:18%;
+  right:18%;
+  top:0;
+  height:1px;
+  background:rgba(255,92,0,.55);
+}
 
 /* ── VIEWS ── */
 .view { display:none; padding:20px 16px 80px; background:var(--black); }
@@ -990,9 +1012,9 @@ header a { text-decoration:none; }
 
 <!-- TABS -->
 <div class="tabs">
-  <div class="tab active" onclick="switchTab('pulse')">🌍 GLOBAL</div>
-  <div class="tab"       onclick="switchTab('score')">✊ SCORE</div>
-  <div class="tab"       onclick="switchTab('rules')">📋 RULES</div>
+  <div class="tab active" onclick="switchTab('pulse')">GLOBAL</div>
+  <div class="tab"       onclick="switchTab('score')">SCORE</div>
+  <div class="tab"       onclick="switchTab('rules')">RULES</div>
 </div>
 
 <!-- ══ GLOBAL ══ -->
@@ -1023,16 +1045,16 @@ header a { text-decoration:none; }
 
   <div class="score-section-label mode-label">COUNT METHOD</div>
   <div class="count-mode-bar">
-    <button class="count-mode-btn active" id="modeScoreBtn" onclick="setCountMode('score')">
-      <strong>SCORE</strong><span>得点で判定</span>
-    </button>
-    <button class="count-mode-btn" id="modeWinBtn" onclick="setCountMode('win')">
+    <button class="count-mode-btn active" id="modeWinBtn" onclick="setCountMode('win')">
       <strong>WIN</strong><span>勝者だけ記録</span>
+    </button>
+    <button class="count-mode-btn" id="modeScoreBtn" onclick="setCountMode('score')">
+      <strong>SCORE</strong><span>得点で判定</span>
     </button>
   </div>
 
   <div class="mode-guide" id="modeGuide">
-    獲得カードの合計点を入力。最も高いプレイヤーを自動判定します。
+    勝ったプレイヤーだけを記録します。
   </div>
 
   <div class="players-grid score-modern-grid">
@@ -1896,7 +1918,7 @@ fetchCounterData();
 </style>
 
 <script id="score-two-modes-script">
-let countMode = 'score';
+let countMode = 'win';
 let resultHistory = [];
 
 function getPlayerName(p) {
@@ -1917,8 +1939,8 @@ function setCountMode(mode) {
   document.getElementById('modeWinBtn').classList.toggle('active', mode === 'win');
   document.getElementById('modeGuide').textContent =
     mode === 'score'
-      ? '獲得カードの合計点を入力。最も高いプレイヤーを自動判定します。'
-      : '得点を入力せず、勝ったプレイヤーのボタンを押すだけで記録します。';
+      ? '獲得カードの合計点を入力し、最も高いプレイヤーを自動判定します。'
+      : '勝ったプレイヤーだけを記録します。';
   clearCardStates();
   if (mode === 'score') refreshScorePreview();
 }
@@ -2283,7 +2305,7 @@ function doReset() {
   closeConfirm();
   refreshScorePreview();
 }
-setCountMode('score');
+setCountMode('win');
 </script>
 
 </body>
