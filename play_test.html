@@ -232,6 +232,14 @@ header a { text-decoration:none; }
   cursor:pointer; transition:transform .1s; touch-action:manipulation;
 }
 .btn-win:active { transform:scale(.93); }
+.btn-win:disabled,
+.btn-minus:disabled,
+.record-result-btn:disabled.is-cooling,
+.btn-undo:disabled.is-cooling {
+  opacity:.55;
+  cursor:not-allowed;
+  transform:none;
+}
 .btn-minus {
   width:40px; padding:10px 0; text-align:center;
   background:transparent; color:var(--dim);
@@ -265,6 +273,25 @@ header a { text-decoration:none; }
 .confetti-wrap.hidden { display:none; }
 .c-piece { position:absolute; top:-20px; border-radius:2px; animation:fall linear forwards; }
 @keyframes fall { to{ transform:translateY(110vh) rotate(720deg); opacity:0; } }
+.fireworks-wrap { position:fixed; inset:0; pointer-events:none; z-index:198; overflow:hidden; }
+.fireworks-wrap.hidden { display:none; }
+.fw-burst {
+  position:absolute; left:50%; top:50%; width:4px; height:4px;
+  border-radius:50%; background:var(--orange);
+  box-shadow:0 0 14px rgba(255,92,0,.75);
+}
+.fw-spark {
+  position:absolute; left:50%; top:50%; width:3px; height:16px;
+  border-radius:999px; background:var(--spark,#ff7a1a);
+  transform-origin:center bottom;
+  animation:fwSpark 1.45s ease-out forwards;
+  box-shadow:0 0 12px rgba(255,122,26,.68);
+}
+@keyframes fwSpark {
+  0% { opacity:0; transform:rotate(var(--r)) translateY(0) scaleY(.4); }
+  12% { opacity:1; }
+  100% { opacity:0; transform:rotate(var(--r)) translateY(var(--d)) scaleY(.9); }
+}
 .m-overlay { display:none; position:fixed; inset:0; z-index:200; flex-direction:column; align-items:center; justify-content:center; text-align:center; }
 .m-overlay.show { display:flex; animation:overlayIn .3s ease-out; }
 .m-overlay.lv1 { background:rgba(8,6,0,.97); }
@@ -478,6 +505,7 @@ header a { text-decoration:none; }
 
 <!-- CONFETTI -->
 <div class="confetti-wrap hidden" id="confettiWrap"></div>
+<div class="fireworks-wrap hidden" id="fireworksWrap"></div>
 
 <!-- MILESTONE -->
 <div class="m-overlay" id="mOverlay">
@@ -568,7 +596,7 @@ header a { text-decoration:none; }
         </div>
       </div>
       <div class="score-btns win-mode-only">
-        <button class="btn-win" onclick="addWin(1)">WIN THIS GAME</button>
+        <button class="btn-win" onclick="addWin(1,this)">WIN THIS GAME</button>
       </div>
     </div>
 
@@ -584,7 +612,7 @@ header a { text-decoration:none; }
         </div>
       </div>
       <div class="score-btns win-mode-only">
-        <button class="btn-win" onclick="addWin(2)">WIN THIS GAME</button>
+        <button class="btn-win" onclick="addWin(2,this)">WIN THIS GAME</button>
       </div>
     </div>
 
@@ -600,7 +628,7 @@ header a { text-decoration:none; }
         </div>
       </div>
       <div class="score-btns win-mode-only">
-        <button class="btn-win" onclick="addWin(3)">WIN THIS GAME</button>
+        <button class="btn-win" onclick="addWin(3,this)">WIN THIS GAME</button>
       </div>
     </div>
 
@@ -616,7 +644,7 @@ header a { text-decoration:none; }
         </div>
       </div>
       <div class="score-btns win-mode-only">
-        <button class="btn-win" onclick="addWin(4)">WIN THIS GAME</button>
+        <button class="btn-win" onclick="addWin(4,this)">WIN THIS GAME</button>
       </div>
     </div>
   </div>
@@ -625,7 +653,7 @@ header a { text-decoration:none; }
     <div class="result-caption">LIVE RESULT</div>
     <div class="result-name" id="resultName">ENTER SCORES</div>
     <div class="result-sub" id="resultSub">各プレイヤーの点数を入力してください</div>
-    <button class="record-result-btn" id="recordResultBtn" onclick="recordScoreResult()" disabled>RECORD RESULT</button>
+    <button class="record-result-btn" id="recordResultBtn" onclick="recordScoreResult(this)" disabled>RECORD RESULT</button>
   </div>
 
   <div class="last-result-panel" id="lastResultPanel">
@@ -634,7 +662,7 @@ header a { text-decoration:none; }
   </div>
 
   <div class="score-footer-actions">
-    <button class="btn-undo" id="undoBtn" onclick="undoLastResult()" disabled>UNDO LAST</button>
+    <button class="btn-undo" id="undoBtn" onclick="undoLastResult(this)" disabled>UNDO LAST</button>
     <button class="btn-reset" onclick="openConfirm()">RESET SESSION</button>
   </div>
 </div>
@@ -666,37 +694,37 @@ header a { text-decoration:none; }
         <span>6+ AGES</span>
       </div>
     </div>
-    <div style="font-size:11px;letter-spacing:1px;color:var(--dim);margin-bottom:8px;"><span class="jp-text">1人分のデッキ（10枚）</span><span class="en-text">10-card deck per player</span></div>
+    <div style="font-size:11px;letter-spacing:1px;color:var(--dim);margin-bottom:8px;"><span class="jp-text">40 CARDS / 10枚 × 4セット入り</span><span class="en-text">40 CARDS / 10 CARDS × 4 SETS INCLUDED</span></div>
     <div class="deck-visual">
       <img src="./assets/play/rules-deck-visual.png" alt="1人分のデッキ 10枚（5点×3・3点×3・1点×3・LUCK×1）">
     </div>
-    <p style="font-size:11px;color:var(--dim);margin-top:8px;line-height:1.5;"><span class="jp-text">各点数にグー・チョキ・パーの3種 / LUCKは全属性に勝つ切り札</span><span class="en-text">Each value has Rock, Scissors & Paper / LUCK beats all</span></p>
+    <p style="font-size:11px;color:var(--dim);margin-top:8px;line-height:1.5;"><span class="jp-text">プレイ人数や遊び方に応じて使用するカードを選びます。</span><span class="en-text">Choose the cards to use depending on the number of players and play mode.</span></p>
   </div>
 
   <div class="rules-block">
     <div class="rules-title">Luck Card</div>
     <p style="font-size:13px;color:var(--mid);line-height:1.7;margin-bottom:10px;"><span class="jp-text">LUCKはこのゲームの「毒」であり「救い」である。場に出すだけで空気が変わる唯一無二の1枚。</span><span class="en-text">LUCK is both poison and salvation. One card that changes everything the moment it hits the table.</span></p>
     <div class="luck-block">
-      <div class="luck-row"><span class="badge win">WIN</span><span><span class="jp-text">グー・チョキ・パー <strong style="color:var(--white)">すべてに勝利する。</strong></span><span class="en-text">Rock, Scissors, Paper — <strong style="color:var(--white)">beats them all.</strong></span></span></div>
+      <div class="luck-row"><span class="badge win">WIN</span><span><span class="jp-text">LUCKはすべての手に勝つ。ただし、得点は0点。</span><span class="en-text">LUCK BEATS EVERYTHING. 0 POINTS.</span></span></div>
       <div class="luck-row"><span class="badge tie">TIE</span><span><span class="jp-text">LUCK vs LUCK は「あいこ」。カードはPOTへ蓄積。</span><span class="en-text">LUCK vs LUCK is a tie. Cards go to the POT.</span></span></div>
     </div>
   </div>
 
   <div class="rules-block">
     <div class="rules-title">How to Play -Over-</div>
-    <div class="step-row"><div class="step-num">1</div><div class="step-body"><div class="step-title"><span class="jp-text">準備</span><span class="en-text">Setup</span></div><div class="step-text"><span class="jp-text">各プレイヤーは自分の10枚デッキを手に持つ。</span><span class="en-text">Each player holds their 10-card deck.</span></div></div></div>
-    <div class="step-row"><div class="step-num">2</div><div class="step-body"><div class="step-title"><span class="jp-text">SELECT — カードを選ぶ</span><span class="en-text">SELECT — Choose a card</span></div><div class="step-text"><span class="jp-text">手札から1枚を選び、伏せたまま場に出す。</span><span class="en-text">Choose 1 card from your hand and place it face-down.</span></div></div></div>
-    <div class="step-row"><div class="step-num">3</div><div class="step-body"><div class="step-title"><span class="jp-text">SE-NO! — 同時公開</span><span class="en-text">SE-NO! — Simultaneous reveal</span></div><div class="step-text"><span class="jp-text">全員で「せーの！」と叫び、同時にカードを公開する。</span><span class="en-text">Everyone shouts "SE-NO!" and flips their card simultaneously.</span></div></div></div>
-    <div class="step-row"><div class="step-num">4</div><div class="step-body"><div class="step-title"><span class="jp-text">勝敗判定（デフォルト：OVER）</span><span class="en-text">Result (Default: OVER)</span></div><div class="step-text"><span class="jp-text">勝者が場に出た全カード＋POT内カードを総取りし、点数を加算する。</span><span class="en-text">The winner takes all cards in play plus the POT and adds up the points.</span></div><div class="step-note"><span class="jp-text"><strong>あいこの場合：</strong>カードはPOT（共有プール）に蓄積され、次の勝者がすべてを奪う。</span><span class="en-text"><strong>TIE:</strong> Cards accumulate in the POT. Next round's winner takes everything.</span></div></div></div>
-    <div class="step-row"><div class="step-num">5</div><div class="step-body"><div class="step-title"><span class="jp-text">終了 — 10ラウンド後に集計</span><span class="en-text">End — Count up after 10 rounds</span></div><div class="step-text"><span class="jp-text">手札がなくなったら集計。獲得カードの合計点数が最も高いプレイヤーの勝利。</span><span class="en-text">After all cards are played, count totals. Highest score wins.</span></div></div></div>
+    <div class="step-row"><div class="step-num">1</div><div class="step-body"><div class="step-title"><span class="jp-text">準備</span><span class="en-text">Setup</span></div><div class="step-text"><span class="jp-text">1人10枚のカードを持ってスタート。</span><span class="en-text">Start with 10 cards per player.</span></div></div></div>
+    <div class="step-row"><div class="step-num">2</div><div class="step-body"><div class="step-title"><span class="jp-text">SELECT — カードを選ぶ</span><span class="en-text">SELECT — Choose a card</span></div><div class="step-text"><span class="jp-text">手札から1枚を選び、「SENO!」で同時に出す。</span><span class="en-text">Choose 1 card from your hand and play it simultaneously on "SENO!".</span></div></div></div>
+    <div class="step-row"><div class="step-num">3</div><div class="step-body"><div class="step-title"><span class="jp-text">勝敗判定</span><span class="en-text">Result</span></div><div class="step-text"><span class="jp-text">じゃんけんで勝ったプレイヤーが、そのターンで出されたカードを獲得。</span><span class="en-text">The player who wins the janken matchup takes the cards played that turn.</span></div><div class="step-note"><span class="jp-text">3〜4人プレイでは、同じ手が重なった場合、またはグー・チョキ・パーの3種類すべてが出た場合は、あいこになります。</span><span class="en-text">In a 3–4 player game, a round is a draw if matching hands appear or if ROCK, PAPER, and SCISSORS are all played.</span></div></div></div>
+    <div class="step-row"><div class="step-num">4</div><div class="step-body"><div class="step-title"><span class="jp-text">OVER — あいこ持ち越し</span><span class="en-text">OVER — Carry-over draw</span></div><div class="step-text"><span class="jp-text">あいこの場合、場のカードは持ち越され、次に勝ったプレイヤーがすべて獲得する。</span><span class="en-text">On a draw, the cards stay in the POT. The next winner takes everything.</span></div></div></div>
+    <div class="step-row"><div class="step-num">5</div><div class="step-body"><div class="step-title"><span class="jp-text">終了 — 10ラウンド後に集計</span><span class="en-text">End — Count up after 10 rounds</span></div><div class="step-text"><span class="jp-text">10ラウンド後、獲得したカードの合計点が最も高いプレイヤーの勝利。</span><span class="en-text">After 10 rounds, the player with the highest total score from captured cards wins.</span></div></div></div>
   </div>
 
   <div class="rules-block">
-    <div class="rules-title">Variant Modes</div>
+    <div class="rules-title">Modes</div>
 
     <div class="variant-item">
-      <div class="variant-head"><div class="variant-name">OVER</div><div class="variant-tag">DEFAULT</div></div>
-      <div class="variant-desc"><span class="jp-text">あいこ蓄積 / ジャックポット</span><span class="en-text">Tie stacks / Jackpot</span></div>
+      <div class="variant-head"><div class="variant-name">OVER</div><div class="variant-tag">MAIN MODE</div></div>
+      <div class="variant-desc"><span class="jp-text">基本モード / あいこ持ち越し</span><span class="en-text">Standard mode / Carry-over draw</span></div>
       <div class="vr-row"><span class="vr-label"><span class="jp-text">準備</span><span class="en-text">Setup</span></span><span class="vr-text"><span class="jp-text">各プレイヤーは手札10枚を裏向きで持つ。</span><span class="en-text">Each player holds 10 cards face-down.</span></span></div>
       <div class="vr-row"><span class="vr-label"><span class="jp-text">進行</span><span class="en-text">PLAY</span></span><span class="vr-text"><span class="jp-text">全員、伏せたまま1枚を選び、場の中央に裏向きで出す。「せーの！」の合図で全員同時に公開。これを手札がなくなるまで繰り返す。</span><span class="en-text">All players pick 1 card and place it face-down in the center. Reveal together on "SE-NO!". Repeat until hands are empty.</span></span></div>
       <div class="vr-row"><span class="vr-label"><span class="jp-text">勝者</span><span class="en-text">WIN</span></span><span class="vr-text"><span class="jp-text">単独勝者がいる場合、その人が場の全カード＋POTに蓄積されたカードすべてを獲得。</span><span class="en-text">A sole winner takes every card in play plus everything stacked in the POT.</span></span></div>
@@ -765,12 +793,15 @@ header a { text-decoration:none; }
 <script>
 // -- Counter API --
 const COUNTER_API_URL = '/api/counter';
+const VISIT_API_URL = '/api/visit';
 let globalCount = 0;
 let counterSendPending = false;
 let wins  = [0,0,0,0];
 let pts   = [0,0,0,0];
 let ptInp = [0,0,0,0];
 let activePlayers = 2;
+let scoreActionCooling = false;
+let firedWinMilestones = [new Set(), new Set(), new Set(), new Set()];
 
 // ── Slot counter ──
 let currentDigits = [];
@@ -900,7 +931,7 @@ async function recordCounterResult(outcome) {
     const res = await fetch(COUNTER_API_URL, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-      body: JSON.stringify({ mode: 'score', outcome })
+      body: JSON.stringify({ mode: 'over', outcome })
     });
     if (!res.ok) throw new Error('Counter result not accepted');
     let data = null;
@@ -912,6 +943,18 @@ async function recordCounterResult(outcome) {
   } finally {
     counterSendPending = false;
   }
+}
+
+async function recordVisitOnce() {
+  try {
+    if (sessionStorage.getItem('senoVisitRecorded') === '1') return;
+    sessionStorage.setItem('senoVisitRecorded', '1');
+    await fetch(VISIT_API_URL, {
+      method: 'POST',
+      headers: { 'Accept': 'application/json' },
+      cache: 'no-store'
+    });
+  } catch (e) {}
 }
 
 setInterval(fetchCounterData, 5000);
@@ -1025,6 +1068,7 @@ function setLang(lang) {
 // ── Init ──
 document.getElementById('view-rules').classList.add('lang-jp');
 buildSlotDigits(0);
+recordVisitOnce();
 fetchCounterData();
 </script>
 
@@ -1266,6 +1310,58 @@ function flashWinner(p) {
   card.classList.remove('flash-1'); void card.offsetWidth; card.classList.add('flash-1');
   setTimeout(() => card.classList.remove('flash-1'), 500);
 }
+function coolScoreButton(btn) {
+  if (scoreActionCooling) return false;
+  scoreActionCooling = true;
+  if (btn) {
+    btn.disabled = true;
+    btn.classList.add('is-cooling');
+  }
+  setTimeout(() => {
+    scoreActionCooling = false;
+    if (btn) {
+      btn.disabled = false;
+      btn.classList.remove('is-cooling');
+      refreshScorePreview();
+    }
+  }, 700);
+  return true;
+}
+function maybeFireWinMilestone(p) {
+  const value = wins[p-1];
+  if (value <= 0 || value % 5 !== 0 || firedWinMilestones[p-1].has(value)) return;
+  firedWinMilestones[p-1].add(value);
+  launchWinFireworks(p, value);
+}
+function launchWinFireworks(p, value) {
+  const wrap = document.getElementById('fireworksWrap');
+  if (!wrap) return;
+  wrap.innerHTML = '';
+  wrap.classList.remove('hidden');
+  const anchors = [
+    [50, 34], [28, 42], [72, 42], [40, 58], [60, 58]
+  ];
+  anchors.forEach((pos, burstIndex) => {
+    const burst = document.createElement('div');
+    burst.className = 'fw-burst';
+    burst.style.left = pos[0] + '%';
+    burst.style.top = pos[1] + '%';
+    const sparks = 14;
+    for (let i=0; i<sparks; i++) {
+      const s = document.createElement('i');
+      s.className = 'fw-spark';
+      s.style.setProperty('--r', ((360 / sparks) * i + burstIndex * 7) + 'deg');
+      s.style.setProperty('--d', (46 + (i % 4) * 10 + value) + 'px');
+      s.style.setProperty('--spark', ['#ff7a1a','#f5b700','#ff3b1f','#ffd166'][i % 4]);
+      burst.appendChild(s);
+    }
+    wrap.appendChild(burst);
+  });
+  setTimeout(() => {
+    wrap.classList.add('hidden');
+    wrap.innerHTML = '';
+  }, 1800);
+}
 function registerWin(p, pointsArray, label) {
   storeSnapshot(label);
   wins[p-1]++;
@@ -1275,10 +1371,12 @@ function registerWin(p, pointsArray, label) {
     document.getElementById('ptotal'+i).textContent = pts[i-1];
   }
   flashWinner(p);
+  maybeFireWinMilestone(p);
   recordCounterResult('win');
   document.getElementById('lastResultText').textContent = label;
 }
-function recordScoreResult() {
+function recordScoreResult(btn) {
+  if (!coolScoreButton(btn)) return;
   const r = getLiveResult();
   if (r.state === 'empty') return;
 
@@ -1299,18 +1397,21 @@ function recordScoreResult() {
   }
   refreshScorePreview();
 }
-function addWin(p) {
+function addWin(p, btn) {
+  if (!coolScoreButton(btn)) return;
   if (countMode !== 'win' || p > activePlayers) return;
   registerWin(p, [0,0,0,0], getPlayerName(p).toUpperCase() + ' WIN');
 }
-function subWin(p) {
+function subWin(p, btn) {
+  if (!coolScoreButton(btn)) return;
   /* 旧ボタン互換。新UIではUNDO LASTを使用 */
   if (wins[p-1] > 0) {
     wins[p-1]--;
     document.getElementById('pwins'+p).textContent = wins[p-1];
   }
 }
-function undoLastResult() {
+function undoLastResult(btn) {
+  if (!coolScoreButton(btn)) return;
   const previous = resultHistory.pop();
   if (!previous) return;
   wins = [...previous.wins];
@@ -1326,6 +1427,7 @@ function undoLastResult() {
 }
 function doReset() {
   wins=[0,0,0,0]; pts=[0,0,0,0]; ptInp=[0,0,0,0]; resultHistory=[];
+  firedWinMilestones = [new Set(), new Set(), new Set(), new Set()];
   for (let i=1;i<=4;i++) {
     document.getElementById('pwins'+i).textContent='0';
     document.getElementById('ptotal'+i).textContent='0';

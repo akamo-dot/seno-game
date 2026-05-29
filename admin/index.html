@@ -1,0 +1,156 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SENO / PRIVATE STATS</title>
+  <style>
+    :root {
+      --black:#050505;
+      --charcoal:#111;
+      --panel:#171717;
+      --line:#2a2a2a;
+      --orange:#ff5c00;
+      --amber:#f5b700;
+      --text:#f3efe8;
+      --muted:#8d8780;
+      --dim:#5f5a54;
+    }
+    * { box-sizing:border-box; }
+    body {
+      margin:0;
+      background:var(--black);
+      color:var(--text);
+      font-family:Arial, sans-serif;
+      letter-spacing:.02em;
+    }
+    main { max-width:1120px; margin:0 auto; padding:28px 16px 48px; }
+    header {
+      display:flex; justify-content:space-between; gap:16px; align-items:flex-end;
+      border-bottom:1px solid var(--line); padding-bottom:18px; margin-bottom:22px;
+    }
+    h1 {
+      margin:0;
+      font-size:22px;
+      letter-spacing:.18em;
+      font-weight:700;
+    }
+    .status {
+      color:var(--orange);
+      font-size:11px;
+      letter-spacing:.16em;
+      text-align:right;
+    }
+    .grid { display:grid; grid-template-columns:repeat(2, minmax(0, 1fr)); gap:14px; }
+    .metric-row { display:grid; grid-template-columns:repeat(2, minmax(0, 1fr)); gap:14px; margin-bottom:14px; }
+    .panel {
+      background:var(--panel);
+      border:1px solid var(--line);
+      border-radius:8px;
+      padding:16px;
+      min-width:0;
+    }
+    .metric .label,
+    .panel-title {
+      color:var(--muted);
+      font-size:11px;
+      letter-spacing:.18em;
+      font-weight:700;
+      margin-bottom:12px;
+    }
+    .metric .value {
+      font-size:42px;
+      line-height:1;
+      color:var(--orange);
+      font-weight:700;
+      font-family:Arial, sans-serif;
+    }
+    table { width:100%; border-collapse:collapse; font-size:13px; }
+    th {
+      color:var(--dim);
+      text-align:left;
+      font-size:10px;
+      letter-spacing:.16em;
+      padding:8px 0;
+      border-bottom:1px solid var(--line);
+    }
+    td { padding:9px 0; border-bottom:1px solid #242424; color:var(--text); }
+    td:last-child, th:last-child { text-align:right; color:var(--amber); }
+    .empty { color:var(--dim); font-size:13px; line-height:1.7; }
+    @media (max-width:720px) {
+      header { display:block; }
+      .status { text-align:left; margin-top:8px; }
+      .grid, .metric-row { grid-template-columns:1fr; }
+      h1 { font-size:18px; }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <header>
+      <h1>SENO / PRIVATE STATS</h1>
+      <div class="status" id="status">LOADING</div>
+    </header>
+
+    <section class="metric-row">
+      <div class="panel metric">
+        <div class="label">VISITS</div>
+        <div class="value" id="visitsTotal">0</div>
+      </div>
+      <div class="panel metric">
+        <div class="label">PLAYS</div>
+        <div class="value" id="playsTotal">0</div>
+      </div>
+    </section>
+
+    <section class="grid">
+      <div class="panel"><div class="panel-title">VISITS BY COUNTRY</div><table id="visitCountries"></table></div>
+      <div class="panel"><div class="panel-title">PLAYS BY COUNTRY</div><table id="playCountries"></table></div>
+      <div class="panel"><div class="panel-title">DAILY VISITS</div><table id="dailyVisits"></table></div>
+      <div class="panel"><div class="panel-title">DAILY PLAYS</div><table id="dailyPlays"></table></div>
+      <div class="panel"><div class="panel-title">WIN / DRAW</div><table id="outcomes"></table></div>
+      <div class="panel"><div class="panel-title">RECENT PLAYS</div><table id="recentPlays"></table></div>
+    </section>
+  </main>
+
+  <script>
+    const statusEl = document.getElementById('status');
+
+    function setText(id, value) {
+      document.getElementById(id).textContent = String(value || 0);
+    }
+
+    function renderTable(id, rows, columns) {
+      const table = document.getElementById(id);
+      if (!rows || !rows.length) {
+        table.innerHTML = '<tr><td class="empty">NO DATA</td></tr>';
+        return;
+      }
+      const head = '<tr>' + columns.map(col => '<th>' + col.label + '</th>').join('') + '</tr>';
+      const body = rows.map(row => '<tr>' + columns.map(col => '<td>' + (row[col.key] ?? '') + '</td>').join('') + '</tr>').join('');
+      table.innerHTML = head + body;
+    }
+
+    async function loadStats() {
+      try {
+        const res = await fetch('/api/admin-stats', { headers:{ 'Accept':'application/json' }, cache:'no-store' });
+        if (!res.ok) throw new Error('stats unavailable');
+        const data = await res.json();
+        setText('visitsTotal', data.visitsTotal);
+        setText('playsTotal', data.playsTotal);
+        renderTable('visitCountries', data.visitCountries, [{ key:'code', label:'COUNTRY' }, { key:'count', label:'COUNT' }]);
+        renderTable('playCountries', data.playCountries, [{ key:'code', label:'COUNTRY' }, { key:'count', label:'COUNT' }]);
+        renderTable('dailyVisits', data.dailyVisits, [{ key:'day', label:'DAY' }, { key:'count', label:'COUNT' }]);
+        renderTable('dailyPlays', data.dailyPlays, [{ key:'day', label:'DAY' }, { key:'count', label:'COUNT' }]);
+        renderTable('outcomes', data.outcomes, [{ key:'outcome', label:'RESULT' }, { key:'count', label:'COUNT' }]);
+        renderTable('recentPlays', data.recentPlays, [{ key:'code', label:'COUNTRY' }, { key:'createdAt', label:'TIME' }]);
+        statusEl.textContent = 'LIVE / ACCESS REQUIRED';
+      } catch (e) {
+        statusEl.textContent = 'PREVIEW / API NOT CONNECTED';
+      }
+    }
+
+    loadStats();
+  </script>
+</body>
+</html>
