@@ -1,0 +1,8 @@
+name = "seno-game"
+compatibility_date = "2026-05-29"
+pages_build_output_dir = "."
+
+[[d1_databases]]
+binding = "SENO_DB"
+database_name = "seno-counter"
+database_id = "REPLACE_WITH_D1_DATABASE_ID"
