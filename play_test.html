@@ -1,0 +1,1343 @@
+﻿<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SENO — PLAY</title>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,400;0,600;0,700;0,900&family=Rajdhani:wght@500;600;700&family=Noto+Sans+JP:wght@400;700;900&display=swap" rel="stylesheet">
+<style>
+:root {
+  --yellow: #F5B700;
+  --orange: #FF5C00;
+  --red:    #E8003A;
+  --black:  #0A0A0A;
+  --dark:   #111111;
+  --dark2:  #181818;
+  --border: #252525;
+  --white:  #F2EFE9;
+  --mid:    #C8C6C1;
+  --dim:    #888680;
+}
+* { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+html { background:var(--black); }
+body {
+  background:var(--black); color:var(--white);
+  font-family:'Barlow Condensed','Noto Sans JP',sans-serif;
+  min-height:100vh; overflow-x:hidden; max-width:480px; margin:0 auto;
+}
+
+/* ── HEADER ── */
+header {
+  position:sticky; top:0; z-index:50;
+  background:var(--black); border-bottom:1px solid var(--border);
+  display:flex; align-items:center; justify-content:space-between; padding:10px 18px;
+}
+.header-logo { height:28px; display:block; }
+header a { text-decoration:none; }
+.tagline { font-size:10px; letter-spacing:3px; color:var(--dim); text-transform:uppercase; }
+
+/* ── TABS ── */
+.tabs {
+  display:flex; position:sticky; top:49px; z-index:49;
+  background:var(--black); border-bottom:1px solid var(--border);
+}
+.tab {
+  flex:1; padding:12px 4px; text-align:center;
+  font-size:10px; letter-spacing:2px; font-weight:700; text-transform:uppercase;
+  color:var(--dim); cursor:pointer; border-bottom:2px solid transparent; transition:all .2s;
+}
+.tab.active { color:var(--orange); border-bottom-color:var(--orange); }
+
+/* ── VIEWS ── */
+.view { display:none; padding:20px 16px 80px; background:var(--black); }
+.view.active { display:block; }
+
+/* ════ GLOBAL TAB ════ */
+.global-hero { text-align:center; padding:32px 0 24px; }
+
+.global-label { font-size:10px; letter-spacing:5px; color:var(--dim); text-transform:uppercase; margin-bottom:12px; }
+
+/* Slot machine counter */
+.slot-counter-wrap {
+  display:flex; justify-content:center; align-items:center;
+  gap:1px; margin:0 auto 12px; min-height:56px;
+}
+.slot-digit {
+  position:relative; width:30px; height:50px;
+  overflow:hidden; border-radius:5px;
+  background:linear-gradient(180deg,#0a0000 0%,#1a0400 50%,#0a0000 100%);
+  border:1px solid #3a1a00;
+  box-shadow:0 0 12px rgba(255,92,0,.3), inset 0 2px 8px rgba(0,0,0,.8);
+}
+.slot-digit-inner {
+  position:absolute; top:0; left:0; right:0;
+  display:flex; flex-direction:column; align-items:center;
+  transition:transform .4s cubic-bezier(.25,.46,.45,.94);
+}
+.slot-digit-num {
+  font-family:'Rajdhani',sans-serif; font-weight:700;
+  font-size:30px; line-height:50px; height:50px; width:100%;
+  text-align:center; flex-shrink:0;
+  color:#FF7A1A;
+  text-shadow:0 0 16px rgba(255,92,0,.9), 0 0 32px rgba(255,92,0,.5);
+}
+.slot-digit::after {
+  content:'';
+  position:absolute; inset:0;
+  background:linear-gradient(180deg,rgba(10,0,0,.7) 0%,transparent 30%,transparent 70%,rgba(10,0,0,.7) 100%);
+  pointer-events:none;
+}
+.slot-separator {
+  font-family:'Rajdhani',sans-serif; font-weight:700;
+  font-size:24px; color:#FF7A1A; padding:0 1px; align-self:center;
+  text-shadow:0 0 16px rgba(255,92,0,.8);
+  opacity:.5;
+}
+
+.global-sub-jp { font-size:13px; letter-spacing:1px; color:var(--mid); margin-top:10px; font-family:'Noto Sans JP',sans-serif; }
+.global-sub-en { font-size:10px; letter-spacing:3px; color:var(--dim); margin-top:4px; text-transform:uppercase; }
+@media (max-width:480px){ .global-sub-en { font-size:9px; letter-spacing:2px; line-height:1.6; padding:0 12px; } }
+.divider { height:1px; background:var(--border); margin:8px 0 20px; }
+
+/* Global flat map */
+.globe-wrap {
+  position:relative; width:calc(100% + 32px);
+  margin:0 -16px;
+  display:flex; align-items:center; justify-content:center;
+  overflow:hidden;
+  padding:10px 0 4px;
+  background:radial-gradient(circle at 50% 50%, #050505 0%, #020202 62%, #000 100%);
+}
+.globe-wrap::before, .globe-wrap::after {
+  content:''; position:absolute; left:0; right:0; height:46px; z-index:1; pointer-events:none;
+}
+.globe-wrap::before { top:0; background:linear-gradient(180deg,#000 0%,rgba(0,0,0,0) 100%); }
+.globe-wrap::after { bottom:0; background:linear-gradient(0deg,#000 0%,rgba(0,0,0,0) 100%); }
+.flat-earth-map {
+  display:block; width:100%; max-width:480px; height:auto;
+  position:relative; z-index:0;
+  opacity:.92;
+  filter:contrast(1.18) brightness(.82) saturate(.15);
+  user-select:none; -webkit-user-drag:none;
+}
+.globe-label { font-size:10px; letter-spacing:4px; color:var(--dim); text-transform:uppercase; margin-top:8px; margin-bottom:18px; position:relative; z-index:2; }
+
+.seno-pulse-layer {
+  position:absolute; inset:10px 0 4px;
+  width:100%; max-width:480px; margin:auto;
+  left:0; right:0; z-index:2; pointer-events:none;
+}
+.seno-pulse {
+  --size:7px; --delay:0s; --dur:5.8s;
+  position:absolute; left:var(--x); top:var(--y);
+  width:var(--size); height:var(--size);
+  transform:translate(-50%,-50%);
+  border-radius:999px;
+  background:rgba(255,92,0,.92);
+  box-shadow:0 0 10px rgba(255,92,0,.95),0 0 22px rgba(255,92,0,.48),0 0 42px rgba(255,92,0,.22);
+  opacity:.28;
+  animation:senoCityPulse var(--dur) ease-in-out infinite;
+  animation-delay:var(--delay);
+}
+.seno-pulse::before {
+  content:''; position:absolute; inset:-7px;
+  border-radius:999px; border:1px solid rgba(255,92,0,.34);
+  transform:scale(.35); opacity:0;
+  animation:senoCityRing var(--dur) ease-out infinite;
+  animation-delay:var(--delay);
+}
+.seno-pulse::after {
+  content:'SENO!';
+  position:absolute; left:8px; top:-12px;
+  font-family:'Rajdhani',sans-serif; font-weight:700; font-size:8px; letter-spacing:1.5px;
+  color:rgba(255,122,26,.78); text-shadow:0 0 8px rgba(255,92,0,.65);
+  opacity:0; transform:translateY(2px);
+  animation:senoCityText var(--dur) ease-in-out infinite;
+  animation-delay:calc(var(--delay) + .2s);
+}
+.seno-pulse.tiny { --size:5px; }
+.seno-pulse.big { --size:9px; }
+.seno-pulse.no-label::after { content:''; display:none; }
+@keyframes senoCityPulse {
+  0%,100% { opacity:.16; transform:translate(-50%,-50%) scale(.72); }
+  42% { opacity:.98; transform:translate(-50%,-50%) scale(1.22); }
+  58% { opacity:.55; transform:translate(-50%,-50%) scale(.95); }
+}
+@keyframes senoCityRing {
+  0% { opacity:0; transform:scale(.25); }
+  34% { opacity:.42; }
+  78%,100% { opacity:0; transform:scale(2.4); }
+}
+@keyframes senoCityText {
+  0%,30%,100% { opacity:0; transform:translateY(3px); }
+  42%,58% { opacity:.86; transform:translateY(0); }
+}
+@media (max-width:420px){ .seno-pulse::after{ font-size:7px; left:7px; top:-10px; } }
+
+/* ════ SCORE TAB ════ */
+.pc-bar { display:flex; gap:8px; margin-bottom:18px; }
+.pc-btn {
+  flex:1; padding:10px; text-align:center;
+  background:var(--dark2); color:var(--dim);
+  border:1px solid var(--border); border-radius:5px;
+  font-family:'Barlow Condensed',sans-serif; font-size:14px; font-weight:700; letter-spacing:1px;
+  cursor:pointer; transition:all .15s;
+}
+.pc-btn.active { background:var(--orange); color:var(--black); border-color:var(--orange); }
+.players-grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+.player-card {
+  background:var(--dark2); border:1px solid var(--border);
+  border-radius:10px; padding:12px 10px; position:relative;
+}
+.player-card.hidden { display:none; }
+.flash-1 { animation:f1 .5s ease-out; }
+.flash-2 { animation:f2 .6s ease-out; }
+.flash-3 { animation:f3 .7s ease-out; }
+.flash-4 { animation:f4 1s ease-out; }
+@keyframes f1 { 0%{background:#2a1a00;border-color:var(--yellow)} 100%{background:var(--dark2);border-color:var(--border)} }
+@keyframes f2 { 0%,40%{background:#2e1200;border-color:var(--orange)} 100%{background:var(--dark2);border-color:var(--border)} }
+@keyframes f3 { 0%,50%{background:#280010;border-color:var(--red)} 100%{background:var(--dark2);border-color:var(--border)} }
+@keyframes f4 { 0%,20%,40%,60%{background:#1a0010;border-color:var(--red)} 10%,30%,50%{background:#26001e;border-color:#ff00aa} 100%{background:var(--dark2);border-color:var(--border)} }
+.player-name-input {
+  background:transparent; border:none; border-bottom:1px solid var(--border);
+  color:#F2EFE9; font-family:'Barlow Condensed',sans-serif;
+  font-size:13px; font-weight:700; letter-spacing:2px; text-transform:uppercase;
+  width:100%; margin-bottom:8px; padding-bottom:4px; outline:none;
+}
+.player-name-input::placeholder { color:#3a3a3a; }
+.stat-label { font-size:9px; letter-spacing:2px; color:var(--dim); text-transform:uppercase; margin-bottom:2px; }
+.stat-val {
+  font-family:'Rajdhani',sans-serif; font-weight:700;
+  font-size:42px; line-height:1; color:var(--white); text-align:center;
+}
+.stat-val.pop { animation:scorePop .2s ease-out; }
+@keyframes scorePop { 0%{transform:scale(1.18);color:var(--orange)} 100%{transform:scale(1);color:var(--white)} }
+.pts-row { margin:8px 0 10px; }
+.pts-label { font-size:9px; letter-spacing:2px; color:var(--dim); text-transform:uppercase; margin-bottom:4px; }
+.pts-input-row { display:flex; gap:6px; align-items:center; }
+.pts-input {
+  flex:1; background:var(--dark); border:1px solid var(--border); border-radius:4px;
+  color:var(--yellow); font-family:'Rajdhani',sans-serif; font-weight:700;
+  font-size:20px; text-align:center; padding:6px 4px; outline:none;
+  -moz-appearance:textfield;
+}
+.pts-input::-webkit-inner-spin-button, .pts-input::-webkit-outer-spin-button { -webkit-appearance:none; }
+.pts-total { font-family:'Rajdhani',sans-serif; font-weight:700; font-size:13px; color:var(--dim); white-space:nowrap; }
+.pts-total span { color:var(--orange); font-size:16px; }
+.score-btns { display:flex; gap:6px; }
+.btn-win {
+  flex:1; padding:10px 4px; background:var(--orange); color:var(--black);
+  border:none; border-radius:5px;
+  font-family:'Rajdhani',sans-serif; font-weight:700; font-size:15px; letter-spacing:1px;
+  cursor:pointer; transition:transform .1s; touch-action:manipulation;
+}
+.btn-win:active { transform:scale(.93); }
+.btn-minus {
+  width:40px; padding:10px 0; text-align:center;
+  background:transparent; color:var(--dim);
+  border:1px solid var(--border); border-radius:5px;
+  font-family:'Rajdhani',sans-serif; font-weight:700; font-size:20px; line-height:1;
+  cursor:pointer; transition:all .1s; touch-action:manipulation;
+}
+.btn-minus:active { background:#1e0000; color:var(--red); border-color:var(--red); }
+.reset-bar { margin-top:14px; }
+.btn-reset {
+  width:100%; padding:12px; background:transparent; color:var(--dim);
+  border:1px solid var(--border); border-radius:5px;
+  font-family:'Barlow Condensed',sans-serif; font-size:12px; font-weight:700;
+  letter-spacing:3px; text-transform:uppercase; cursor:pointer; transition:all .2s;
+}
+.btn-reset:hover { color:var(--red); border-color:var(--red); }
+
+/* confirm modal */
+.confirm-modal { display:none; position:fixed; inset:0; z-index:300; background:rgba(0,0,0,.88); align-items:center; justify-content:center; }
+.confirm-modal.show { display:flex; }
+.confirm-box { background:var(--dark2); border:1px solid var(--border); border-radius:10px; padding:26px 22px; max-width:280px; width:90%; text-align:center; animation:overlayIn .2s ease-out; }
+@keyframes overlayIn { from{opacity:0;transform:scale(.94)} to{opacity:1;transform:scale(1)} }
+.confirm-title { font-family:'Rajdhani',sans-serif; font-weight:700; font-size:22px; letter-spacing:3px; color:var(--white); margin-bottom:8px; }
+.confirm-sub { font-size:13px; color:var(--dim); margin-bottom:20px; line-height:1.5; }
+.confirm-btns { display:flex; gap:10px; }
+.confirm-yes { flex:1; padding:12px; background:var(--red); color:var(--white); border:none; border-radius:5px; font-family:'Rajdhani',sans-serif; font-weight:700; font-size:15px; cursor:pointer; }
+.confirm-no  { flex:1; padding:12px; background:transparent; color:var(--dim); border:1px solid var(--border); border-radius:5px; font-family:'Rajdhani',sans-serif; font-weight:700; font-size:15px; cursor:pointer; }
+
+/* milestone */
+.confetti-wrap { position:fixed; inset:0; pointer-events:none; z-index:199; overflow:hidden; }
+.confetti-wrap.hidden { display:none; }
+.c-piece { position:absolute; top:-20px; border-radius:2px; animation:fall linear forwards; }
+@keyframes fall { to{ transform:translateY(110vh) rotate(720deg); opacity:0; } }
+.m-overlay { display:none; position:fixed; inset:0; z-index:200; flex-direction:column; align-items:center; justify-content:center; text-align:center; }
+.m-overlay.show { display:flex; animation:overlayIn .3s ease-out; }
+.m-overlay.lv1 { background:rgba(8,6,0,.97); }
+.m-overlay.lv2 { background:rgba(16,6,0,.97); }
+.m-overlay.lv3 { background:rgba(16,0,6,.97); }
+.m-overlay.lv4 { background:rgba(8,0,12,.97); }
+.m-emoji { font-size:56px; margin-bottom:8px; animation:emojiPop .5s ease-out; }
+@keyframes emojiPop { 0%{transform:scale(0) rotate(-15deg)} 70%{transform:scale(1.15) rotate(4deg)} 100%{transform:scale(1) rotate(0)} }
+.m-title { font-family:'Rajdhani',sans-serif; font-weight:700; line-height:1; letter-spacing:5px; animation:titleShake .45s ease-out; }
+@keyframes titleShake { 0%,100%{transform:translateX(0)} 25%{transform:translateX(-8px)} 75%{transform:translateX(8px)} }
+.m-title.lv1 { font-size:64px; color:var(--yellow); }
+.m-title.lv2 { font-size:72px; color:var(--orange); }
+.m-title.lv3 { font-size:78px; color:var(--red); }
+.m-title.lv4 { font-size:86px; background:linear-gradient(135deg,#ff0080,#ff5c00,#f5b700); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
+.m-name { font-family:'Rajdhani',sans-serif; font-weight:600; font-size:24px; letter-spacing:4px; margin-top:8px; opacity:.65; }
+.m-name.lv1 { color:var(--yellow); } .m-name.lv2 { color:var(--orange); } .m-name.lv3 { color:var(--red); } .m-name.lv4 { color:#ff00aa; }
+.m-sub { font-size:13px; letter-spacing:1px; color:var(--dim); margin-top:10px; max-width:260px; line-height:1.65; }
+.m-close { margin-top:32px; padding:12px 44px; background:transparent; border:1px solid #333; color:var(--mid); border-radius:5px; font-family:'Rajdhani',sans-serif; font-weight:700; font-size:17px; letter-spacing:3px; cursor:pointer; }
+
+/* ════ RULES TAB ════ */
+#view-rules { background:var(--black); }
+/* ── Lang Toggle ── */
+.lang-toggle {
+  display:flex; gap:0; margin-bottom:20px;
+  border:1px solid var(--border); border-radius:5px; overflow:hidden;
+  width:fit-content;
+}
+.lang-btn {
+  padding:7px 18px; font-family:'Rajdhani',sans-serif; font-weight:700;
+  font-size:12px; letter-spacing:2px; cursor:pointer;
+  background:transparent; color:var(--dim); border:none;
+  transition:all .15s;
+}
+.lang-btn.active { background:var(--orange); color:var(--black); }
+.jp-text, .en-text { display:none; }
+#view-rules.lang-en .en-text { display:inline; }
+#view-rules.lang-en .jp-text { display:none; }
+#view-rules.lang-jp .en-text { display:none; }
+#view-rules.lang-jp .jp-text { display:inline; }
+
+.rules-block { margin-bottom:28px; }
+.rules-title {
+  font-family:'Rajdhani',sans-serif; font-weight:700; font-size:11px; letter-spacing:6px;
+  color:var(--orange); text-transform:uppercase;
+  padding-bottom:8px; border-bottom:1px solid var(--border); margin-bottom:14px;
+}
+.info-chips { display:flex; flex-wrap:wrap; gap:6px; margin-bottom:14px; }
+.info-chip { display:inline-flex; align-items:center; gap:5px; border:1px solid var(--border); border-radius:20px; padding:4px 10px; font-size:11px; color:var(--mid); }
+.info-chip span { font-weight:700; color:var(--white); }
+.card-chart { display:grid; grid-template-columns:repeat(4,1fr); gap:8px; margin:10px 0; }
+.deck-visual { margin:10px 0; }
+.deck-visual img { display:block; width:100%; height:auto; }
+
+.step-row { display:flex; gap:14px; align-items:flex-start; margin-bottom:14px; }
+.step-num { font-family:'Rajdhani',sans-serif; font-weight:700; font-size:26px; color:var(--orange); min-width:22px; line-height:1.1; }
+.step-body { flex:1; }
+.step-title { font-size:15px; font-weight:700; color:var(--white); margin-bottom:3px; }
+.step-text { font-size:13px; color:var(--mid); line-height:1.7; }
+.step-note { margin-top:6px; padding:9px 11px; background:var(--dark2); border-left:2px solid var(--orange); font-size:12px; color:var(--mid); line-height:1.65; border-radius:0 4px 4px 0; }
+.step-note strong { color:var(--white); }
+.score-tbl { width:100%; border-collapse:collapse; margin-top:10px; }
+.score-tbl th { text-align:left; padding:7px 8px; font-size:9px; letter-spacing:2px; color:var(--dim); border-bottom:1px solid var(--border); font-weight:700; text-transform:uppercase; }
+.score-tbl td { padding:8px; border-bottom:1px solid var(--border); color:var(--white); vertical-align:middle; }
+.pts { font-family:'Rajdhani',sans-serif; font-weight:700; font-size:18px; color:var(--white); }
+.pts.luck { color:var(--orange); }
+.hand-icon { width:24px; height:24px; object-fit:contain; vertical-align:middle; }
+.luck-block { border:1px solid var(--border); border-radius:8px; overflow:hidden; margin:10px 0; }
+.luck-row { display:flex; align-items:flex-start; gap:10px; padding:11px 12px; border-bottom:1px solid var(--border); font-size:13px; color:var(--mid); line-height:1.6; }
+.luck-row:last-child { border-bottom:none; }
+.badge { font-family:'Rajdhani',sans-serif; font-weight:700; font-size:10px; letter-spacing:2px; padding:3px 7px; border-radius:3px; white-space:nowrap; flex-shrink:0; margin-top:2px; }
+.badge.win    { background:var(--orange); color:var(--black); }
+.badge.tie    { background:var(--dark2); color:var(--mid); border:1px solid var(--border); }
+.variant-item { padding:12px 0; border-bottom:1px solid var(--border); }
+.variant-item:last-child { border-bottom:none; }
+.variant-head { display:flex; align-items:baseline; gap:8px; margin-bottom:4px; }
+.variant-name { font-family:'Rajdhani',sans-serif; font-weight:700; font-size:26px; letter-spacing:3px; color:var(--orange); }
+.variant-tag { font-size:9px; letter-spacing:2px; color:var(--dim); border:1px solid var(--border); padding:2px 6px; border-radius:2px; text-transform:uppercase; }
+.variant-desc { font-size:14px; font-weight:700; color:var(--white); margin-bottom:8px; }
+.vr-row { display:flex; gap:8px; padding:7px 0; border-bottom:1px solid #181818; font-size:12px; line-height:1.6; }
+.vr-row:last-child { border-bottom:none; }
+.vr-label { font-family:'Rajdhani',sans-serif; font-weight:700; font-size:10px; letter-spacing:2px; color:var(--orange); white-space:nowrap; min-width:50px; padding-top:1px; }
+.vr-text { color:var(--mid); flex:1; }
+.vr-text strong { color:var(--white); }
+
+
+/* === SENO GLOBAL MAP / orange emission dense HUD update === */
+.global-hero{padding:26px 0 16px;}
+.global-label{letter-spacing:7px;color:#e9e5db;text-shadow:0 0 16px rgba(255,92,0,.18);}
+.slot-digit{background:linear-gradient(180deg,#120300 0%,#250700 50%,#090100 100%);border-color:rgba(255,92,0,.55);box-shadow:0 0 18px rgba(255,92,0,.42),inset 0 0 24px rgba(255,92,0,.16),inset 0 2px 8px rgba(0,0,0,.88);}
+.slot-digit-num{color:#ff6a14;text-shadow:0 0 10px rgba(255,92,0,1),0 0 26px rgba(255,92,0,.68),0 0 46px rgba(255,92,0,.32);}
+.globe-label{display:none;}
+.globe-wrap{
+  margin:6px -16px 0;width:calc(100% + 32px);padding:0;min-height:258px;
+  background:#020202;
+  border-top:1px solid rgba(255,92,0,.12);border-bottom:1px solid rgba(255,92,0,.14);
+  box-shadow:inset 0 0 80px rgba(255,92,0,.08),0 0 32px rgba(255,92,0,.05);
+}
+.globe-wrap::before{height:auto;inset:0;z-index:1;background:
+  linear-gradient(180deg,rgba(0,0,0,.66) 0%,rgba(0,0,0,.04) 24%,rgba(0,0,0,.04) 76%,rgba(0,0,0,.76) 100%),
+  linear-gradient(90deg,rgba(0,0,0,.88) 0%,rgba(0,0,0,.12) 16%,rgba(0,0,0,.05) 50%,rgba(0,0,0,.12) 84%,rgba(0,0,0,.88) 100%),
+  radial-gradient(circle at 52% 52%,rgba(255,92,0,.10),rgba(255,92,0,.025) 38%,rgba(0,0,0,.48) 84%);
+}
+.globe-wrap::after{height:auto;inset:0;z-index:3;background:
+  linear-gradient(rgba(255,92,0,.075) 1px,transparent 1px),
+  linear-gradient(90deg,rgba(255,92,0,.07) 1px,transparent 1px),
+  radial-gradient(circle at 18% 56%,rgba(255,92,0,.22),transparent 13%),
+  radial-gradient(circle at 48% 43%,rgba(255,92,0,.24),transparent 14%),
+  radial-gradient(circle at 76% 49%,rgba(255,92,0,.18),transparent 12%);
+  background-size:24px 24px,24px 24px,100% 100%,100% 100%,100% 100%;
+  mix-blend-mode:screen;opacity:.72;pointer-events:none;
+}
+.flat-earth-map{
+  max-width:480px;width:104%;transform:translateY(0) scale(1.06);opacity:.96;
+  filter:contrast(1.2) brightness(.72) saturate(1.08) drop-shadow(0 0 7px rgba(255,92,0,.18));
+}
+.seno-pulse-layer{inset:0;max-width:480px;z-index:2;overflow:hidden;}
+.seno-pulse-layer::before{content:'';position:absolute;inset:0;background:
+  radial-gradient(circle at 20% 45%,rgba(255,92,0,.72) 0 1px,transparent 2px),
+  radial-gradient(circle at 25% 48%,rgba(255,92,0,.45) 0 1px,transparent 2px),
+  radial-gradient(circle at 48% 42%,rgba(255,92,0,.68) 0 1px,transparent 2px),
+  radial-gradient(circle at 66% 47%,rgba(255,92,0,.48) 0 1px,transparent 2px),
+  radial-gradient(circle at 76% 57%,rgba(255,92,0,.52) 0 1px,transparent 2px),
+  repeating-radial-gradient(circle at 50% 52%,transparent 0 45px,rgba(255,92,0,.12) 46px,transparent 47px);
+  background-size:100% 100%;mix-blend-mode:screen;opacity:.32;filter:blur(.1px);
+}
+.seno-pulse{--size:2.1px;--dur:8.8s;background:#ff6a14;box-shadow:0 0 3px #ff5c00,0 0 8px rgba(255,92,0,.65),0 0 14px rgba(255,92,0,.20);opacity:.42;mix-blend-mode:screen;}
+.seno-pulse.big{--size:3.1px;}.seno-pulse.tiny{--size:1.35px;}
+.seno-pulse::before{inset:-4px;border:1px solid rgba(255,92,0,.18);box-shadow:0 0 5px rgba(255,92,0,.18);}
+.seno-pulse::after{content:''!important;display:none!important;}
+.city-spark{position:absolute;left:var(--x);top:var(--y);width:1.35px;height:1.35px;border-radius:50%;background:rgba(255,112,28,.92);box-shadow:0 0 3px rgba(255,92,0,.85),0 0 8px rgba(255,92,0,.35);opacity:.28;animation:cityTwinkle var(--dur) ease-in-out infinite;animation-delay:var(--delay);mix-blend-mode:screen;}
+.city-spark.hot{width:2.1px;height:2.1px;opacity:.50;box-shadow:0 0 5px #ff5c00,0 0 13px rgba(255,92,0,.58),0 0 24px rgba(255,92,0,.16);}
+@keyframes cityTwinkle{0%,100%{opacity:.10;transform:translate(-50%,-50%) scale(.72)}45%{opacity:.82;transform:translate(-50%,-50%) scale(1.18)}65%{opacity:.30;transform:translate(-50%,-50%) scale(.9)}}
+.map-scanline{display:none;}
+@keyframes scanGlow{0%,100%{opacity:.18;transform:translateX(-8%)}50%{opacity:.86;transform:translateX(8%)}}
+.hud-ring{display:none;}
+.hud-ring::before,.hud-ring::after{content:'';position:absolute;inset:6px;border:1px solid rgba(255,92,0,.18);border-radius:50%;}.hud-ring::after{inset:13px;background:rgba(255,92,0,.78);box-shadow:0 0 8px #ff5c00;}
+@keyframes ringBreath{0%,100%{opacity:.25;transform:translate(-50%,-50%) scale(.82)}50%{opacity:.92;transform:translate(-50%,-50%) scale(1.08)}}
+@media (min-width:481px){body{max-width:780px}.flat-earth-map,.seno-pulse-layer{max-width:780px}.slot-digit{width:38px}.globe-wrap{min-height:370px}}
+</style>
+<style id="seno-counter-api-style">
+.slot-separator {
+  font-weight:500 !important;
+  font-size:18px !important;
+  color:rgba(255,122,26,.42) !important;
+  text-shadow:none !important;
+  opacity:.38 !important;
+}
+.global-map-status {
+  margin: 10px auto 0;
+  width: fit-content;
+  max-width: 100%;
+  color: rgba(255, 106, 0, .58);
+  font-size: 10px;
+  font-weight: 600;
+  line-height: 1.2;
+  letter-spacing: 1.8px;
+  text-align: center;
+  text-transform: uppercase;
+}
+.global-map-status.live { color: rgba(255, 132, 28, .72); }
+.globe-wrap::after {
+  background:
+    linear-gradient(rgba(255,92,0,.045) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(255,92,0,.04) 1px,transparent 1px) !important;
+  background-size:24px 24px,24px 24px !important;
+  opacity:.38 !important;
+}
+.seno-pulse-layer::before,
+.seno-pulse-layer::after { display:none !important; content:none !important; }
+.seno-pulse-layer > .seno-pulse,
+.seno-pulse-layer > .city-spark,
+.seno-pulse-layer > .land-city-glow,
+.seno-pulse-layer > .urban-emitter,
+.seno-pulse-layer > .match-emitter,
+.seno-pulse-layer > .match-trace,
+.seno-pulse-layer > .hud-ring,
+.seno-pulse-layer > .map-scanline { display:none !important; }
+.seno-pulse-layer > .country-pulse { display:block !important; }
+.country-pulse {
+  position:absolute;
+  left:var(--x);
+  top:var(--y);
+  width:var(--s);
+  height:var(--s);
+  border-radius:50%;
+  background:rgba(255, 112, 24, var(--a));
+  box-shadow:0 0 5px rgba(255,92,0,.55),0 0 12px rgba(255,92,0,.18);
+  transform:translate(-50%,-50%);
+  pointer-events:none;
+  mix-blend-mode:screen;
+}
+.country-pulse.hot {
+  box-shadow:0 0 7px rgba(255,132,32,.72),0 0 18px rgba(255,92,0,.28);
+}
+.country-pulse.recent::after {
+  content:"";
+  position:absolute;
+  inset:-5px;
+  border:1px solid rgba(255,124,28,.45);
+  border-radius:50%;
+  animation:countryRecentPulse 2.6s ease-out infinite;
+}
+@keyframes countryRecentPulse {
+  0% { transform:scale(.72); opacity:.54; }
+  100% { transform:scale(1.9); opacity:0; }
+}
+@media (max-width:520px){ body{width:100%;max-width:390px;margin:0;} header,.tabs{width:100%;max-width:100%;} .tagline{font-size:8px;letter-spacing:2px;} .view{padding-left:12px;padding-right:12px;} .global-hero{overflow:hidden;} .global-label{letter-spacing:4px;} .slot-counter-wrap{transform:scale(.88);transform-origin:center;} .global-sub-en{font-size:8px;letter-spacing:1.4px;line-height:1.55;padding:0 8px;} .globe-wrap{width:calc(100% + 24px);margin:0 -12px;} .global-map-status{font-size:9px;letter-spacing:1.5px;} }
+</style>
+</head>
+<body>
+
+<!-- CONFETTI -->
+<div class="confetti-wrap hidden" id="confettiWrap"></div>
+
+<!-- MILESTONE -->
+<div class="m-overlay" id="mOverlay">
+  <div class="m-emoji" id="mEmoji">✊</div>
+  <div class="m-title lv1" id="mTitle">SENO!</div>
+  <div class="m-name lv1" id="mName">PLAYER 1</div>
+  <div class="m-sub" id="mSub"></div>
+  <button class="m-close" onclick="closeMilestone()">CONTINUE →</button>
+</div>
+
+<!-- CONFIRM MODAL -->
+<div class="confirm-modal" id="confirmModal">
+  <div class="confirm-box">
+    <div class="confirm-title">RESET?</div>
+    <div class="confirm-sub">全プレイヤーのスコアを<br>ゼロに戻します。</div>
+    <div class="confirm-btns">
+      <button class="confirm-yes" onclick="doReset()">RESET</button>
+      <button class="confirm-no" onclick="closeConfirm()">CANCEL</button>
+    </div>
+  </div>
+</div>
+
+<!-- HEADER -->
+<header>
+  <a href="https://seno-game.com" style="display:block;line-height:0;">
+    <img src="./assets/play/seno-logo.jpg" class="header-logo" alt="SENO">
+  </a>
+  <div class="tagline">Trust Your Luck</div>
+</header>
+
+<!-- TABS -->
+<div class="tabs">
+  <div class="tab active" onclick="switchTab('pulse')">🌍 GLOBAL</div>
+  <div class="tab"       onclick="switchTab('score')">✊ SCORE</div>
+  <div class="tab"       onclick="switchTab('rules')">📋 RULES</div>
+</div>
+
+<!-- ══ GLOBAL ══ -->
+<div class="view active" id="view-pulse">
+  <div class="global-hero">
+      <div class="global-label">SENO COUNTER — LIVE</div>
+    <div class="slot-counter-wrap" id="slotWrap"></div>
+    <div class="global-sub-jp">世界で、SENO！がプレイされた回数。</div>
+    <div class="global-sub-en">Worldwide SENO plays recorded — and still counting.</div>
+  </div>
+  <div class="divider"></div>
+  <div class="globe-label">🌍 Live Play Map</div>
+  <div class="globe-wrap">
+    <img class="flat-earth-map" src="./assets/play/world-map.png" alt="Global play map with orange city lights">
+    <div class="seno-pulse-layer" aria-hidden="true"></div>
+  </div>
+    <div class="global-map-status preview" id="globalMapStatus">PREVIEW / API NOT CONNECTED</div>
+</div>
+
+<!-- ══ SCORE ══ -->
+<div class="view" id="view-score">
+  <div class="score-section-label">PLAYERS</div>
+  <div class="pc-bar">
+    <div class="pc-btn active" onclick="setPC(2,this)">2P</div>
+    <div class="pc-btn"       onclick="setPC(3,this)">3P</div>
+    <div class="pc-btn"       onclick="setPC(4,this)">4P</div>
+  </div>
+
+  <div class="score-section-label mode-label">COUNT METHOD</div>
+  <div class="count-mode-bar">
+    <button class="count-mode-btn active" id="modeScoreBtn" onclick="setCountMode('score')">
+      <strong>SCORE</strong><span>得点で判定</span>
+    </button>
+    <button class="count-mode-btn" id="modeWinBtn" onclick="setCountMode('win')">
+      <strong>WIN</strong><span>勝者だけ記録</span>
+    </button>
+  </div>
+
+  <div class="mode-guide" id="modeGuide">
+    獲得カードの合計点を入力。最も高いプレイヤーを自動判定します。
+  </div>
+
+  <div class="players-grid score-modern-grid">
+    <div class="player-card" id="pc1">
+      <input class="player-name-input" id="pname1" placeholder="PLAYER 1" maxlength="10" oninput="refreshScorePreview()">
+      <div class="stat-label">WINS</div>
+      <div class="stat-val" id="pwins1">0</div>
+      <div class="pts-row score-mode-only">
+        <div class="pts-label">GAME TOTAL PTS</div>
+        <div class="pts-input-row">
+          <input class="pts-input" type="number" id="pinput1" value="0" min="0" max="999" oninput="updatePts(1)">
+          <div class="pts-total">SESSION <span id="ptotal1">0</span></div>
+        </div>
+      </div>
+      <div class="score-btns win-mode-only">
+        <button class="btn-win" onclick="addWin(1)">WIN THIS GAME</button>
+      </div>
+    </div>
+
+    <div class="player-card" id="pc2">
+      <input class="player-name-input" id="pname2" placeholder="PLAYER 2" maxlength="10" oninput="refreshScorePreview()">
+      <div class="stat-label">WINS</div>
+      <div class="stat-val" id="pwins2">0</div>
+      <div class="pts-row score-mode-only">
+        <div class="pts-label">GAME TOTAL PTS</div>
+        <div class="pts-input-row">
+          <input class="pts-input" type="number" id="pinput2" value="0" min="0" max="999" oninput="updatePts(2)">
+          <div class="pts-total">SESSION <span id="ptotal2">0</span></div>
+        </div>
+      </div>
+      <div class="score-btns win-mode-only">
+        <button class="btn-win" onclick="addWin(2)">WIN THIS GAME</button>
+      </div>
+    </div>
+
+    <div class="player-card hidden" id="pc3">
+      <input class="player-name-input" id="pname3" placeholder="PLAYER 3" maxlength="10" oninput="refreshScorePreview()">
+      <div class="stat-label">WINS</div>
+      <div class="stat-val" id="pwins3">0</div>
+      <div class="pts-row score-mode-only">
+        <div class="pts-label">GAME TOTAL PTS</div>
+        <div class="pts-input-row">
+          <input class="pts-input" type="number" id="pinput3" value="0" min="0" max="999" oninput="updatePts(3)">
+          <div class="pts-total">SESSION <span id="ptotal3">0</span></div>
+        </div>
+      </div>
+      <div class="score-btns win-mode-only">
+        <button class="btn-win" onclick="addWin(3)">WIN THIS GAME</button>
+      </div>
+    </div>
+
+    <div class="player-card hidden" id="pc4">
+      <input class="player-name-input" id="pname4" placeholder="PLAYER 4" maxlength="10" oninput="refreshScorePreview()">
+      <div class="stat-label">WINS</div>
+      <div class="stat-val" id="pwins4">0</div>
+      <div class="pts-row score-mode-only">
+        <div class="pts-label">GAME TOTAL PTS</div>
+        <div class="pts-input-row">
+          <input class="pts-input" type="number" id="pinput4" value="0" min="0" max="999" oninput="updatePts(4)">
+          <div class="pts-total">SESSION <span id="ptotal4">0</span></div>
+        </div>
+      </div>
+      <div class="score-btns win-mode-only">
+        <button class="btn-win" onclick="addWin(4)">WIN THIS GAME</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="score-result-panel score-mode-only" id="scoreResultPanel">
+    <div class="result-caption">LIVE RESULT</div>
+    <div class="result-name" id="resultName">ENTER SCORES</div>
+    <div class="result-sub" id="resultSub">各プレイヤーの点数を入力してください</div>
+    <button class="record-result-btn" id="recordResultBtn" onclick="recordScoreResult()" disabled>RECORD RESULT</button>
+  </div>
+
+  <div class="last-result-panel" id="lastResultPanel">
+    <span class="last-result-label">LAST RESULT</span>
+    <span class="last-result-text" id="lastResultText">—</span>
+  </div>
+
+  <div class="score-footer-actions">
+    <button class="btn-undo" id="undoBtn" onclick="undoLastResult()" disabled>UNDO LAST</button>
+    <button class="btn-reset" onclick="openConfirm()">RESET SESSION</button>
+  </div>
+</div>
+
+<!-- ══ RULES ══ -->
+<div class="view" id="view-rules">
+  <div class="lang-toggle">
+    <button class="lang-btn active" onclick="setLang('jp')">日本語</button>
+    <button class="lang-btn" onclick="setLang('en')">EN</button>
+  </div>
+
+  <div class="rules-block">
+    <div class="rules-title">Components</div>
+    <div class="info-chips">
+      <div class="info-chip">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-4 0v2M8 7V5a2 2 0 0 0-4 0v2"/></svg>
+        <span>40 CARDS</span>
+      </div>
+      <div class="info-chip">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="7" r="3"/><circle cx="15" cy="7" r="3"/><path d="M3 21v-2a6 6 0 0 1 6-6h6a6 6 0 0 1 6 6v2"/></svg>
+        <span>2–4 PLAYERS</span>
+      </div>
+      <div class="info-chip">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>
+        <span>5–10 MIN</span>
+      </div>
+      <div class="info-chip">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+        <span>6+ AGES</span>
+      </div>
+    </div>
+    <div style="font-size:11px;letter-spacing:1px;color:var(--dim);margin-bottom:8px;"><span class="jp-text">1人分のデッキ（10枚）</span><span class="en-text">10-card deck per player</span></div>
+    <div class="deck-visual">
+      <img src="./assets/play/rules-deck-visual.png" alt="1人分のデッキ 10枚（5点×3・3点×3・1点×3・LUCK×1）">
+    </div>
+    <p style="font-size:11px;color:var(--dim);margin-top:8px;line-height:1.5;"><span class="jp-text">各点数にグー・チョキ・パーの3種 / LUCKは全属性に勝つ切り札</span><span class="en-text">Each value has Rock, Scissors & Paper / LUCK beats all</span></p>
+  </div>
+
+  <div class="rules-block">
+    <div class="rules-title">Luck Card</div>
+    <p style="font-size:13px;color:var(--mid);line-height:1.7;margin-bottom:10px;"><span class="jp-text">LUCKはこのゲームの「毒」であり「救い」である。場に出すだけで空気が変わる唯一無二の1枚。</span><span class="en-text">LUCK is both poison and salvation. One card that changes everything the moment it hits the table.</span></p>
+    <div class="luck-block">
+      <div class="luck-row"><span class="badge win">WIN</span><span><span class="jp-text">グー・チョキ・パー <strong style="color:var(--white)">すべてに勝利する。</strong></span><span class="en-text">Rock, Scissors, Paper — <strong style="color:var(--white)">beats them all.</strong></span></span></div>
+      <div class="luck-row"><span class="badge tie">TIE</span><span><span class="jp-text">LUCK vs LUCK は「あいこ」。カードはPOTへ蓄積。</span><span class="en-text">LUCK vs LUCK is a tie. Cards go to the POT.</span></span></div>
+    </div>
+  </div>
+
+  <div class="rules-block">
+    <div class="rules-title">How to Play -Over-</div>
+    <div class="step-row"><div class="step-num">1</div><div class="step-body"><div class="step-title"><span class="jp-text">準備</span><span class="en-text">Setup</span></div><div class="step-text"><span class="jp-text">各プレイヤーは自分の10枚デッキを手に持つ。</span><span class="en-text">Each player holds their 10-card deck.</span></div></div></div>
+    <div class="step-row"><div class="step-num">2</div><div class="step-body"><div class="step-title"><span class="jp-text">SELECT — カードを選ぶ</span><span class="en-text">SELECT — Choose a card</span></div><div class="step-text"><span class="jp-text">手札から1枚を選び、伏せたまま場に出す。</span><span class="en-text">Choose 1 card from your hand and place it face-down.</span></div></div></div>
+    <div class="step-row"><div class="step-num">3</div><div class="step-body"><div class="step-title"><span class="jp-text">SE-NO! — 同時公開</span><span class="en-text">SE-NO! — Simultaneous reveal</span></div><div class="step-text"><span class="jp-text">全員で「せーの！」と叫び、同時にカードを公開する。</span><span class="en-text">Everyone shouts "SE-NO!" and flips their card simultaneously.</span></div></div></div>
+    <div class="step-row"><div class="step-num">4</div><div class="step-body"><div class="step-title"><span class="jp-text">勝敗判定（デフォルト：OVER）</span><span class="en-text">Result (Default: OVER)</span></div><div class="step-text"><span class="jp-text">勝者が場に出た全カード＋POT内カードを総取りし、点数を加算する。</span><span class="en-text">The winner takes all cards in play plus the POT and adds up the points.</span></div><div class="step-note"><span class="jp-text"><strong>あいこの場合：</strong>カードはPOT（共有プール）に蓄積され、次の勝者がすべてを奪う。</span><span class="en-text"><strong>TIE:</strong> Cards accumulate in the POT. Next round's winner takes everything.</span></div></div></div>
+    <div class="step-row"><div class="step-num">5</div><div class="step-body"><div class="step-title"><span class="jp-text">終了 — 10ラウンド後に集計</span><span class="en-text">End — Count up after 10 rounds</span></div><div class="step-text"><span class="jp-text">手札がなくなったら集計。獲得カードの合計点数が最も高いプレイヤーの勝利。</span><span class="en-text">After all cards are played, count totals. Highest score wins.</span></div></div></div>
+  </div>
+
+  <div class="rules-block">
+    <div class="rules-title">Variant Modes</div>
+
+    <div class="variant-item">
+      <div class="variant-head"><div class="variant-name">OVER</div><div class="variant-tag">DEFAULT</div></div>
+      <div class="variant-desc"><span class="jp-text">あいこ蓄積 / ジャックポット</span><span class="en-text">Tie stacks / Jackpot</span></div>
+      <div class="vr-row"><span class="vr-label"><span class="jp-text">準備</span><span class="en-text">Setup</span></span><span class="vr-text"><span class="jp-text">各プレイヤーは手札10枚を裏向きで持つ。</span><span class="en-text">Each player holds 10 cards face-down.</span></span></div>
+      <div class="vr-row"><span class="vr-label"><span class="jp-text">進行</span><span class="en-text">PLAY</span></span><span class="vr-text"><span class="jp-text">全員、伏せたまま1枚を選び、場の中央に裏向きで出す。「せーの！」の合図で全員同時に公開。これを手札がなくなるまで繰り返す。</span><span class="en-text">All players pick 1 card and place it face-down in the center. Reveal together on "SE-NO!". Repeat until hands are empty.</span></span></div>
+      <div class="vr-row"><span class="vr-label"><span class="jp-text">勝者</span><span class="en-text">WIN</span></span><span class="vr-text"><span class="jp-text">単独勝者がいる場合、その人が場の全カード＋POTに蓄積されたカードすべてを獲得。</span><span class="en-text">A sole winner takes every card in play plus everything stacked in the POT.</span></span></div>
+      <div class="vr-row"><span class="vr-label"><span class="jp-text">あいこ</span><span class="en-text">TIE</span></span><span class="vr-text"><span class="jp-text">出されたカードはPOT（共有プール）に蓄積され、次のラウンドに持ち越される。</span><span class="en-text">Tied cards stack in the POT (shared pool) and carry over to the next round.</span></span></div>
+    </div>
+
+    <div class="variant-item">
+      <div class="variant-head"><div class="variant-name">VANISH</div><div class="variant-tag">COLD MODE</div></div>
+      <div class="variant-desc"><span class="jp-text">あいこ消滅 / 冷徹モード</span><span class="en-text">Tie vanishes / Cold mode</span></div>
+      <div class="vr-row"><span class="vr-label"><span class="jp-text">進行</span><span class="en-text">PLAY</span></span><span class="vr-text"><span class="jp-text">進行はOVERと同じ。1枚を伏せて出し、「せーの！」で同時公開。</span><span class="en-text">Same as OVER. Play 1 card face-down, reveal together on "SE-NO!".</span></span></div>
+      <div class="vr-row"><span class="vr-label"><span class="jp-text">勝者</span><span class="en-text">WIN</span></span><span class="vr-text"><span class="jp-text">単独勝者がいる場合、その回に場に出たカードのみ獲得（POTは存在しない）。</span><span class="en-text">A sole winner takes only the cards played that round. There is no POT.</span></span></div>
+      <div class="vr-row"><span class="vr-label"><span class="jp-text">あいこ</span><span class="en-text">TIE</span></span><span class="vr-text"><span class="jp-text">出されたカードはすべて場から除外（捨て札）。強いカードをいつ切るか、意思決定が最も重くなるモード。</span><span class="en-text">All tied cards are discarded from play. The mode where deciding when to play your strong cards weighs heaviest.</span></span></div>
+    </div>
+
+    <div class="variant-item">
+      <div class="variant-head"><div class="variant-name">DARK</div><div class="variant-tag">FATE MODE</div></div>
+      <div class="variant-desc"><span class="jp-text">運命モード / 戦略ゼロ</span><span class="en-text">Fate mode / Zero strategy</span></div>
+      <div class="vr-row"><span class="vr-label"><span class="jp-text">準備</span><span class="en-text">Setup</span></span><span class="vr-text"><span class="jp-text">ゲーム開始時、自分の手札10枚をシャッフルし、裏向きの山にする。中身は確認できない。</span><span class="en-text">At the start, shuffle your 10 cards into a face-down pile. You cannot check its contents.</span></span></div>
+      <div class="vr-row"><span class="vr-label"><span class="jp-text">進行</span><span class="en-text">PLAY</span></span><span class="vr-text"><span class="jp-text">毎ラウンド、山の一番上の1枚をそのまま場に出す（選択権なし）。「せーの！」で同時公開。</span><span class="en-text">Each round, play the top card of your pile as-is — no choice. Reveal together on "SE-NO!".</span></span></div>
+      <div class="vr-row"><span class="vr-label"><span class="jp-text">判定</span><span class="en-text">RESULT</span></span><span class="vr-text"><span class="jp-text">勝敗判定はOVERと同じ（あいこはPOTへ蓄積）。</span><span class="en-text">Result is judged the same as OVER (ties stack in the POT).</span></span></div>
+    </div>
+
+    <div class="variant-item">
+      <div class="variant-head"><div class="variant-name">DUAL</div><div class="variant-tag">CHOICE MODE</div></div>
+      <div class="variant-desc"><span class="jp-text">二択モード / 完全情報の読み合い</span><span class="en-text">Two-choice mode / Full information mind game</span></div>
+      <div class="vr-row"><span class="vr-label"><span class="jp-text">準備</span><span class="en-text">Setup</span></span><span class="vr-text"><span class="jp-text">各プレイヤーは手札（10枚のデッキ）をシャッフルし、裏向きのまま台に設置。上から2枚を選び、表向きで自分の前に並べる（中身は全員に見える）。</span><span class="en-text">Each player shuffles their 10-card deck and sets it face-down. Draw the top 2 and lay them face-up in front of you — visible to everyone.</span></span></div>
+      <div class="vr-row"><span class="vr-label"><span class="jp-text">進行</span><span class="en-text">PLAY</span></span><span class="vr-text"><span class="jp-text">全員が他プレイヤーの2枚を確認できる状態で、「せーの！」の合図で並べた2枚のうち1枚を選んで場に出す。残った1枚はそのままキープ。勝敗判定はOVERと同じ（あいこはPOTへ蓄積）。</span><span class="en-text">With every player's 2 cards visible, on "SE-NO!" choose 1 of your 2 to play. The other stays as-is. Result is judged like OVER (ties stack in the POT).</span></span></div>
+      <div class="vr-row"><span class="vr-label"><span class="jp-text">LUCK</span><span class="en-text">LUCK</span></span><span class="vr-text"><span class="jp-text">LUCKは0点カード（どの手にも勝つが、LUCK同士はあいこ）。</span><span class="en-text">LUCK is a 0-point card: it beats any hand, but LUCK vs LUCK is a tie.</span></span></div>
+      <div class="vr-row"><span class="vr-label"><span class="jp-text">補充</span><span class="en-text">DRAW</span></span><span class="vr-text"><span class="jp-text">次のターンは、また手札の上から1枚を自分の前に出して2枚にする。</span><span class="en-text">Each next turn, draw 1 from the top of your deck to bring your front row back to 2.</span></span></div>
+      <div class="vr-row"><span class="vr-label"><span class="jp-text">最終</span><span class="en-text">FINAL</span></span><span class="vr-text"><span class="jp-text">第10ターン（最終ターン）は、手元に残った最後の1枚（選択肢なし）をそのまま出し合う。最終ターンであいこになった場合、POTのカードは誰も回収できず、そのままゲーム終了。</span><span class="en-text">On turn 10 (the final turn), everyone plays their single remaining card — no choice. If the final turn ties, the POT goes uncollected and the game ends.</span></span></div>
+      <div class="vr-row"><span class="vr-label"><span class="jp-text">勝利</span><span class="en-text">WIN</span></span><span class="vr-text"><span class="jp-text">手元にある獲得カードの点数合計が最も高いプレイヤーの勝利。</span><span class="en-text">The player with the highest total score among their won cards wins.</span></span></div>
+    </div>
+
+    <div class="variant-item">
+      <div class="variant-head"><div class="variant-name">SHOUT</div><div class="variant-tag">BLUFF MODE</div></div>
+      <div class="variant-desc"><span class="jp-text">宣言制 / 心理戦モード</span><span class="en-text">Declaration mode / Psychological warfare</span></div>
+      <div class="vr-row"><span class="vr-label"><span class="jp-text">準備</span><span class="en-text">Setup</span></span><span class="vr-text"><span class="jp-text">各プレイヤーは手札を持つ。手元で手札を見ながら、順番に「自分は何を出すか」を口頭で宣言していく。宣言内容は嘘でも構わない（例：チョキ / LUCK 等）。</span><span class="en-text">Each player holds a hand. Looking at your own cards, take turns declaring out loud what you will play. Lying is allowed (e.g. scissors / LUCK).</span></span></div>
+      <div class="vr-row"><span class="vr-label"><span class="jp-text">進行</span><span class="en-text">PLAY</span></span><span class="vr-text"><span class="jp-text">全員の宣言（1人1回）が終わったら、手札を周りに見えないように隠し、出すカードを1枚心の中で決める。「せーの！」の合図で、全員同時にカードを選んで場に出す。勝敗判定はOVERと同じ（あいこはPOTへ蓄積）。</span><span class="en-text">After everyone has declared once, hide your hand, decide your card in your head, and on "SE-NO!" all play simultaneously. Result is judged like OVER (ties stack in the POT).</span></span></div>
+      <div class="vr-row"><span class="vr-label"><span class="jp-text">雰囲気</span><span class="en-text">VIBE</span></span><span class="vr-text"><span class="jp-text">ジャンケンがポーカーになる瞬間。</span><span class="en-text">The moment janken becomes poker.</span></span></div>
+    </div>
+
+    <div class="variant-item">
+      <div class="variant-head"><div class="variant-name">MEMORY SPD</div><div class="variant-tag">PAIR RUSH</div></div>
+      <div class="variant-desc"><span class="jp-text">神経衰弱 / ペア速攻</span><span class="en-text">Memory / Pair rush</span></div>
+      <div class="vr-row"><span class="vr-label"><span class="jp-text">準備</span><span class="en-text">Setup</span></span><span class="vr-text"><span class="jp-text">40枚のカードをすべて裏向きのまま場に設置する。</span><span class="en-text">Lay all 40 cards face-down on the table.</span></span></div>
+      <div class="vr-row"><span class="vr-label"><span class="jp-text">進行</span><span class="en-text">PLAY</span></span><span class="vr-text"><span class="jp-text">手番プレイヤーは場から2枚を選び、表向きにする。数字や色が異なっても、手の形が同じであればペア獲得。</span><span class="en-text">On your turn, flip 2 cards face-up. Even if numbers or colors differ, a matching hand shape counts as a pair.</span></span></div>
+      <div class="vr-row"><span class="vr-label"><span class="jp-text">LUCK</span><span class="en-text">LUCK</span></span><span class="vr-text"><span class="jp-text">LUCKはLUCK同士のみペア成立（1枚<strong style="color:var(--orange)">8点</strong> / ペアで<strong style="color:var(--orange)">16点</strong>）。</span><span class="en-text">LUCK only pairs with LUCK (<strong style="color:var(--orange)">8 pts</strong> each / <strong style="color:var(--orange)">16 pts</strong> per pair).</span></span></div>
+      <div class="vr-row"><span class="vr-label"><span class="jp-text">継続</span><span class="en-text">TURN</span></span><span class="vr-text"><span class="jp-text">ペア成立時はそのままキープし、続けてもう一度2枚めくる。不成立時は裏向きに戻し、次のプレイヤーのターンになる。</span><span class="en-text">On a match, keep the pair and flip again. On a miss, turn them back and pass to the next player.</span></span></div>
+      <div class="vr-row"><span class="vr-label"><span class="jp-text">勝利</span><span class="en-text">WIN</span></span><span class="vr-text"><span class="jp-text">場のカードがすべてなくなったら終了。手元のカードの点数合計が最も高い人の勝利。</span><span class="en-text">Game ends when the table is empty. Highest total score wins.</span></span></div>
+    </div>
+
+    <div class="variant-item">
+      <div class="variant-head"><div class="variant-name">MEMORY STD</div><div class="variant-tag">EXACT MATCH</div></div>
+      <div class="variant-desc"><span class="jp-text">神経衰弱 / 完全一致</span><span class="en-text">Memory / Exact match</span></div>
+      <div class="vr-row"><span class="vr-label"><span class="jp-text">準備</span><span class="en-text">Setup</span></span><span class="vr-text"><span class="jp-text">40枚のカードをすべて裏向きのまま場に設置する。</span><span class="en-text">Lay all 40 cards face-down on the table.</span></span></div>
+      <div class="vr-row"><span class="vr-label"><span class="jp-text">進行</span><span class="en-text">PLAY</span></span><span class="vr-text"><span class="jp-text">手番プレイヤーは場から2枚を選び、表向きにする。数字（色）と手の形が完全に一致している場合のみペア獲得。</span><span class="en-text">On your turn, flip 2 cards face-up. A pair counts only when both the number (color) and the hand shape match exactly.</span></span></div>
+      <div class="vr-row"><span class="vr-label"><span class="jp-text">LUCK</span><span class="en-text">LUCK</span></span><span class="vr-text"><span class="jp-text">LUCKはLUCK同士のみペア成立（1枚<strong style="color:var(--orange)">5点</strong> / ペアで<strong style="color:var(--orange)">10点</strong>）。</span><span class="en-text">LUCK only pairs with LUCK (<strong style="color:var(--orange)">5 pts</strong> each / <strong style="color:var(--orange)">10 pts</strong> per pair).</span></span></div>
+      <div class="vr-row"><span class="vr-label"><span class="jp-text">継続</span><span class="en-text">TURN</span></span><span class="vr-text"><span class="jp-text">ペア成立時はそのままキープし、続けてもう一度2枚めくる。不成立時は裏向きに戻し、次のプレイヤーのターンになる。</span><span class="en-text">On a match, keep the pair and flip again. On a miss, turn them back and pass to the next player.</span></span></div>
+      <div class="vr-row"><span class="vr-label"><span class="jp-text">勝利</span><span class="en-text">WIN</span></span><span class="vr-text"><span class="jp-text">場のカードがすべてなくなったら終了。手元のカードの点数合計が最も高い人の勝利。</span><span class="en-text">Game ends when the table is empty. Highest total score wins.</span></span></div>
+    </div>
+
+  </div>
+
+</div>
+
+<script>
+// -- Counter API --
+const COUNTER_API_URL = '/api/counter';
+let globalCount = 0;
+let counterSendPending = false;
+let wins  = [0,0,0,0];
+let pts   = [0,0,0,0];
+let ptInp = [0,0,0,0];
+let activePlayers = 2;
+
+// ── Slot counter ──
+let currentDigits = [];
+
+function buildSlotDigits(n) {
+  const s = String(Math.max(0,n)).padStart(9,'0');
+  const wrap = document.getElementById('slotWrap');
+  if (currentDigits.length !== 9) {
+    wrap.innerHTML = '';
+    currentDigits = [];
+    for (let i=0; i<9; i++) {
+      if (i===3 || i===6) {
+        const sep=document.createElement('div');
+        sep.className='slot-separator';
+        sep.textContent='·';
+        wrap.appendChild(sep);
+      }
+      const d = document.createElement('div');
+      d.className = 'slot-digit';
+      const inner = document.createElement('div');
+      inner.className = 'slot-digit-inner';
+      // digits 0-9 top to bottom
+      for (let v=0; v<=9; v++) {
+        const num = document.createElement('div');
+        num.className = 'slot-digit-num';
+        num.textContent = v;
+        inner.appendChild(num);
+      }
+      // init: show 0 = translateY(0)
+      inner.style.transform = 'translateY(0px)';
+      d.appendChild(inner);
+      wrap.appendChild(d);
+      currentDigits.push({inner:inner, cur:-1});
+    }
+  }
+  for (let i=0; i<9; i++) {
+    const v = parseInt(s[i]);
+    const d = currentDigits[i];
+    if (d.cur !== v) {
+      // digit v is at position v, offset = -v * 50px
+      d.inner.style.transform = `translateY(${-v * 50}px)`;
+      d.cur = v;
+    }
+  }
+}
+
+function updateGlobal() {
+  buildSlotDigits(globalCount);
+}
+
+// Counter data is loaded through /api/counter.
+
+function setCounterStatus(state) {
+  const el = document.getElementById('globalMapStatus');
+  if (!el) return;
+  el.classList.toggle('live', state === 'live');
+  el.classList.toggle('preview', state !== 'live');
+  el.textContent = state === 'live'
+    ? 'LIVE / RECORDED PLAYS'
+    : state === 'not-sent'
+      ? 'PREVIEW / RESULT NOT SENT'
+      : 'PREVIEW / API NOT CONNECTED';
+}
+
+const COUNTRY_POINTS = {
+  JP:[87.8,39.5], KR:[85.7,39.0], CN:[78.4,43.2], TW:[82.8,50.0], HK:[81.8,51.0],
+  SG:[77.9,61.6], TH:[76.9,55.2], VN:[78.3,54.6], ID:[79.5,66.8], MY:[77.4,60.4],
+  PH:[82.6,55.6], IN:[69.5,52.8], AU:[82.6,76.5], NZ:[91.4,82.6], US:[21.5,42.5],
+  CA:[19.8,29.0], MX:[19.9,54.4], BR:[34.3,67.3], GB:[49.7,35.2], FR:[50.7,40.6],
+  DE:[52.1,37.2], ES:[48.3,43.6], IT:[52.0,43.5], NL:[51.0,36.4], SE:[53.6,28.6],
+  NO:[51.3,27.4], FI:[56.1,27.1], PL:[54.3,37.6], TR:[58.9,45.3], AE:[65.3,51.7], ZA:[55.2,78.8]
+};
+
+function renderCountryPulses(countries = [], recent = []) {
+  const layer = document.querySelector('.seno-pulse-layer');
+  if (!layer) return;
+  layer.replaceChildren();
+  const valid = countries
+    .map(c => ({ code:String(c.code || '').toUpperCase(), count:Number(c.count || 0) }))
+    .filter(c => COUNTRY_POINTS[c.code] && c.count > 0);
+  if (!valid.length) return;
+  const max = Math.max(...valid.map(c => c.count), 1);
+  const recentSet = new Set((recent || []).map(r => String(r.code || '').toUpperCase()));
+  valid.forEach(c => {
+    const [x,y] = COUNTRY_POINTS[c.code];
+    const strength = Math.min(1, Math.log(c.count + 1) / Math.log(max + 1));
+    const dot = document.createElement('i');
+    dot.className = 'country-pulse' + (strength > .58 ? ' hot' : '') + (recentSet.has(c.code) ? ' recent' : '');
+    dot.title = c.code + ' / ' + c.count;
+    dot.style.setProperty('--x', x + '%');
+    dot.style.setProperty('--y', y + '%');
+    dot.style.setProperty('--s', (2 + strength * 2.2).toFixed(2) + 'px');
+    dot.style.setProperty('--a', (.40 + strength * .36).toFixed(2));
+    layer.appendChild(dot);
+  });
+}
+
+function applyCounterData(data) {
+  globalCount = Number(data && data.total) || 0;
+  updateGlobal();
+  renderCountryPulses(
+    Array.isArray(data && data.countries) ? data.countries : [],
+    Array.isArray(data && data.recent) ? data.recent : []
+  );
+  setCounterStatus('live');
+}
+
+async function fetchCounterData() {
+  try {
+    const res = await fetch(COUNTER_API_URL, {
+      headers: { 'Accept': 'application/json' },
+      cache: 'no-store'
+    });
+    if (!res.ok) throw new Error('Counter API unavailable');
+    applyCounterData(await res.json());
+  } catch (e) {
+    setCounterStatus('preview');
+    renderCountryPulses([], []);
+    updateGlobal();
+  }
+}
+
+async function recordCounterResult(outcome) {
+  if (counterSendPending) return;
+  counterSendPending = true;
+  try {
+    const res = await fetch(COUNTER_API_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+      body: JSON.stringify({ mode: 'score', outcome })
+    });
+    if (!res.ok) throw new Error('Counter result not accepted');
+    let data = null;
+    try { data = await res.json(); } catch (e) {}
+    if (data && typeof data.total !== 'undefined') applyCounterData(data);
+    else await fetchCounterData();
+  } catch (e) {
+    setCounterStatus('not-sent');
+  } finally {
+    counterSendPending = false;
+  }
+}
+
+setInterval(fetchCounterData, 5000);
+
+// -- Map emissions are rendered from /api/counter country data only. --
+function switchTab(name) {
+  ['pulse','score','rules'].forEach((n,i) => {
+    document.querySelectorAll('.tab')[i].classList.toggle('active', n===name);
+    document.getElementById('view-'+n).classList.toggle('active', n===name);
+  });
+}
+
+// ── Player count ──
+function setPC(n, btn) {
+  activePlayers = n;
+  document.querySelectorAll('.pc-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  for (let i=1; i<=4; i++) document.getElementById('pc'+i).classList.toggle('hidden', i>n);
+}
+
+function updatePts(p) {
+  ptInp[p-1] = parseInt(document.getElementById('pinput'+p).value) || 0;
+}
+
+function addWin(p) {
+  wins[p-1]++;
+  const rndPts = ptInp[p-1];
+  pts[p-1] += rndPts;
+  document.getElementById('pinput'+p).value = 0;
+  ptInp[p-1] = 0;
+  const wEl = document.getElementById('pwins'+p);
+  const tEl = document.getElementById('ptotal'+p);
+  wEl.textContent = wins[p-1];
+  tEl.textContent = pts[p-1];
+  wEl.classList.remove('pop'); void wEl.offsetWidth; wEl.classList.add('pop');
+  recordCounterResult('win');
+  const name = document.getElementById('pname'+p).value || 'PLAYER '+p;
+  const s = wins[p-1];
+  const cardEl = document.getElementById('pc'+p);
+  if (s % 5 === 0) {
+    const milestones = {
+      5:{lv:1,emoji:'✊',title:'SENO!',sub:'5勝達成。運が味方している。'},
+      10:{lv:2,emoji:'🔥',title:'ON FIRE!',sub:'10勝。止まらない。'},
+      15:{lv:3,emoji:'💀',title:'UNSTOPPABLE',sub:'15勝。対戦相手に同情する。'},
+      20:{lv:4,emoji:'👑',title:'OVERLORD',sub:'20勝。このゲームはあなたのものだ。'},
+    };
+    const mk = s>=20?20:s>=15?15:s>=10?10:5;
+    const m = milestones[mk]||{lv:4,emoji:'👑',title:'LEGEND',sub:s+'勝。人外の領域へ。'};
+    cardEl.classList.remove('flash-1','flash-2','flash-3','flash-4');
+    void cardEl.offsetWidth; cardEl.classList.add('flash-'+m.lv);
+    setTimeout(()=>cardEl.classList.remove('flash-'+m.lv),1200);
+    showMilestone(m.lv,m.emoji,m.title,name,m.sub);
+    if(m.lv>=3) spawnConfetti(m.lv);
+  } else {
+    cardEl.classList.remove('flash-1'); void cardEl.offsetWidth; cardEl.classList.add('flash-1');
+    setTimeout(()=>cardEl.classList.remove('flash-1'),500);
+  }
+}
+
+function subWin(p) { if(wins[p-1]>0){ wins[p-1]--; document.getElementById('pwins'+p).textContent=wins[p-1]; } }
+function openConfirm()  { document.getElementById('confirmModal').classList.add('show'); }
+function closeConfirm() { document.getElementById('confirmModal').classList.remove('show'); }
+function doReset() {
+  wins=[0,0,0,0]; pts=[0,0,0,0]; ptInp=[0,0,0,0];
+  for(let i=1;i<=4;i++){ document.getElementById('pwins'+i).textContent='0'; document.getElementById('ptotal'+i).textContent='0'; document.getElementById('pinput'+i).value='0'; }
+  closeConfirm();
+}
+
+function showMilestone(lv,emoji,title,name,sub) {
+  const ov=document.getElementById('mOverlay');
+  ov.className='m-overlay show lv'+lv;
+  document.getElementById('mEmoji').textContent=emoji;
+  const t=document.getElementById('mTitle'); t.className='m-title lv'+lv; t.textContent=title;
+  const n=document.getElementById('mName'); n.className='m-name lv'+lv; n.textContent=name.toUpperCase();
+  document.getElementById('mSub').textContent=sub;
+}
+function closeMilestone() {
+  document.getElementById('mOverlay').classList.remove('show');
+  document.getElementById('confettiWrap').classList.add('hidden');
+  document.getElementById('confettiWrap').innerHTML='';
+}
+
+const cColors=['#F5B700','#FF5C00','#E8003A','#ffffff','#ff00aa'];
+function spawnConfetti(lv) {
+  const wrap=document.getElementById('confettiWrap');
+  wrap.classList.remove('hidden'); wrap.innerHTML='';
+  const count=lv>=4?80:40;
+  for(let i=0;i<count;i++){
+    const pc=document.createElement('div'); pc.className='c-piece';
+    const sz=6+Math.random()*8, col=cColors[Math.floor(Math.random()*cColors.length)];
+    pc.style.cssText=`left:${Math.random()*100}%;width:${sz}px;height:${sz}px;background:${col};animation-duration:${1.6+Math.random()*2}s;animation-delay:${Math.random()*.9}s;border-radius:${Math.random()>.5?'50%':'2px'}`;
+    wrap.appendChild(pc);
+  }
+}
+
+
+function setLang(lang) {
+  document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.lang-btn').forEach(b => {
+    if (b.textContent.trim() === (lang==='jp'?'日本語':'EN')) b.classList.add('active');
+  });
+  const rulesEl = document.getElementById('view-rules');
+  if (lang === 'en') {
+    rulesEl.classList.add('lang-en');
+    rulesEl.classList.remove('lang-jp');
+  } else {
+    rulesEl.classList.add('lang-jp');
+    rulesEl.classList.remove('lang-en');
+  }
+}
+// ── Init ──
+document.getElementById('view-rules').classList.add('lang-jp');
+buildSlotDigits(0);
+fetchCounterData();
+</script>
+
+<script>
+/* Disabled: dummy city spark generation is no longer used. */
+</script>
+
+<style id="landlocked-city-glow-style">
+/* Disabled: dummy map glow styles are no longer used. */
+</style>
+<script id="landlocked-city-glow-script">
+/* Disabled: country pulses are rendered from /api/counter data only. */
+</script>
+
+
+<style id="city-only-stronger-final-override">
+/* Disabled: dummy map glow styles are no longer used. */
+</style>
+
+
+<style id="visible-urban-pulse-override">
+/* Disabled: dummy map glow styles are no longer used. */
+</style>
+<script id="visible-urban-pulse-script">
+/* Disabled: country pulses are rendered from /api/counter data only. */
+</script>
+
+
+<style id="seno-match-world-override">
+/* Disabled: dummy map glow styles are no longer used. */
+</style>
+
+<script id="seno-match-world-script">
+/* Disabled: country pulses are rendered from /api/counter data only. */
+</script>
+
+
+<style id="score-two-modes-style">
+:root { --orange:#FF5C00; }
+.score-section-label {
+  font-family:'Rajdhani',sans-serif;
+  font-size:10px; font-weight:700; letter-spacing:4px;
+  color:var(--dim); margin:0 0 8px 2px;
+}
+.mode-label { margin-top:20px; }
+.count-mode-bar {
+  display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-bottom:12px;
+}
+.count-mode-btn {
+  background:var(--dark2); border:1px solid var(--border); border-radius:6px;
+  color:var(--dim); min-height:58px; cursor:pointer; transition:all .18s;
+  display:flex; flex-direction:column; justify-content:center; align-items:center; gap:1px;
+}
+.count-mode-btn strong {
+  font-family:'Rajdhani',sans-serif; font-size:19px; font-weight:700; letter-spacing:3px;
+}
+.count-mode-btn span {
+  font-family:'Noto Sans JP',sans-serif; font-size:10px; letter-spacing:1px;
+}
+.count-mode-btn.active {
+  color:#090909; background:var(--orange); border-color:var(--orange);
+  box-shadow:0 0 16px rgba(255,92,0,.22);
+}
+.mode-guide {
+  margin:0 0 16px; min-height:38px; padding:10px 12px;
+  border-left:2px solid var(--orange); background:rgba(255,92,0,.055);
+  font-family:'Noto Sans JP',sans-serif; font-size:11px; line-height:1.65; color:var(--mid);
+}
+.score-modern-grid .player-card {
+  transition:border-color .22s, box-shadow .22s, background .22s;
+}
+.score-modern-grid .player-card.preview-winner {
+  border-color:rgba(255,92,0,.72);
+  box-shadow:0 0 0 1px rgba(255,92,0,.16), 0 0 18px rgba(255,92,0,.08);
+}
+.score-modern-grid .player-card.preview-draw {
+  border-color:#484848;
+}
+.pts-total {
+  display:flex; flex-direction:column; align-items:flex-end; font-size:9px; letter-spacing:1px;
+}
+.pts-total span { font-size:19px; line-height:1; margin-top:2px; }
+.win-mode-only { display:none; margin-top:12px; }
+#view-score.mode-win .score-mode-only { display:none !important; }
+#view-score.mode-win .win-mode-only { display:flex; }
+#view-score.mode-win .stat-val { margin:14px 0 18px; font-size:56px; }
+#view-score.mode-win .player-card { padding-bottom:12px; }
+.score-result-panel {
+  margin-top:14px; border:1px solid var(--border); border-radius:8px; padding:14px 12px 12px;
+  text-align:center; background:linear-gradient(180deg, rgba(255,92,0,.028), transparent);
+}
+.result-caption {
+  font-family:'Rajdhani',sans-serif; font-size:10px; font-weight:700; letter-spacing:4px; color:var(--dim);
+}
+.result-name {
+  margin-top:6px; font-family:'Rajdhani',sans-serif; font-size:26px; font-weight:700;
+  letter-spacing:3px; color:var(--white);
+}
+.result-name.winner { color:var(--orange); text-shadow:0 0 15px rgba(255,92,0,.34); }
+.result-sub {
+  font-family:'Noto Sans JP',sans-serif; font-size:11px; color:var(--dim); margin:3px 0 12px;
+}
+.record-result-btn {
+  width:100%; padding:12px 8px; border:none; border-radius:5px;
+  background:var(--orange); color:#070707; font-family:'Rajdhani',sans-serif;
+  font-size:17px; font-weight:700; letter-spacing:2px; cursor:pointer;
+}
+.record-result-btn:disabled { background:#202020; color:#555; cursor:not-allowed; box-shadow:none; }
+.record-result-btn:not(:disabled) { box-shadow:0 0 18px rgba(255,92,0,.20); }
+.last-result-panel {
+  display:flex; gap:10px; align-items:center; margin:14px 0 10px;
+  padding:10px 12px; background:#0e0e0e; border:1px solid var(--border); border-radius:5px;
+}
+.last-result-label {
+  font-family:'Rajdhani',sans-serif; font-size:10px; font-weight:700; letter-spacing:3px; color:var(--dim);
+  white-space:nowrap;
+}
+.last-result-text {
+  color:var(--white); font-family:'Rajdhani','Noto Sans JP',sans-serif;
+  font-size:13px; letter-spacing:1px; text-overflow:ellipsis; overflow:hidden; white-space:nowrap;
+}
+.score-footer-actions { display:flex; gap:8px; }
+.score-footer-actions .btn-reset { flex:1; margin:0; }
+.btn-undo {
+  width:44%; padding:12px 8px; background:transparent; color:var(--mid);
+  border:1px solid var(--border); border-radius:5px;
+  font-family:'Barlow Condensed',sans-serif; font-size:12px; font-weight:700;
+  letter-spacing:2px; cursor:pointer;
+}
+.btn-undo:disabled { color:#414141; cursor:not-allowed; }
+@media (max-width:370px) {
+  .players-grid { gap:7px; }
+  .player-card { padding:10px 8px; }
+  .stat-val { font-size:36px; }
+  .pts-input-row { flex-direction:column; }
+  .pts-total { flex-direction:row; gap:5px; align-items:center; }
+}
+</style>
+
+<style id="seno-orange-boost-style">
+/* Disabled: dummy map glow styles are no longer used. */
+</style>
+
+<script id="score-two-modes-script">
+let countMode = 'score';
+let resultHistory = [];
+
+function getPlayerName(p) {
+  const val = document.getElementById('pname'+p).value.trim();
+  return val || 'PLAYER ' + p;
+}
+function clearCardStates() {
+  for (let i=1; i<=4; i++) {
+    const c = document.getElementById('pc'+i);
+    c.classList.remove('preview-winner','preview-draw');
+  }
+}
+function setCountMode(mode) {
+  countMode = mode;
+  const scoreView = document.getElementById('view-score');
+  scoreView.classList.toggle('mode-win', mode === 'win');
+  document.getElementById('modeScoreBtn').classList.toggle('active', mode === 'score');
+  document.getElementById('modeWinBtn').classList.toggle('active', mode === 'win');
+  document.getElementById('modeGuide').textContent =
+    mode === 'score'
+      ? '獲得カードの合計点を入力。最も高いプレイヤーを自動判定します。'
+      : '得点を入力せず、勝ったプレイヤーのボタンを押すだけで記録します。';
+  clearCardStates();
+  if (mode === 'score') refreshScorePreview();
+}
+function setPC(n, btn) {
+  activePlayers = n;
+  document.querySelectorAll('.pc-btn').forEach(b => b.classList.remove('active'));
+  if (btn) btn.classList.add('active');
+  for (let i=1; i<=4; i++) {
+    document.getElementById('pc'+i).classList.toggle('hidden', i > n);
+  }
+  refreshScorePreview();
+}
+function updatePts(p) {
+  const input = document.getElementById('pinput'+p);
+  let val = parseInt(input.value, 10);
+  if (isNaN(val) || val < 0) val = 0;
+  if (val > 999) val = 999;
+  ptInp[p-1] = val;
+  refreshScorePreview();
+}
+function getLiveResult() {
+  const values = [];
+  for (let i=1; i<=activePlayers; i++) values.push(ptInp[i-1] || 0);
+  const max = Math.max(...values);
+  const hasEntry = values.some(v => v > 0);
+  if (!hasEntry) return { state:'empty', values };
+  const leaders = values.map((v,i) => v === max ? i + 1 : null).filter(Boolean);
+  if (leaders.length !== 1) return { state:'draw', leaders, score:max, values };
+  return { state:'winner', winner:leaders[0], score:max, values };
+}
+function refreshScorePreview() {
+  const resultName = document.getElementById('resultName');
+  const resultSub = document.getElementById('resultSub');
+  const recordBtn = document.getElementById('recordResultBtn');
+  if (!resultName || !recordBtn) return;
+
+  clearCardStates();
+  const r = getLiveResult();
+  resultName.classList.remove('winner');
+
+  if (r.state === 'empty') {
+    resultName.textContent = 'ENTER SCORES';
+    resultSub.textContent = '各プレイヤーの点数を入力してください';
+    recordBtn.disabled = true;
+    return;
+  }
+  if (r.state === 'draw') {
+    resultName.textContent = 'DRAW';
+    resultSub.textContent = r.score + ' PTS — 引き分けのため勝利数は加算されません';
+    recordBtn.disabled = false;
+    r.leaders.forEach(p => document.getElementById('pc'+p).classList.add('preview-draw'));
+    return;
+  }
+  const name = getPlayerName(r.winner);
+  resultName.textContent = name.toUpperCase() + ' WINS';
+  resultName.classList.add('winner');
+  resultSub.textContent = r.score + ' PTS — 結果を確定してください';
+  recordBtn.disabled = false;
+  document.getElementById('pc'+r.winner).classList.add('preview-winner');
+}
+function storeSnapshot(label) {
+  resultHistory.push({
+    wins:[...wins], pts:[...pts], label: label,
+    globalCountBefore: globalCount
+  });
+  document.getElementById('undoBtn').disabled = false;
+}
+function flashWinner(p) {
+  const card = document.getElementById('pc'+p);
+  const wEl = document.getElementById('pwins'+p);
+  wEl.classList.remove('pop'); void wEl.offsetWidth; wEl.classList.add('pop');
+  card.classList.remove('flash-1'); void card.offsetWidth; card.classList.add('flash-1');
+  setTimeout(() => card.classList.remove('flash-1'), 500);
+}
+function registerWin(p, pointsArray, label) {
+  storeSnapshot(label);
+  wins[p-1]++;
+  pointsArray.forEach((value, index) => { pts[index] += value; });
+  for (let i=1; i<=4; i++) {
+    document.getElementById('pwins'+i).textContent = wins[i-1];
+    document.getElementById('ptotal'+i).textContent = pts[i-1];
+  }
+  flashWinner(p);
+  recordCounterResult('win');
+  document.getElementById('lastResultText').textContent = label;
+}
+function recordScoreResult() {
+  const r = getLiveResult();
+  if (r.state === 'empty') return;
+
+  if (r.state === 'draw') {
+    storeSnapshot('DRAW / ' + r.score + ' PTS');
+    r.values.forEach((v,i) => { pts[i] += v; });
+    for (let i=1; i<=4; i++) document.getElementById('ptotal'+i).textContent = pts[i-1];
+    recordCounterResult('draw');
+    document.getElementById('lastResultText').textContent = 'DRAW / ' + r.score + ' PTS';
+  } else {
+    const label = getPlayerName(r.winner).toUpperCase() + ' WIN / ' + r.score + ' PTS';
+    registerWin(r.winner, r.values, label);
+  }
+
+  for (let i=1; i<=4; i++) {
+    document.getElementById('pinput'+i).value = 0;
+    ptInp[i-1] = 0;
+  }
+  refreshScorePreview();
+}
+function addWin(p) {
+  if (countMode !== 'win' || p > activePlayers) return;
+  registerWin(p, [0,0,0,0], getPlayerName(p).toUpperCase() + ' WIN');
+}
+function subWin(p) {
+  /* 旧ボタン互換。新UIではUNDO LASTを使用 */
+  if (wins[p-1] > 0) {
+    wins[p-1]--;
+    document.getElementById('pwins'+p).textContent = wins[p-1];
+  }
+}
+function undoLastResult() {
+  const previous = resultHistory.pop();
+  if (!previous) return;
+  wins = [...previous.wins];
+  pts = [...previous.pts];
+  for (let i=1; i<=4; i++) {
+    document.getElementById('pwins'+i).textContent = wins[i-1];
+    document.getElementById('ptotal'+i).textContent = pts[i-1];
+  }
+  document.getElementById('lastResultText').textContent =
+    resultHistory.length ? resultHistory[resultHistory.length-1].label : '—';
+  document.getElementById('undoBtn').disabled = resultHistory.length === 0;
+  refreshScorePreview();
+}
+function doReset() {
+  wins=[0,0,0,0]; pts=[0,0,0,0]; ptInp=[0,0,0,0]; resultHistory=[];
+  for (let i=1;i<=4;i++) {
+    document.getElementById('pwins'+i).textContent='0';
+    document.getElementById('ptotal'+i).textContent='0';
+    document.getElementById('pinput'+i).value='0';
+  }
+  document.getElementById('lastResultText').textContent='—';
+  document.getElementById('undoBtn').disabled=true;
+  closeConfirm();
+  refreshScorePreview();
+}
+setCountMode('score');
+</script>
+
+</body>
+</html>
