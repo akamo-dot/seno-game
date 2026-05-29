@@ -280,10 +280,11 @@ header a { text-decoration:none; }
   position:absolute;
   inset:0;
   background:
-    radial-gradient(circle at 50% 38%,rgba(255,185,36,.32),transparent 34%),
-    radial-gradient(circle at 22% 48%,rgba(255,92,0,.20),transparent 28%),
-    radial-gradient(circle at 78% 50%,rgba(255,0,128,.16),transparent 30%);
-  animation:vegasFlash 2.65s ease-out forwards;
+    radial-gradient(circle at 50% 36%,rgba(255,226,168,.46),transparent 28%),
+    radial-gradient(circle at 22% 34%,rgba(255,92,0,.30),transparent 28%),
+    radial-gradient(circle at 78% 36%,rgba(255,0,128,.22),transparent 30%),
+    linear-gradient(180deg,rgba(255,122,26,.13),transparent 62%);
+  animation:vegasFlash 3.2s ease-out forwards;
 }
 .fw-marquee {
   position:absolute;
@@ -297,18 +298,33 @@ header a { text-decoration:none; }
   letter-spacing:8px;
   text-shadow:0 0 14px rgba(255,92,0,.92),0 0 38px rgba(255,0,128,.35);
   opacity:0;
-  animation:vegasMarquee 2.45s ease-out forwards;
+  animation:vegasMarquee 3.05s ease-out forwards;
   white-space:nowrap;
 }
 @keyframes vegasFlash {
   0% { opacity:0; }
-  9% { opacity:1; }
+  8% { opacity:1; }
+  38% { opacity:.72; }
   100% { opacity:0; }
 }
 @keyframes vegasMarquee {
   0%,12% { opacity:0; transform:translateX(-50%) translateY(18px) scale(.94); }
   24%,70% { opacity:.86; transform:translateX(-50%) translateY(0) scale(1); }
   100% { opacity:0; transform:translateX(-50%) translateY(-10px) scale(1.02); }
+}
+.fw-haze {
+  position:absolute;
+  inset:auto 0 0;
+  height:42%;
+  background:linear-gradient(180deg,transparent,rgba(255,122,26,.18),rgba(255,255,255,.08));
+  filter:blur(10px);
+  opacity:.72;
+  animation:vegasHaze 3.1s ease-out forwards;
+}
+@keyframes vegasHaze {
+  0% { opacity:0; transform:translateY(18px); }
+  18%,70% { opacity:.8; transform:translateY(0); }
+  100% { opacity:0; transform:translateY(12px); }
 }
 .fw-burst {
   position:absolute; left:50%; top:50%; width:4px; height:4px;
@@ -366,6 +382,9 @@ header a { text-decoration:none; }
 #view-rules.lang-en .jp-text { display:none; }
 #view-rules.lang-jp .en-text { display:none; }
 #view-rules.lang-jp .jp-text { display:inline; }
+.jp-block, .en-block { display:none; }
+#view-rules.lang-jp .jp-block { display:block; }
+#view-rules.lang-en .en-block { display:block; }
 
 .rules-block { margin-bottom:28px; }
 .rules-title {
@@ -592,6 +611,87 @@ header a { text-decoration:none; }
   font-family:'Rajdhani',sans-serif;
   font-size:18px;
   letter-spacing:1px;
+}
+.rules-over-label {
+  display:inline-flex;
+  align-items:center;
+  border:1px solid rgba(255,92,0,.45);
+  color:var(--orange);
+  border-radius:999px;
+  padding:4px 10px;
+  font-family:'Rajdhani',sans-serif;
+  font-weight:700;
+  font-size:10px;
+  letter-spacing:3px;
+  margin-bottom:10px;
+}
+.rules-copy-lead {
+  color:var(--white);
+  font-size:17px;
+  font-weight:700;
+  line-height:1.7;
+  margin:6px 0 10px;
+}
+.rules-copy {
+  color:var(--mid);
+  font-size:13px;
+  line-height:1.9;
+  margin:0 0 10px;
+}
+.rules-emphasis {
+  border-left:2px solid var(--orange);
+  padding:10px 12px;
+  margin-top:12px;
+  background:#0b0b0b;
+  color:var(--white);
+  font-size:15px;
+  font-weight:700;
+  line-height:1.75;
+}
+.rules-term {
+  color:var(--orange);
+  font-family:'Rajdhani',sans-serif;
+  font-weight:700;
+  letter-spacing:1px;
+}
+.rules-small-copy {
+  color:var(--orange);
+  font-family:'Rajdhani',sans-serif;
+  font-weight:700;
+  font-size:12px;
+  letter-spacing:2px;
+  margin-top:10px;
+}
+.rules-mini-list {
+  display:grid;
+  gap:8px;
+  margin-top:10px;
+}
+.rules-mini-item {
+  border:1px solid var(--border);
+  border-radius:6px;
+  background:#0b0b0b;
+  padding:10px 11px;
+  color:var(--mid);
+  font-size:13px;
+  line-height:1.7;
+}
+.rules-mode-list {
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+  margin-top:10px;
+}
+.rules-mode-list span {
+  border:1px solid var(--border);
+  color:var(--white);
+  background:#0b0b0b;
+  border-radius:4px;
+  padding:6px 8px;
+  font-family:'Rajdhani',sans-serif;
+  font-weight:700;
+  font-size:12px;
+  letter-spacing:2px;
 }
 @media (max-width:620px) {
   .rules-grid-2 { grid-template-columns:1fr; }
@@ -901,6 +1001,82 @@ header a { text-decoration:none; }
     <button class="lang-btn" onclick="setLang('en')">EN</button>
   </div>
 
+  <div class="jp-block">
+    <section class="rules-hero">
+      <div class="rules-over-label">OVER MODE</div>
+      <div class="rules-kicker">SENO / TRUST YOUR LUCK.</div>
+      <div class="rules-headline">READ AND PLUNDER.</div>
+      <div class="rules-subline">2–4 PLAYERS / 5–10 MIN / 6+ AGES / 40 CARDS / 10 CARDS × 4 SETS</div>
+    </section>
+
+    <section class="rules-panel rules-block">
+      <div class="rules-panel-title">OVER</div>
+      <div class="rules-copy-lead">あいこが、次の一手を重くする。</div>
+      <p class="rules-copy"><span class="rules-term">OVER</span>は、SENOを最初に体験するための推奨モード。</p>
+      <p class="rules-copy">プレイヤーは同時に1枚を出し、勝者が場のカードを獲得します。</p>
+      <p class="rules-copy">あいこになったカードは、そのまま <span class="rules-term">POT</span> へ。次に勝ったプレイヤーが、積み上がったカードをすべて奪います。</p>
+      <div class="rules-emphasis">5点を出すか。<br><span class="rules-term">LUCK</span>を切るか。<br>膨らんだ<span class="rules-term">POT</span>を、奪い取るか。</div>
+    </section>
+
+    <section class="rules-panel rules-block">
+      <div class="rules-panel-title">Components</div>
+      <div class="rules-copy-lead">40 CARDS / 10 CARDS × 4 SETS</div>
+      <p class="rules-copy">各プレイヤーは、同じ構成の10枚で戦います。</p>
+      <div class="deck-visual">
+        <img src="./assets/play/rules-deck-visual.png" alt="SENO deck visual: 10 cards per player">
+      </div>
+      <div class="rules-mini-list">
+        <div class="rules-mini-item">5 POINTS × 3 / 3 POINTS × 3 / 1 POINT × 3 / <span class="rules-term">LUCK</span> × 1</div>
+        <div class="rules-mini-item">勝者は、そのターンに場へ出されたカードを獲得。10ラウンド後、獲得したカードの合計点で勝敗を決めます。</div>
+      </div>
+      <div class="rules-emphasis">高い点数を出すほど、<br>奪われるリスクも高くなる。</div>
+    </section>
+
+    <div class="rules-grid-2">
+      <section class="rules-panel">
+        <div class="rules-panel-title">Matchup</div>
+        <div class="rules-copy-lead">勝てば、場のカードを奪う。</div>
+        <p class="rules-copy">勝敗の基本は、<span class="rules-term">ROCK / SCISSORS / PAPER</span> の三すくみ。</p>
+        <p class="rules-copy">各プレイヤーは手札から1枚を選び、同時に公開します。</p>
+        <p class="rules-copy">勝ったプレイヤーは、そのターンに場へ出されたカードをすべて獲得します。</p>
+        <p class="rules-copy">獲得したカードの点数は、ゲーム終了時に集計されます。</p>
+        <div class="rules-small-copy">WIN THE MATCHUP. TAKE THE CARDS.</div>
+      </section>
+
+      <section class="rules-panel">
+        <div class="rules-panel-title">Luck Card</div>
+        <div class="rules-copy-lead">勝てる一枚。稼げない一枚。</div>
+        <p class="rules-copy"><span class="rules-term">LUCK</span>は、<span class="rules-term">ROCK / SCISSORS / PAPER</span> のすべてに勝つ特殊カード。</p>
+        <p class="rules-copy">ただし、カード自体の得点は <span class="rules-term">0点</span> です。</p>
+        <p class="rules-copy">出せば勝てる場面がある。しかし、0点の<span class="rules-term">LUCK</span>をいつ使うかで、高得点カードを奪えるかどうかが変わります。</p>
+        <div class="rules-emphasis">何に勝つかではない。<br>何点を奪うために使うか。</div>
+        <div class="luck-block">
+          <div class="luck-row"><span class="badge win">WIN</span><span>LUCKは三すくみのすべてに勝つ。ただし、得点は0点。</span></div>
+          <div class="luck-row"><span class="badge tie">TIE</span><span>LUCK同士はあいこ。場のカードはPOTへ持ち越されます。</span></div>
+        </div>
+      </section>
+    </div>
+
+    <section class="rules-panel rules-block">
+      <div class="rules-panel-title">How to Play — Over</div>
+      <div class="rules-copy-lead">10ラウンド。最も多く奪った者が勝つ。</div>
+      <div class="step-row"><div class="step-num">1</div><div class="step-body"><div class="step-title">PREPARE — 準備</div><div class="step-text">各プレイヤーは、同じ構成の10枚を手札として持ちます。10枚は、5点・3点・1点のカード各3枚と、<span class="rules-term">LUCK</span> 1枚で構成されます。</div></div></div>
+      <div class="step-row"><div class="step-num">2</div><div class="step-body"><div class="step-title">SELECT — カードを選ぶ</div><div class="step-text">手札から1枚を選びます。掛け声は、<span class="rules-term">SENO!</span> 全員同時にカードを公開します。</div></div></div>
+      <div class="step-row"><div class="step-num">3</div><div class="step-body"><div class="step-title">MATCHUP — 勝敗を決める</div><div class="step-text"><span class="rules-term">ROCK / SCISSORS / PAPER</span> の三すくみと、<span class="rules-term">LUCK</span>の効果で勝敗を決めます。勝者は、そのターンに場へ出されたカードをすべて獲得します。</div><div class="step-note"><strong>3–4 PLAYERS</strong><br>同じ手が複数出た場合、または ROCK / SCISSORS / PAPER の3種類すべてが場に出た場合、そのターンはあいことなります。</div></div></div>
+      <div class="step-row"><div class="step-num">4</div><div class="step-body"><div class="step-title">OVER — あいこはPOTへ</div><div class="step-text">あいこになった場合、そのターンのカードは <span class="rules-term">POT</span> として場に残ります。次に勝ったプレイヤーが、<span class="rules-term">POT</span>を含む場のカードをすべて獲得します。</div><div class="rules-emphasis">あいこが続くほど、<br>次の一手で奪える点数は大きくなる。</div></div></div>
+      <div class="step-row"><div class="step-num">5</div><div class="step-body"><div class="step-title">SCORE — 得点計算</div><div class="step-text">10枚すべてを出し終えたら、ゲーム終了。獲得したカードの合計点が最も高いプレイヤーが勝者です。</div><div class="rules-small-copy">READ. RISK. PLUNDER.</div></div></div>
+    </section>
+
+    <section class="rules-panel rules-block">
+      <div class="rules-panel-title">Other Modes</div>
+      <p class="rules-copy">同じ40枚が、異なる読み合いを生む。</p>
+      <div class="rules-mode-list">
+        <span>VANISH</span><span>DARK</span><span>DUAL</span><span>SHOUT</span><span>MEMORY SPD</span><span>MEMORY</span>
+      </div>
+    </section>
+  </div>
+
+  <div class="en-block">
   <section class="rules-hero">
     <div class="rules-kicker">SENO BASIC RULES</div>
     <div class="rules-headline">TRUST YOUR LUCK.</div>
@@ -943,7 +1119,7 @@ header a { text-decoration:none; }
   <section class="rules-panel rules-block">
     <div class="rules-panel-title">Special Luck</div>
     <div class="luck-cards">
-      <div class="luck-card"><b>LUCK BEATS ALL.</b><span><span class="jp-text">LUCKはすべての手に勝つ。得点は0点。</span><span class="en-text">LUCK beats every hand. 0 points.</span></span></div>
+      <div class="luck-card"><b>LUCK BEATS ALL.</b><span><span class="jp-text">LUCKは三すくみのすべてに勝つ。得点は0点。</span><span class="en-text">LUCK beats every hand. 0 points.</span></span></div>
       <div class="luck-card"><b>LUCK vs LUCK = DRAW</b><span><span class="jp-text">LUCK vs LUCK は DRAW。場のカードはPOTへ蓄積。</span><span class="en-text">LUCK vs LUCK is a draw. Cards stack in the POT.</span></span></div>
     </div>
     <div class="step-note"><span class="jp-text">3〜4人プレイでは、同じ手が重なった場合、または ROCK / PAPER / SCISSORS の3種類すべてが出た場合は DRAW。</span><span class="en-text">In a 3–4 player game, a round is a draw if matching hands appear or if ROCK, PAPER, and SCISSORS are all played.</span></div>
@@ -961,6 +1137,7 @@ header a { text-decoration:none; }
     </div>
     <p style="font-size:11px;color:var(--dim);margin-top:8px;line-height:1.5;"><span class="jp-text">プレイ人数や遊び方に応じて使用するカードを選びます。</span><span class="en-text">Choose the cards to use depending on the number of players and play mode.</span></p>
   </section>
+  </div>
 
 </div>
 
@@ -1514,6 +1691,8 @@ function launchWinFireworks(p, value) {
   wrap.classList.remove('hidden');
   const flash = document.createElement('div');
   flash.className = 'fw-flash';
+  const haze = document.createElement('div');
+  haze.className = 'fw-haze';
   const marquee = document.createElement('div');
   marquee.className = 'fw-marquee';
   marquee.textContent = getPlayerName(p).toUpperCase() + ' / ' + value + ' WINS';
@@ -1521,6 +1700,7 @@ function launchWinFireworks(p, value) {
   canvas.className = 'fw-canvas';
   wrap.appendChild(canvas);
   wrap.appendChild(flash);
+  wrap.appendChild(haze);
   wrap.appendChild(marquee);
 
   const ctx = canvas.getContext('2d');
@@ -1534,31 +1714,68 @@ function launchWinFireworks(p, value) {
   };
   resize();
 
-  const palette = ['#ff7a1a', '#f5b700', '#ffd166', '#ff3b1f', '#ff2d95'];
+  const palette = ['#ff7a1a', '#f5b700', '#ffd166', '#ff3b1f', '#ff2d95', '#fff0c2', '#6ec6ff'];
   const bursts = [
-    [0, .50, .30, 72], [160, .22, .42, 54], [260, .78, .42, 54],
-    [470, .38, .58, 58], [620, .62, .56, 58], [900, .50, .22, 68],
-    [1160, .18, .30, 50], [1320, .82, .30, 50]
+    [0, .50, .24, 180, 1.18], [70, .18, .35, 138, 1.02], [110, .82, .34, 138, 1.02],
+    [250, .36, .28, 150, 1.10], [310, .64, .28, 150, 1.10],
+    [520, .26, .52, 112, .88], [560, .74, .52, 112, .88], [680, .50, .48, 150, 1.05],
+    [900, .12, .23, 112, .90], [960, .88, .24, 112, .90], [1120, .40, .18, 138, 1.05],
+    [1200, .60, .18, 138, 1.05], [1440, .30, .38, 116, .90], [1500, .70, .38, 116, .90],
+    [1780, .50, .20, 200, 1.20], [2050, .22, .28, 130, .95], [2100, .78, .28, 130, .95]
   ];
+  const comets = [];
   const particles = [];
   let started = performance.now();
 
-  function addBurst(cxRatio, cyRatio, count) {
+  function addComet(targetX, targetY, delay) {
+    comets.push({
+      delay,
+      x:window.innerWidth * (.12 + Math.random() * .76),
+      y:window.innerHeight + 20,
+      tx:window.innerWidth * targetX,
+      ty:window.innerHeight * targetY,
+      life:0,
+      max:32 + Math.random() * 18,
+      color:palette[Math.floor(Math.random() * palette.length)],
+      trail:[]
+    });
+  }
+
+  bursts.forEach(b => addComet(b[1], b[2], Math.max(0, b[0] - 300)));
+
+  function addBurst(cxRatio, cyRatio, count, power) {
     const cx = window.innerWidth * cxRatio;
     const cy = window.innerHeight * cyRatio;
     for (let i=0; i<count; i++) {
       const angle = (Math.PI * 2 * i / count) + Math.random() * .18;
-      const speed = 2.2 + Math.random() * 4.8;
+      const speed = (2.8 + Math.random() * 7.6) * power;
       const color = palette[(i + Math.floor(Math.random() * palette.length)) % palette.length];
       particles.push({
         x:cx, y:cy,
         vx:Math.cos(angle) * speed,
-        vy:Math.sin(angle) * speed - Math.random() * 1.8,
+        vy:Math.sin(angle) * speed - Math.random() * 2.5,
         life:0,
-        max:56 + Math.random() * 34,
-        size:1.2 + Math.random() * 2.2,
+        max:78 + Math.random() * 58,
+        size:.8 + Math.random() * 2.4,
         color,
-        trail:[]
+        trail:[],
+        flicker:Math.random() > .72,
+        glitter:Math.random() > .50
+      });
+    }
+    for (let i=0; i<Math.floor(count * .35); i++) {
+      particles.push({
+        x:cx + (Math.random() - .5) * 28,
+        y:cy + (Math.random() - .5) * 28,
+        vx:(Math.random() - .5) * 2.4,
+        vy:(Math.random() - .5) * 2.4,
+        life:0,
+        max:34 + Math.random() * 28,
+        size:.6 + Math.random() * 1.1,
+        color:'#fff6d6',
+        trail:[],
+        flicker:true,
+        glitter:true
       });
     }
   }
@@ -1568,11 +1785,32 @@ function launchWinFireworks(p, value) {
     bursts.forEach(b => {
       if (!b.done && elapsed >= b[0]) {
         b.done = true;
-        addBurst(b[1], b[2], b[3]);
+        addBurst(b[1], b[2], b[3], b[4]);
       }
     });
-    ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
+    ctx.fillStyle = 'rgba(0,0,0,.18)';
+    ctx.fillRect(0, 0, window.innerWidth, window.innerHeight);
     ctx.globalCompositeOperation = 'lighter';
+    comets.forEach(comet => {
+      if (elapsed < comet.delay || comet.life >= comet.max) return;
+      comet.life++;
+      const t = comet.life / comet.max;
+      const ease = 1 - Math.pow(1 - t, 2.6);
+      comet.trail.push([comet.x, comet.y]);
+      if (comet.trail.length > 12) comet.trail.shift();
+      comet.x = comet.x + (comet.tx - comet.x) * .085;
+      comet.y = comet.y + (comet.ty - comet.y) * .11 - 1.5 * (1 - ease);
+      ctx.globalAlpha = .72 * (1 - t);
+      ctx.strokeStyle = comet.color;
+      ctx.lineWidth = 2.2;
+      ctx.beginPath();
+      comet.trail.forEach((pt, index) => {
+        if (index === 0) ctx.moveTo(pt[0], pt[1]);
+        else ctx.lineTo(pt[0], pt[1]);
+      });
+      ctx.stroke();
+      ctx.globalAlpha = 1;
+    });
     for (let i=particles.length-1; i>=0; i--) {
       const spark = particles[i];
       spark.life++;
@@ -1583,9 +1821,10 @@ function launchWinFireworks(p, value) {
       spark.vy += .055;
       spark.vx *= .988;
       spark.vy *= .988;
-      const alpha = Math.max(0, 1 - spark.life / spark.max);
+      let alpha = Math.max(0, 1 - spark.life / spark.max);
+      if (spark.flicker) alpha *= .55 + Math.random() * .65;
       ctx.strokeStyle = spark.color;
-      ctx.globalAlpha = alpha * .55;
+      ctx.globalAlpha = alpha * .74;
       ctx.lineWidth = spark.size;
       ctx.beginPath();
       spark.trail.forEach((pt, index) => {
@@ -1598,17 +1837,22 @@ function launchWinFireworks(p, value) {
       ctx.beginPath();
       ctx.arc(spark.x, spark.y, spark.size * 1.15, 0, Math.PI * 2);
       ctx.fill();
+      if (spark.glitter && spark.life % 5 === 0) {
+        ctx.globalAlpha = alpha * .9;
+        ctx.fillStyle = '#ffffff';
+        ctx.fillRect(spark.x - .8, spark.y - .8, 1.6, 1.6);
+      }
       if (spark.life > spark.max) particles.splice(i, 1);
     }
     ctx.globalAlpha = 1;
-    if (elapsed < 2700 || particles.length) requestAnimationFrame(tick);
+    if (elapsed < 3600 || particles.length) requestAnimationFrame(tick);
   }
 
   requestAnimationFrame(tick);
   setTimeout(() => {
     wrap.classList.add('hidden');
     wrap.innerHTML = '';
-  }, 2900);
+  }, 3800);
 }
 function registerWin(p, pointsArray, label) {
   storeSnapshot(label);
