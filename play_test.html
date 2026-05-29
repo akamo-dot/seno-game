@@ -297,55 +297,55 @@ header a { text-decoration:none; }
 @keyframes fall { to{ transform:translateY(110vh) rotate(720deg); opacity:0; } }
 .fireworks-wrap { position:fixed; inset:0; pointer-events:none; z-index:198; overflow:hidden; }
 .fireworks-wrap.hidden { display:none; }
-.fw-canvas { position:absolute; inset:0; width:100%; height:100%; opacity:.98; }
+.fw-canvas { position:absolute; inset:0; width:100%; height:100%; opacity:.78; }
 .fw-flash {
   position:absolute;
   inset:0;
   background:
-    radial-gradient(circle at 50% 36%,rgba(255,226,168,.46),transparent 28%),
-    radial-gradient(circle at 22% 34%,rgba(255,92,0,.30),transparent 28%),
-    radial-gradient(circle at 78% 36%,rgba(255,0,128,.22),transparent 30%),
-    linear-gradient(180deg,rgba(255,122,26,.13),transparent 62%);
-  animation:vegasFlash 4.15s ease-out forwards;
+    radial-gradient(circle at 50% 34%,rgba(255,120,160,.08),transparent 26%),
+    radial-gradient(circle at 24% 38%,rgba(80,190,255,.06),transparent 30%),
+    radial-gradient(circle at 78% 36%,rgba(255,92,0,.08),transparent 30%),
+    linear-gradient(180deg,rgba(12,24,48,.11),transparent 68%);
+  animation:vegasFlash 3.55s ease-out forwards;
 }
 .fw-marquee {
   position:absolute;
   left:50%;
   bottom:12%;
   transform:translateX(-50%);
-  color:rgba(255,238,196,.78);
+  color:rgba(255,210,160,.58);
   font-family:'Rajdhani',sans-serif;
   font-weight:700;
   font-size:clamp(34px,8vw,96px);
   letter-spacing:8px;
-  text-shadow:0 0 14px rgba(255,92,0,.92),0 0 38px rgba(255,0,128,.35);
+  text-shadow:0 0 10px rgba(255,92,0,.45),0 0 24px rgba(255,0,128,.22);
   opacity:0;
-  animation:vegasMarquee 4.05s ease-out forwards;
+  animation:vegasMarquee 3.45s ease-out forwards;
   white-space:nowrap;
 }
 @keyframes vegasFlash {
   0% { opacity:0; }
-  8% { opacity:1; }
-  38% { opacity:.72; }
+  8% { opacity:.28; }
+  38% { opacity:.16; }
   100% { opacity:0; }
 }
 @keyframes vegasMarquee {
   0%,12% { opacity:0; transform:translateX(-50%) translateY(18px) scale(.94); }
-  24%,70% { opacity:.86; transform:translateX(-50%) translateY(0) scale(1); }
+  24%,70% { opacity:.58; transform:translateX(-50%) translateY(0) scale(1); }
   100% { opacity:0; transform:translateX(-50%) translateY(-10px) scale(1.02); }
 }
 .fw-haze {
   position:absolute;
   inset:auto 0 0;
   height:42%;
-  background:linear-gradient(180deg,transparent,rgba(255,122,26,.18),rgba(255,255,255,.08));
-  filter:blur(10px);
-  opacity:.72;
-  animation:vegasHaze 4.1s ease-out forwards;
+  background:linear-gradient(180deg,transparent,rgba(24,64,104,.10),rgba(255,122,26,.045));
+  filter:blur(12px);
+  opacity:.46;
+  animation:vegasHaze 3.6s ease-out forwards;
 }
 @keyframes vegasHaze {
   0% { opacity:0; transform:translateY(18px); }
-  18%,70% { opacity:.8; transform:translateY(0); }
+  18%,70% { opacity:.26; transform:translateY(0); }
   100% { opacity:0; transform:translateY(12px); }
 }
 .fw-burst {
@@ -2068,19 +2068,12 @@ function launchWinFireworks(p, value) {
   };
   resize();
 
-  const palette = ['#ff7a1a', '#f5b700', '#ffd166', '#ff3b1f', '#ff2d95', '#fff0c2', '#6ec6ff', '#ffffff', '#ffb347'];
+  const palette = ['#ff7a1a', '#f5b700', '#ffd166', '#ff3b1f', '#ff4aa2', '#54d7ff', '#6fffd2', '#b58cff'];
   const bursts = [
-    [0, .50, .22, 260, 1.32], [60, .16, .30, 190, 1.08], [95, .84, .29, 190, 1.08],
-    [210, .31, .24, 210, 1.18], [250, .69, .24, 210, 1.18], [330, .50, .38, 170, 1.05],
-    [480, .22, .48, 150, .96], [520, .78, .48, 150, .96], [620, .40, .17, 180, 1.12],
-    [660, .60, .17, 180, 1.12], [780, .10, .21, 150, .96], [830, .90, .22, 150, .96],
-    [950, .28, .34, 170, 1.02], [990, .72, .34, 170, 1.02], [1110, .50, .16, 240, 1.28],
-    [1260, .18, .41, 145, .92], [1300, .82, .41, 145, .92], [1420, .36, .27, 185, 1.10],
-    [1470, .64, .27, 185, 1.10], [1640, .50, .50, 190, 1.08], [1780, .12, .33, 145, .95],
-    [1830, .88, .33, 145, .95], [2020, .30, .18, 210, 1.18], [2070, .70, .18, 210, 1.18],
-    [2260, .22, .55, 150, .92], [2300, .78, .55, 150, .92], [2480, .43, .31, 180, 1.05],
-    [2530, .57, .31, 180, 1.05], [2750, .50, .20, 280, 1.36], [3050, .26, .26, 170, 1.04],
-    [3100, .74, .26, 170, 1.04]
+    [0, .31, .25, 58, .82], [120, .69, .24, 64, .86],
+    [420, .50, .34, 48, .76], [760, .22, .45, 36, .62], [840, .78, .44, 36, .62],
+    [1220, .39, .18, 56, .78], [1320, .63, .19, 56, .78],
+    [1860, .50, .23, 72, .88]
   ];
   const comets = [];
   const particles = [];
@@ -2094,7 +2087,7 @@ function launchWinFireworks(p, value) {
       tx:window.innerWidth * targetX,
       ty:window.innerHeight * targetY,
       life:0,
-      max:26 + Math.random() * 15,
+      max:32 + Math.random() * 18,
       color:palette[Math.floor(Math.random() * palette.length)],
       trail:[]
     });
@@ -2106,38 +2099,38 @@ function launchWinFireworks(p, value) {
     const cx = window.innerWidth * cxRatio;
     const cy = window.innerHeight * cyRatio;
     for (let i=0; i<count; i++) {
-      const angle = (Math.PI * 2 * i / count) + Math.random() * .18;
-      const speed = (3.4 + Math.random() * 9.4) * power;
+      const angle = (Math.PI * 2 * i / count) + Math.random() * .12;
+      const speed = (2.2 + Math.random() * 5.6) * power;
       const color = palette[(i + Math.floor(Math.random() * palette.length)) % palette.length];
       particles.push({
         x:cx, y:cy,
         vx:Math.cos(angle) * speed,
         vy:Math.sin(angle) * speed - Math.random() * 2.5,
         life:0,
-        max:92 + Math.random() * 70,
-        size:.9 + Math.random() * 2.9,
+        max:88 + Math.random() * 64,
+        size:.28 + Math.random() * .72,
         color,
         trail:[],
         flicker:Math.random() > .72,
         glitter:Math.random() > .50
       });
     }
-    for (let i=0; i<Math.floor(count * .58); i++) {
+    for (let i=0; i<Math.floor(count * .06); i++) {
       particles.push({
         x:cx + (Math.random() - .5) * 28,
         y:cy + (Math.random() - .5) * 28,
         vx:(Math.random() - .5) * 2.4,
         vy:(Math.random() - .5) * 2.4,
         life:0,
-        max:42 + Math.random() * 34,
-        size:.7 + Math.random() * 1.35,
-        color:'#fff6d6',
+        max:34 + Math.random() * 24,
+        size:.25 + Math.random() * .42,
+        color:'#ffe0aa',
         trail:[],
         flicker:true,
         glitter:true
       });
     }
-    for (let i=0; i<Math.floor(count * .16); i++) {
+    for (let i=0; i<Math.floor(count * .04); i++) {
       const side = Math.random() > .5 ? 1 : -1;
       particles.push({
         x:cx + (Math.random() - .5) * 42,
@@ -2145,8 +2138,8 @@ function launchWinFireworks(p, value) {
         vx:side * (1.4 + Math.random() * 3.6),
         vy:1.4 + Math.random() * 3.8,
         life:0,
-        max:92 + Math.random() * 64,
-        size:.75 + Math.random() * 1.45,
+        max:82 + Math.random() * 50,
+        size:.28 + Math.random() * .55,
         color:palette[Math.floor(Math.random() * palette.length)],
         trail:[],
         flicker:true,
@@ -2163,7 +2156,7 @@ function launchWinFireworks(p, value) {
         addBurst(b[1], b[2], b[3], b[4]);
       }
     });
-    ctx.fillStyle = 'rgba(0,0,0,.135)';
+    ctx.fillStyle = 'rgba(2,4,10,.34)';
     ctx.fillRect(0, 0, window.innerWidth, window.innerHeight);
     ctx.globalCompositeOperation = 'lighter';
     comets.forEach(comet => {
@@ -2172,12 +2165,12 @@ function launchWinFireworks(p, value) {
       const t = comet.life / comet.max;
       const ease = 1 - Math.pow(1 - t, 2.6);
       comet.trail.push([comet.x, comet.y]);
-      if (comet.trail.length > 18) comet.trail.shift();
-      comet.x = comet.x + (comet.tx - comet.x) * .105;
-      comet.y = comet.y + (comet.ty - comet.y) * .13 - 2.1 * (1 - ease);
-      ctx.globalAlpha = .92 * (1 - t);
+      if (comet.trail.length > 16) comet.trail.shift();
+      comet.x = comet.x + (comet.tx - comet.x) * .095;
+      comet.y = comet.y + (comet.ty - comet.y) * .12 - 1.8 * (1 - ease);
+      ctx.globalAlpha = .44 * (1 - t);
       ctx.strokeStyle = comet.color;
-      ctx.lineWidth = 2.8;
+      ctx.lineWidth = 1.05;
       ctx.beginPath();
       comet.trail.forEach((pt, index) => {
         if (index === 0) ctx.moveTo(pt[0], pt[1]);
@@ -2190,16 +2183,16 @@ function launchWinFireworks(p, value) {
       const spark = particles[i];
       spark.life++;
       spark.trail.push([spark.x, spark.y]);
-      if (spark.trail.length > 12) spark.trail.shift();
+      if (spark.trail.length > 18) spark.trail.shift();
       spark.x += spark.vx;
       spark.y += spark.vy;
-      spark.vy += .046;
-      spark.vx *= .991;
-      spark.vy *= .991;
+      spark.vy += .034;
+      spark.vx *= .993;
+      spark.vy *= .993;
       let alpha = Math.max(0, 1 - spark.life / spark.max);
       if (spark.flicker) alpha *= .55 + Math.random() * .65;
       ctx.strokeStyle = spark.color;
-      ctx.globalAlpha = alpha * .88;
+      ctx.globalAlpha = alpha * .34;
       ctx.lineWidth = spark.size;
       ctx.beginPath();
       spark.trail.forEach((pt, index) => {
@@ -2207,27 +2200,27 @@ function launchWinFireworks(p, value) {
         else ctx.lineTo(pt[0], pt[1]);
       });
       ctx.stroke();
-      ctx.globalAlpha = alpha;
+      ctx.globalAlpha = alpha * .20;
       ctx.fillStyle = spark.color;
       ctx.beginPath();
-      ctx.arc(spark.x, spark.y, spark.size * 1.15, 0, Math.PI * 2);
+      ctx.arc(spark.x, spark.y, Math.max(.45, spark.size * .72), 0, Math.PI * 2);
       ctx.fill();
-      if (spark.glitter && spark.life % 5 === 0) {
-        ctx.globalAlpha = alpha * .9;
-        ctx.fillStyle = '#ffffff';
-        ctx.fillRect(spark.x - .8, spark.y - .8, 1.6, 1.6);
+      if (spark.glitter && spark.life % 13 === 0) {
+        ctx.globalAlpha = alpha * .18;
+        ctx.fillStyle = '#ffe8bc';
+        ctx.fillRect(spark.x - .45, spark.y - .45, .9, .9);
       }
       if (spark.life > spark.max) particles.splice(i, 1);
     }
     ctx.globalAlpha = 1;
-    if (elapsed < 4400 || particles.length) requestAnimationFrame(tick);
+    if (elapsed < 3000 || particles.length) requestAnimationFrame(tick);
   }
 
   requestAnimationFrame(tick);
   setTimeout(() => {
     wrap.classList.add('hidden');
     wrap.innerHTML = '';
-  }, 4600);
+  }, 3300);
 }
 function registerWin(p, pointsArray, label) {
   storeSnapshot(label);
