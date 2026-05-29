@@ -718,6 +718,10 @@ header a { text-decoration:none; }
   cursor:pointer;
   padding:13px 14px;
 }
+.other-mode-card summary:focus-visible {
+  outline:1px solid rgba(255,92,0,.72);
+  outline-offset:-3px;
+}
 .other-mode-card summary::-webkit-details-marker { display:none; }
 .other-mode-main {
   display:grid;
@@ -793,6 +797,13 @@ header a { text-decoration:none; }
   font-size:13px;
   line-height:1.75;
 }
+.mode-rule-text {
+  color:var(--mid);
+  font-size:13px;
+  line-height:1.85;
+}
+.mode-rule-text p { margin:0 0 10px; }
+.mode-rule-text p:last-child { margin-bottom:0; }
 .mode-rule-note {
   margin-top:10px;
   padding:10px 11px;
@@ -1139,7 +1150,7 @@ header a { text-decoration:none; }
       </div>
       <div class="rules-mini-list">
         <div class="rules-mini-item">5 POINTS × 3 / 3 POINTS × 3 / 1 POINT × 3 / <span class="rules-term">LUCK</span> × 1</div>
-        <div class="rules-mini-item">勝者は、そのターンに場へ出されたカードを獲得。10ラウンド後、獲得したカードの合計点で勝敗を決めます。</div>
+        <div class="rules-mini-item">勝者は、そのターンに場へ出されたカードを獲得。手札がなくなったら、獲得したカードの合計点で勝敗を決めます。</div>
       </div>
       <div class="rules-emphasis">高い点数を出すほど、<br>奪われるリスクも高くなる。</div>
     </section>
@@ -1149,24 +1160,22 @@ header a { text-decoration:none; }
         <div class="rules-panel-title">Matchup</div>
         <div class="rules-copy-lead">勝てば、場のカードを奪う。</div>
         <div class="rule-diagram-visual">
-          <img src="./assets/play/rule-diagram.png" alt="ROCK / SCISSORS / PAPER / LUCK の勝敗図">
+          <img src="./assets/play/rule-diagram.png" alt="ROCK、SCISSORS、PAPERの三すくみと、中央のLUCKが通常の三手に勝つ関係を示したSENOの勝敗図">
         </div>
         <p class="rules-copy">勝敗の基本は、<span class="rules-term">ROCK / SCISSORS / PAPER</span> の三すくみ。</p>
-        <p class="rules-copy">各プレイヤーは手札から1枚を選び、同時に公開します。</p>
-        <p class="rules-copy">勝ったプレイヤーは、そのターンに場へ出されたカードをすべて獲得します。</p>
-        <p class="rules-copy">獲得したカードの点数は、ゲーム終了時に集計されます。</p>
+        <p class="rules-copy"><span class="rules-term">LUCK</span>は、三すくみのすべてに勝つ特殊カードです。</p>
         <div class="rules-small-copy">WIN THE MATCHUP. TAKE THE CARDS.</div>
       </section>
 
       <section class="rules-panel">
-        <div class="rules-panel-title">Luck Card</div>
-        <div class="rules-copy-lead">勝てる一枚。稼げない一枚。</div>
-        <p class="rules-copy"><span class="rules-term">LUCK</span>は、<span class="rules-term">ROCK / SCISSORS / PAPER</span> のすべてに勝つ特殊カード。</p>
-        <p class="rules-copy">ただし、カード自体の得点は <span class="rules-term">0点</span> です。</p>
-        <p class="rules-copy">出せば勝てる場面がある。しかし、0点の<span class="rules-term">LUCK</span>をいつ使うかで、高得点カードを奪えるかどうかが変わります。</p>
-        <div class="rules-emphasis">何に勝つかではない。<br>何点を奪うために使うか。</div>
+        <div class="rules-panel-title">Luck Card — In Over</div>
+        <div class="rules-copy-lead">勝てる一枚。得点は0。</div>
+        <p class="rules-copy"><span class="rules-term">OVER</span>では、<span class="rules-term">LUCK</span>は三すくみのすべてに勝つ特殊カード。</p>
+        <p class="rules-copy">ただし、<span class="rules-term">LUCK</span>自体の得点は<span class="rules-term">0点</span>です。</p>
+        <p class="rules-copy">高得点のカードが場に出る瞬間を読むか。<span class="rules-term">POT</span>が膨らんだ勝負に切るか。</p>
+        <p class="rules-copy"><span class="rules-term">LUCK</span>は、奪う価値を見極めて使う一枚です。</p>
         <div class="luck-block">
-          <div class="luck-row"><span class="badge win">WIN</span><span>LUCKは三すくみのすべてに勝つ。ただし、得点は0点。</span></div>
+          <div class="luck-row"><span class="badge win">WIN</span><span>LUCKは三すくみのすべてに勝つ。ただし、OVERでの得点は0点。</span></div>
           <div class="luck-row"><span class="badge tie">TIE</span><span>LUCK同士はあいこ。場のカードはPOTへ持ち越されます。</span></div>
         </div>
       </section>
@@ -1174,12 +1183,17 @@ header a { text-decoration:none; }
 
     <section class="rules-panel rules-block">
       <div class="rules-panel-title">How to Play — Over</div>
-      <div class="rules-copy-lead">10ラウンド。最も多く奪った者が勝つ。</div>
-      <div class="step-row"><div class="step-num">1</div><div class="step-body"><div class="step-title">PREPARE — 準備</div><div class="step-text">各プレイヤーは、同じ構成の10枚を手札として持ちます。10枚は、5点・3点・1点のカード各3枚と、<span class="rules-term">LUCK</span> 1枚で構成されます。</div></div></div>
-      <div class="step-row"><div class="step-num">2</div><div class="step-body"><div class="step-title">SELECT — カードを選ぶ</div><div class="step-text">手札から1枚を選びます。掛け声は、<span class="rules-term">SENO!</span> 全員同時にカードを公開します。</div></div></div>
-      <div class="step-row"><div class="step-num">3</div><div class="step-body"><div class="step-title">MATCHUP — 勝敗を決める</div><div class="step-text"><span class="rules-term">ROCK / SCISSORS / PAPER</span> の三すくみと、<span class="rules-term">LUCK</span>の効果で勝敗を決めます。勝者は、そのターンに場へ出されたカードをすべて獲得します。</div><div class="step-note"><strong>3–4 PLAYERS</strong><br>同じ手が複数出た場合、または ROCK / SCISSORS / PAPER の3種類すべてが場に出た場合、そのターンはあいことなります。</div></div></div>
-      <div class="step-row"><div class="step-num">4</div><div class="step-body"><div class="step-title">OVER — あいこはPOTへ</div><div class="step-text">あいこになった場合、そのターンのカードは <span class="rules-term">POT</span> として場に残ります。次に勝ったプレイヤーが、<span class="rules-term">POT</span>を含む場のカードをすべて獲得します。</div><div class="rules-emphasis">あいこが続くほど、<br>次の一手で奪える点数は大きくなる。</div></div></div>
-      <div class="step-row"><div class="step-num">5</div><div class="step-body"><div class="step-title">SCORE — 得点計算</div><div class="step-text">10枚すべてを出し終えたら、ゲーム終了。獲得したカードの合計点が最も高いプレイヤーが勝者です。</div><div class="rules-small-copy">READ. RISK. PLUNDER.</div></div></div>
+      <div class="rules-copy-lead">あいこ蓄積 / ジャックポット</div>
+      <p class="rules-copy">あいこで積み上がったカードを、次の勝者がすべて奪う。</p>
+      <div class="mode-rule-text">
+        <p>各プレイヤーは手札10枚を裏向きで持つ。</p>
+        <p>全員、伏せたまま1枚を選び、場の中央に裏向きで出す。</p>
+        <p>「せーの！」の合図で全員同時に公開。</p>
+        <p>単独勝者がいる場合、そのプレイヤーが場の全カードと、<span class="rules-term">POT</span>（共有プール）に蓄積されたカードをすべて獲得する。</p>
+        <p>あいこの場合、出されたカードは<span class="rules-term">POT</span>に蓄積され、次のラウンドに持ち越される。</p>
+        <p>これを、手札がなくなるまで繰り返す。</p>
+      </div>
+      <div class="rules-emphasis">あいこが続くほど、<br>次に奪えるカードは増えていく。</div>
     </section>
 
     <section class="rules-panel rules-block">
@@ -1187,117 +1201,146 @@ header a { text-decoration:none; }
       <div class="rules-copy-lead">同じ40枚が、異なる読み合いを生む。</div>
       <div class="other-modes-intro">
         <p class="rules-copy">OVERのほかにも、SENOには異なる緊張を生むプレイモードがあります。</p>
-        <p class="rules-copy">運に委ねるか。声で揺さぶるか。記憶で奪うか。</p>
-        <p class="rules-copy">選ぶモードで、同じカードの意味が変わります。</p>
+        <p class="rules-copy">消える得点。選べない一枚。見えている二択。声によるブラフ。記憶の中の勝負。</p>
+        <p class="rules-copy">同じカードが、モードごとに別の表情を見せます。</p>
       </div>
       <div class="other-mode-stack">
         <details class="other-mode-card">
-          <summary>
+          <summary aria-label="VANISHのルールを見る">
             <div class="other-mode-main">
-              <div><span class="other-mode-name">VANISH</span><span class="other-mode-cat">あいこ消滅 / 消滅モード</span></div>
-              <span class="other-mode-toggle">VIEW RULES</span>
+              <div><span class="other-mode-name">VANISH</span><span class="other-mode-cat">あいこ消滅 / 冷徹モード</span></div>
+              <span class="other-mode-toggle">ルールを見る</span>
             </div>
             <div class="other-mode-copy">あいこになったカードは、得点になることなく消える。</div>
-            <div class="other-mode-sub">奪えなければ、価値そのものが失われる。</div>
           </summary>
           <div class="other-mode-detail">
             <div class="rules-small-copy">HOW TO PLAY</div>
-            <div class="mode-rule-row"><b>進行</b><span>進行はOVERと同じ。1枚を伏せて出し、「せーの！」で同時公開。</span></div>
-            <div class="mode-rule-row"><b>勝者</b><span>単独勝者がいる場合、その回に場に出たカードのみ獲得（POTは存在しない）。</span></div>
-            <div class="mode-rule-row"><b>あいこ</b><span>出されたカードはすべて場から除外（捨て札）。強いカードをいつ切るか、意思決定が最も重くなるモード。</span></div>
-            <div class="mode-rule-note"><strong>RULE NOTE</strong><br>POTは存在しません。あいこになったカードは場から除外されます。</div>
+            <div class="mode-rule-text">
+              <p>進行はOVERと同じ。</p>
+              <p>1枚を伏せて出し、「せーの！」で同時公開する。</p>
+              <p>単独勝者がいる場合、その回に場に出たカードのみを獲得する。VANISHではPOTは存在しない。</p>
+              <p>あいこの場合、出されたカードはすべて場から除外される。</p>
+            </div>
+            <div class="mode-rule-note">強いカードをいつ切るか。<br>意思決定が最も重くなるモード。</div>
           </div>
         </details>
 
         <details class="other-mode-card">
-          <summary>
+          <summary aria-label="DARKのルールを見る">
             <div class="other-mode-main">
               <div><span class="other-mode-name">DARK</span><span class="other-mode-cat">運命モード / 戦略ゼロ</span></div>
-              <span class="other-mode-toggle">VIEW RULES</span>
+              <span class="other-mode-toggle">ルールを見る</span>
             </div>
-            <div class="other-mode-copy">伏せた山札から出される一枚。選ぶことさえできない。</div>
-            <div class="other-mode-sub">読むのは相手ではなく、運命かもしれない。</div>
+            <div class="other-mode-copy">選ぶことはできない。裏向きの山札が、次の一手を決める。</div>
           </summary>
           <div class="other-mode-detail">
             <div class="rules-small-copy">HOW TO PLAY</div>
-            <div class="mode-rule-row"><b>準備</b><span>ゲーム開始時、自分の手札10枚をシャッフルし、裏向きの山にする。中身は確認できない。</span></div>
-            <div class="mode-rule-row"><b>進行</b><span>毎ラウンド、山の一番上の1枚をそのまま場に出す（選択権なし）。「せーの！」で同時公開。</span></div>
-            <div class="mode-rule-row"><b>判定</b><span>勝敗判定はOVERと同じ（あいこはPOTへ蓄積）。</span></div>
+            <div class="mode-rule-text">
+              <p>ゲーム開始時、自分の手札10枚をシャッフルし、裏向きの山にする。</p>
+              <p>山札の中身は確認できない。</p>
+              <p>毎ラウンド、山の一番上の1枚をそのまま場に出す。カードを選ぶことはできない。</p>
+              <p>「せーの！」で同時公開する。</p>
+              <p>勝敗判定はOVERと同じ。あいこの場合、カードはPOTへ蓄積される。</p>
+            </div>
           </div>
         </details>
 
         <details class="other-mode-card">
-          <summary>
+          <summary aria-label="DUALのルールを見る">
             <div class="other-mode-main">
               <div><span class="other-mode-name">DUAL</span><span class="other-mode-cat">二択モード / 完全情報の読み合い</span></div>
-              <span class="other-mode-toggle">VIEW RULES</span>
+              <span class="other-mode-toggle">ルールを見る</span>
             </div>
-            <div class="other-mode-copy">見えている選択肢から、相手が選ぶ一枚を読む。</div>
-            <div class="other-mode-sub">隠れていないからこそ、逃げ場がない。</div>
+            <div class="other-mode-copy">見えている二択から、相手が選ぶ一枚を読む。</div>
           </summary>
           <div class="other-mode-detail">
             <div class="rules-small-copy">HOW TO PLAY</div>
-            <div class="mode-rule-row"><b>準備</b><span>各プレイヤーは手札（10枚のデッキ）をシャッフルし、裏向きのまま台に設置。上から2枚を選び、表向きで自分の前に並べる（中身は全員に見える）。</span></div>
-            <div class="mode-rule-row"><b>進行</b><span>全員が他プレイヤーの2枚を確認できる状態で、「せーの！」の合図で並べた2枚のうち1枚を選んで場に出す。残った1枚はそのままキープ。勝敗判定はOVERと同じ（あいこはPOTへ蓄積）。</span></div>
-            <div class="mode-rule-row"><b>LUCK</b><span>LUCKは0点カード（どの手にも勝つが、LUCK同士はあいこ）。</span></div>
-            <div class="mode-rule-row"><b>補充</b><span>次のターンは、また手札の上から1枚を自分の前に出して2枚にする。</span></div>
-            <div class="mode-rule-row"><b>最終</b><span>第10ターン（最終ターン）は、手元に残った最後の1枚（選択肢なし）をそのまま出し合う。最終ターンであいこになった場合、POTのカードは誰も回収できず、そのままゲーム終了。</span></div>
-            <div class="mode-rule-row"><b>勝利</b><span>手元にある獲得カードの点数合計が最も高いプレイヤーの勝利。</span></div>
+            <div class="mode-rule-text">
+              <p>各プレイヤーは手札、つまり10枚のデッキをシャッフルし、裏向きのまま台にカードを配置する。</p>
+              <p>手札の上から2枚を選び、表向きで自分の前に並べる。カードの中身は全員に見える。</p>
+              <p>全員が、他プレイヤーの2枚をすべて確認できる状態になる。</p>
+              <p>「せーの！」の合図で、自分が並べた2枚のうち1枚を選んで場に出す。</p>
+              <p>残った1枚は、その状態のままキープする。</p>
+              <p>勝敗判定はOVERと同じ。あいこの場合、カードはPOTへ蓄積される。</p>
+              <p>LUCKは0点カード。ROCK / SCISSORS / PAPER のすべてに勝つが、LUCK同士はあいことなる。</p>
+              <p>次のターンは、また手札の上から1枚を自分の前に出し、選択肢を2枚に戻す。</p>
+              <p>第10ターン、つまり最終ターンは、手元に残った最後の1枚を、選択肢なしでそのまま出し合う。</p>
+              <p>最終ターンであいこになった場合、POTのカードは誰も回収できず、そのままゲーム終了となる。</p>
+              <p>手元にある獲得カードの点数合計が最も高いプレイヤーの勝利。</p>
+            </div>
+            <div class="mode-rule-note">隠れていない。<br>それでも、読まなければ勝てない。</div>
           </div>
         </details>
 
         <details class="other-mode-card">
-          <summary>
+          <summary aria-label="SHOUTのルールを見る">
             <div class="other-mode-main">
-              <div><span class="other-mode-name">SHOUT</span><span class="other-mode-cat">言霊制 / 心理戦モード</span></div>
-              <span class="other-mode-toggle">VIEW RULES</span>
+              <div><span class="other-mode-name">SHOUT</span><span class="other-mode-cat">宣言制 / 心理戦モード</span></div>
+              <span class="other-mode-toggle">ルールを見る</span>
             </div>
             <div class="other-mode-copy">出すカードを宣言する。真実を言う必要はない。</div>
-            <div class="other-mode-sub">声が、相手の一手を揺らす。</div>
           </summary>
           <div class="other-mode-detail">
             <div class="rules-small-copy">HOW TO PLAY</div>
-            <div class="mode-rule-row"><b>準備</b><span>各プレイヤーは手札を持つ。手元で手札を見ながら、順番に「自分は何を出すか」を口頭で宣言していく。宣言内容は嘘でも構わない（例：チョキ / LUCK 等）。</span></div>
-            <div class="mode-rule-row"><b>進行</b><span>全員の宣言（1人1回）が終わったら、手札を周りに見えないように隠し、出すカードを1枚心の中で決める。「せーの！」の合図で、全員同時にカードを選んで場に出す。勝敗判定はOVERと同じ（あいこはPOTへ蓄積）。</span></div>
-            <div class="mode-rule-row"><b>雰囲気</b><span>ジャンケンがポーカーになる瞬間。</span></div>
+            <div class="mode-rule-text">
+              <p>各プレイヤーは手札を持つ。</p>
+              <p>手元で手札を見ながら、順番に「自分は何を出すか」を口頭で宣言していく。</p>
+              <p>宣言内容は嘘でも構わない。例：チョキ / LUCK など。</p>
+              <p>全員の宣言が終わったら、自分の手札を周囲に見えないように隠し、出すカードを1枚、心の中で決める。</p>
+              <p>「せーの！」の合図で、全員同時にカードを選んで場に出す。</p>
+              <p>勝敗判定はOVERと同じ。あいこの場合、カードはPOTへ蓄積される。</p>
+            </div>
+            <div class="mode-rule-note">ジャンケンがポーカーになる瞬間。</div>
           </div>
         </details>
 
         <details class="other-mode-card">
-          <summary>
+          <summary aria-label="MEMORY SPDのルールを見る">
             <div class="other-mode-main">
-              <div><span class="other-mode-name">MEMORY SPD</span><span class="other-mode-cat">神経衰弱 / ペア選択</span></div>
-              <span class="other-mode-toggle">VIEW RULES</span>
+              <div><span class="other-mode-name">MEMORY SPD</span><span class="other-mode-cat">神経衰弱 / ペア速攻</span></div>
+              <span class="other-mode-toggle">ルールを見る</span>
             </div>
-            <div class="other-mode-copy">記憶したカードから、勝てる組み合わせを奪い取る。</div>
-            <div class="other-mode-sub">見つけるだけでは、勝ちにならない。</div>
+            <div class="other-mode-copy">手の形が揃えば獲得。点数の違いさえ、勝負に変わる。</div>
           </summary>
           <div class="other-mode-detail">
             <div class="rules-small-copy">HOW TO PLAY</div>
-            <div class="mode-rule-row"><b>準備</b><span>40枚のカードをすべて裏向きのまま場に設置する。</span></div>
-            <div class="mode-rule-row"><b>進行</b><span>手番プレイヤーは場から2枚を選び、表向きにする。数字や色が異なっても、手の形が同じであればペア獲得。</span></div>
-            <div class="mode-rule-row"><b>LUCK</b><span>LUCKはLUCK同士のみペア成立（1枚<strong style="color:var(--orange)">8点</strong> / ペアで<strong style="color:var(--orange)">16点</strong>）。</span></div>
-            <div class="mode-rule-row"><b>継続</b><span>ペア成立時はそのままキープし、続けてもう一度2枚めくる。不成立時は裏向きに戻し、次のプレイヤーのターンになる。</span></div>
-            <div class="mode-rule-row"><b>勝利</b><span>場のカードがすべてなくなったら終了。手元のカードの点数合計が最も高い人の勝利。</span></div>
+            <div class="mode-rule-text">
+              <p>40枚のカードをすべて裏向きのまま場に設置する。</p>
+              <p>手番プレイヤーは、場から2枚を選び、表向きにする。</p>
+              <p>数字や色が異なっていても、手の形が同じであればペアとして獲得する。</p>
+              <p>LUCKは、LUCK同士のみペア成立となる。</p>
+              <p>MEMORY SPDでは、LUCKは1枚8点、ペアで16点として扱う。</p>
+              <p>ペア成立時は、そのカードをそのまま獲得し、続けてもう一度2枚をめくる。</p>
+              <p>ペア不成立時は、カードを裏向きに戻し、次のプレイヤーのターンとなる。</p>
+              <p>場のカードがすべてなくなったらゲーム終了。</p>
+              <p>手元のカードの点数合計が最も高いプレイヤーの勝利。</p>
+            </div>
+            <div class="mode-rule-note">形を覚えろ。<br>点数は、奪ってから計算する。</div>
           </div>
         </details>
 
         <details class="other-mode-card">
-          <summary>
+          <summary aria-label="MEMORY STDのルールを見る">
             <div class="other-mode-main">
-              <div><span class="other-mode-name">MEMORY</span><span class="other-mode-cat">神経衰弱 / 完全一致</span></div>
-              <span class="other-mode-toggle">VIEW RULES</span>
+              <div><span class="other-mode-name">MEMORY STD</span><span class="other-mode-cat">神経衰弱 / 完全一致</span></div>
+              <span class="other-mode-toggle">ルールを見る</span>
             </div>
-            <div class="other-mode-copy">同じカードを見つけ、確実に得点へ変える。</div>
-            <div class="other-mode-sub">記憶が、そのまま勝敗になる。</div>
+            <div class="other-mode-copy">数字と手の形。完全に一致したカードだけを獲得する。</div>
           </summary>
           <div class="other-mode-detail">
             <div class="rules-small-copy">HOW TO PLAY</div>
-            <div class="mode-rule-row"><b>準備</b><span>40枚のカードをすべて裏向きのまま場に設置する。</span></div>
-            <div class="mode-rule-row"><b>進行</b><span>手番プレイヤーは場から2枚を選び、表向きにする。数字（色）と手の形が完全に一致している場合のみペア獲得。</span></div>
-            <div class="mode-rule-row"><b>LUCK</b><span>LUCKはLUCK同士のみペア成立（1枚<strong style="color:var(--orange)">5点</strong> / ペアで<strong style="color:var(--orange)">10点</strong>）。</span></div>
-            <div class="mode-rule-row"><b>継続</b><span>ペア成立時はそのままキープし、続けてもう一度2枚めくる。不成立時は裏向きに戻し、次のプレイヤーのターンになる。</span></div>
-            <div class="mode-rule-row"><b>勝利</b><span>場のカードがすべてなくなったら終了。手元のカードの点数合計が最も高い人の勝利。</span></div>
+            <div class="mode-rule-text">
+              <p>40枚のカードをすべて裏向きのまま場に設置する。</p>
+              <p>手番プレイヤーは、場から2枚を選び、表向きにする。</p>
+              <p>数字、または色と、手の形が完全に一致している場合のみ、ペアとして獲得する。</p>
+              <p>LUCKは、LUCK同士のみペア成立となる。</p>
+              <p>MEMORY STDでは、LUCKは1枚5点、ペアで10点として扱う。</p>
+              <p>ペア成立時は、そのカードをそのまま獲得し、続けてもう一度2枚をめくる。</p>
+              <p>ペア不成立時は、カードを裏向きに戻し、次のプレイヤーのターンとなる。</p>
+              <p>場のカードがすべてなくなったらゲーム終了。</p>
+              <p>手元のカードの点数合計が最も高いプレイヤーの勝利。</p>
+            </div>
+            <div class="mode-rule-note">一致だけが、得点になる。</div>
           </div>
         </details>
       </div>
