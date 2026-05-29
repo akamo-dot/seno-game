@@ -757,10 +757,12 @@ header a { text-decoration:none; }
   letter-spacing:2px;
   white-space:nowrap;
 }
+.other-mode-toggle::before { content:'+ '; }
 .other-mode-card[open] .other-mode-toggle {
   color:var(--orange);
   border-color:rgba(255,92,0,.42);
 }
+.other-mode-card[open] .other-mode-toggle::before { content:'- '; }
 .other-mode-copy {
   color:var(--white);
   font-size:14px;
@@ -1185,15 +1187,11 @@ header a { text-decoration:none; }
       <div class="rules-panel-title">How to Play — Over</div>
       <div class="rules-copy-lead">あいこ蓄積 / ジャックポット</div>
       <p class="rules-copy">あいこで積み上がったカードを、次の勝者がすべて奪う。</p>
-      <div class="mode-rule-text">
-        <p>各プレイヤーは手札10枚を裏向きで持つ。</p>
-        <p>全員、伏せたまま1枚を選び、場の中央に裏向きで出す。</p>
-        <p>「せーの！」の合図で全員同時に公開。</p>
-        <p>単独勝者がいる場合、そのプレイヤーが場の全カードと、<span class="rules-term">POT</span>（共有プール）に蓄積されたカードをすべて獲得する。</p>
-        <p>あいこの場合、出されたカードは<span class="rules-term">POT</span>に蓄積され、次のラウンドに持ち越される。</p>
-        <p>これを、手札がなくなるまで繰り返す。</p>
-      </div>
-      <div class="rules-emphasis">あいこが続くほど、<br>次に奪えるカードは増えていく。</div>
+      <div class="step-row"><div class="step-num">1</div><div class="step-body"><div class="step-title">PREPARE — 準備</div><div class="step-text">各プレイヤーは手札10枚を裏向きで持ちます。</div></div></div>
+      <div class="step-row"><div class="step-num">2</div><div class="step-body"><div class="step-title">SELECT — カードを選ぶ</div><div class="step-text">全員、伏せたまま1枚を選び、場の中央に裏向きで出します。</div></div></div>
+      <div class="step-row"><div class="step-num">3</div><div class="step-body"><div class="step-title">REVEAL — 同時公開</div><div class="step-text">「SENO!」の合図で、全員同時にカードを公開します。</div></div></div>
+      <div class="step-row"><div class="step-num">4</div><div class="step-body"><div class="step-title">TAKE OR POT — 獲得 / 持ち越し</div><div class="step-text">単独勝者がいる場合、そのプレイヤーが場の全カードと、POTに蓄積されたカードをすべて獲得します。あいこの場合、出されたカードはPOT（共有プール）に蓄積され、次のラウンドに持ち越されます。</div><div class="rules-emphasis">あいこが続くほど、<br>次に奪えるカードは増えていく。</div></div></div>
+      <div class="step-row"><div class="step-num">5</div><div class="step-body"><div class="step-title">END — 終了</div><div class="step-text">これを、手札がなくなるまで繰り返します。ゲーム終了時、獲得したカードの合計点が最も高いプレイヤーの勝利です。</div></div></div>
     </section>
 
     <section class="rules-panel rules-block">
@@ -1348,66 +1346,129 @@ header a { text-decoration:none; }
   </div>
 
   <div class="en-block">
-  <section class="rules-hero">
-    <div class="rules-kicker">SENO BASIC RULES</div>
-    <div class="rules-headline">TRUST YOUR LUCK.</div>
-    <div class="rules-subline">
-      <span class="jp-text">1人10枚の手札から1枚を同時に出し、手の強さで勝負。最後に獲得カードの合計点を競います。</span>
-      <span class="en-text">Play one card at the same time, win the matchup, take the cards, and compete for the highest score.</span>
-    </div>
-    <div class="core-loop">
-      <div class="core-step"><div class="core-num">1</div><div class="core-label">PLAY<br>1 CARD</div></div>
-      <div class="core-step"><div class="core-num">2</div><div class="core-label">WIN THE<br>MATCHUP</div></div>
-      <div class="core-step"><div class="core-num">3</div><div class="core-label">TAKE THE<br>CARDS</div></div>
-      <div class="core-step"><div class="core-num">4</div><div class="core-label">HIGHEST<br>SCORE WINS</div></div>
-    </div>
-  </section>
+    <section class="rules-hero">
+      <div class="rules-over-label">OVER MODE</div>
+      <div class="rules-kicker">SENO / TRUST YOUR LUCK.</div>
+      <div class="rules-headline">READ AND PLUNDER.</div>
+      <div class="rules-subline">2–4 PLAYERS / 5–10 MIN / AGES 6+ / 40 CARDS / 10 CARDS × 4 SETS</div>
+    </section>
 
-  <div class="rules-grid-2">
-    <section class="rules-panel">
-      <div class="rules-panel-title">Matchup System</div>
-      <div class="matchup-diagram" aria-label="ROCK PAPER SCISSORS and LUCK matchup diagram">
-        <div class="match-node rock"><strong>R</strong><span>ROCK</span></div>
-        <div class="match-node scissors"><strong>S</strong><span>SCISSORS</span></div>
-        <div class="match-node paper"><strong>P</strong><span>PAPER</span></div>
-        <div class="match-node luck"><strong>L</strong><span>LUCK</span></div>
-        <div class="match-arrow a1">↘</div>
-        <div class="match-arrow a2">↙</div>
-        <div class="match-arrow a3">↗</div>
+    <section class="rules-panel rules-block">
+      <div class="rules-panel-title">OVER</div>
+      <div class="rules-copy-lead">TIE ACCUMULATION / JACKPOT MODE</div>
+      <p class="rules-copy">A tie makes the next move worth more.</p>
+      <p class="rules-copy">OVER is the recommended mode for your first game of SENO.</p>
+      <p class="rules-copy">Every player plays one card at the same time. A sole winner takes every card in play.</p>
+      <p class="rules-copy">When the round ends in a tie, the played cards remain in the <span class="rules-term">POT</span>. The next player to win takes everything that has built up.</p>
+      <div class="rules-emphasis">Play the 5.<br>Hold the <span class="rules-term">LUCK</span>.<br>Or take the growing <span class="rules-term">POT</span>.</div>
+    </section>
+
+    <section class="rules-panel rules-block">
+      <div class="rules-panel-title">Components</div>
+      <div class="rules-copy-lead">40 CARDS / 10 CARDS × 4 SETS</div>
+      <p class="rules-copy">Each player fights with the same 10-card set.</p>
+      <div class="deck-visual">
+        <img src="./assets/play/rules-deck-visual.png" alt="SENO deck visual: 10 cards per player">
+      </div>
+      <div class="rules-mini-list">
+        <div class="rules-mini-item">5 POINTS × 3 / 3 POINTS × 3 / 1 POINT × 3 / <span class="rules-term">LUCK</span> × 1</div>
+        <div class="rules-mini-item">Win a round and take the cards played that turn. At the end of the game, the player with the highest total score wins.</div>
+      </div>
+      <div class="rules-emphasis">The more points you play,<br>the more you risk losing.</div>
+    </section>
+
+    <div class="rules-grid-2">
+      <section class="rules-panel">
+        <div class="rules-panel-title">Matchup</div>
+        <div class="rules-copy-lead">Win the matchup. Take the cards.</div>
+        <div class="rule-diagram-visual">
+          <img src="./assets/play/rule-diagram.png" alt="SENO matchup diagram showing ROCK, SCISSORS and PAPER in a three-way relationship, with LUCK defeating all three standard signs.">
+        </div>
+        <p class="rules-copy">The core matchup follows the familiar triangle:</p>
+        <p class="rules-copy"><span class="rules-term">ROCK / SCISSORS / PAPER</span></p>
+        <p class="rules-copy"><span class="rules-term">LUCK</span> is the special card that defeats all three standard signs.</p>
+        <div class="rules-small-copy">WIN THE MATCHUP. TAKE THE CARDS.</div>
+      </section>
+
+      <section class="rules-panel">
+        <div class="rules-panel-title">Luck Card — In Over</div>
+        <div class="rules-copy-lead">It wins. It scores zero.</div>
+        <p class="rules-copy">In <span class="rules-term">OVER</span>, <span class="rules-term">LUCK</span> defeats <span class="rules-term">ROCK</span>, <span class="rules-term">SCISSORS</span> and <span class="rules-term">PAPER</span>.</p>
+        <p class="rules-copy">But <span class="rules-term">LUCK</span> itself is worth 0 points.</p>
+        <p class="rules-copy">Do you spend it when high-value cards are exposed? Or hold it until the <span class="rules-term">POT</span> grows?</p>
+        <p class="rules-copy"><span class="rules-term">LUCK</span> is not about winning any round. It is about choosing which round is worth taking.</p>
+        <div class="rules-emphasis">Not what it beats.<br>What it lets you take.</div>
+        <div class="luck-block">
+          <div class="luck-row"><span class="badge win">WIN</span><span>LUCK defeats ROCK, SCISSORS and PAPER. In OVER, it is worth 0 points.</span></div>
+          <div class="luck-row"><span class="badge tie">TIE</span><span>LUCK versus LUCK is a tie. All played cards carry over into the POT.</span></div>
+        </div>
+      </section>
+    </div>
+
+    <section class="rules-panel rules-block">
+      <div class="rules-panel-title">How to Play — Over</div>
+      <div class="rules-copy-lead">TIE ACCUMULATION / JACKPOT MODE</div>
+      <p class="rules-copy">When cards build up in a tie, the next winner takes them all.</p>
+      <div class="step-row"><div class="step-num">1</div><div class="step-body"><div class="step-title">PREPARE</div><div class="step-text">Each player takes a 10-card hand and keeps it face down.</div></div></div>
+      <div class="step-row"><div class="step-num">2</div><div class="step-body"><div class="step-title">SELECT</div><div class="step-text">Without revealing it, each player chooses one card and places it face down in the center.</div></div></div>
+      <div class="step-row"><div class="step-num">3</div><div class="step-body"><div class="step-title">REVEAL</div><div class="step-text">On the call of <span class="rules-term">SENO!</span>, all players reveal their cards at the same time.</div></div></div>
+      <div class="step-row"><div class="step-num">4</div><div class="step-body"><div class="step-title">TAKE OR POT</div><div class="step-text">If there is a sole winner, that player takes every card played in the round, plus every card already stored in the POT. If the round ends in a tie, all played cards are added to the POT and carried over to the next round.</div><div class="rules-emphasis">The longer the tie continues,<br>the more the next win is worth.</div></div></div>
+      <div class="step-row"><div class="step-num">5</div><div class="step-body"><div class="step-title">END OF GAME</div><div class="step-text">Continue until every player has played all cards in their hand. At the end of the game, the player with the highest total value among the cards they have taken wins.</div></div></div>
+    </section>
+
+    <section class="rules-panel rules-block">
+      <div class="rules-panel-title">Other Modes</div>
+      <div class="rules-copy-lead">The same 40 cards.<br>Different kinds of tension.</div>
+      <div class="other-modes-intro">
+        <p class="rules-copy">SENO does not end with OVER.</p>
+        <p class="rules-copy">Points that vanish. A move you cannot choose. Two visible options. A spoken bluff. A battle of memory.</p>
+        <p class="rules-copy">The cards stay the same. The game does not.</p>
+      </div>
+      <div class="other-mode-stack">
+        <details class="other-mode-card">
+          <summary aria-label="View VANISH rules">
+            <div class="other-mode-main"><div><span class="other-mode-name">VANISH</span><span class="other-mode-cat">TIE ELIMINATION / COLD MODE</span></div><span class="other-mode-toggle">VIEW RULES</span></div>
+            <div class="other-mode-copy">Cards played into a tie disappear without ever becoming points.</div>
+          </summary>
+          <div class="other-mode-detail"><div class="rules-small-copy">HOW TO PLAY</div><div class="mode-rule-text"><p>Play proceeds in the same way as OVER.</p><p>Each player selects one card face down. On the call of “SENO!”, all cards are revealed at the same time.</p><p>If there is a sole winner, that player takes only the cards played in that round. There is no POT in VANISH.</p><p>If the round ends in a tie, all cards played that round are removed from the game.</p></div><div class="mode-rule-note">Every high-value card<br>demands a harder decision.</div></div>
+        </details>
+        <details class="other-mode-card">
+          <summary aria-label="View DARK rules">
+            <div class="other-mode-main"><div><span class="other-mode-name">DARK</span><span class="other-mode-cat">FATE MODE / ZERO STRATEGY</span></div><span class="other-mode-toggle">VIEW RULES</span></div>
+            <div class="other-mode-copy">You do not choose your move. Your face-down deck chooses for you.</div>
+          </summary>
+          <div class="other-mode-detail"><div class="rules-small-copy">HOW TO PLAY</div><div class="mode-rule-text"><p>At the beginning of the game, each player shuffles their 10-card hand and places it face down as a deck.</p><p>No player may look at the contents of their deck.</p><p>Each round, every player places the top card of their deck directly into play. There is no choice of card.</p><p>On the call of “SENO!”, all cards are revealed at the same time.</p><p>Matchup resolution is the same as in OVER. If the round ends in a tie, the played cards are added to the POT.</p></div></div>
+        </details>
+        <details class="other-mode-card">
+          <summary aria-label="View DUAL rules">
+            <div class="other-mode-main"><div><span class="other-mode-name">DUAL</span><span class="other-mode-cat">TWO-CHOICE MODE / OPEN INFORMATION</span></div><span class="other-mode-toggle">VIEW RULES</span></div>
+            <div class="other-mode-copy">Both options are visible. Read which one your opponent will play.</div>
+          </summary>
+          <div class="other-mode-detail"><div class="rules-small-copy">HOW TO PLAY</div><div class="mode-rule-text"><p>Each player shuffles their 10-card deck and keeps it face down.</p><p>Each player draws the top two cards and places them face up in front of themselves. Every player can see every available option.</p><p>On the call of “SENO!”, each player chooses one of their two face-up cards and plays it into the center.</p><p>The unused card remains face up in front of that player.</p><p>Matchup resolution is the same as in OVER. If the round ends in a tie, the played cards are added to the POT.</p><p>In DUAL, LUCK is worth 0 points. It defeats ROCK, SCISSORS and PAPER, but LUCK versus LUCK is a tie.</p><p>At the beginning of the next round, each player draws one new card and places it face up beside their remaining card, returning to two available choices.</p><p>In the tenth and final round, each player plays their single remaining card with no choice left to make.</p><p>If the final round ends in a tie, no player may claim the cards in the POT. The game ends immediately.</p><p>The player with the highest total value among the cards they have taken wins.</p></div><div class="mode-rule-note">Visible does not mean predictable.</div></div>
+        </details>
+        <details class="other-mode-card">
+          <summary aria-label="View SHOUT rules">
+            <div class="other-mode-main"><div><span class="other-mode-name">SHOUT</span><span class="other-mode-cat">DECLARATION / BLUFF MODE</span></div><span class="other-mode-toggle">VIEW RULES</span></div>
+            <div class="other-mode-copy">Declare the card you will play. You do not have to tell the truth.</div>
+          </summary>
+          <div class="other-mode-detail"><div class="rules-small-copy">HOW TO PLAY</div><div class="mode-rule-text"><p>Each player holds their cards in hand.</p><p>While looking at their own hand, players take turns declaring aloud what they intend to play.</p><p>A declaration may be true or false. For example: SCISSORS or LUCK.</p><p>After every player has made a declaration, each player hides their hand from the others and privately chooses one card to play.</p><p>On the call of “SENO!”, all players place their chosen card into play at the same time.</p><p>Matchup resolution is the same as in OVER. If the round ends in a tie, the played cards are added to the POT.</p></div><div class="mode-rule-note">The moment rock-paper-scissors becomes poker.</div></div>
+        </details>
+        <details class="other-mode-card">
+          <summary aria-label="View MEMORY SPD rules">
+            <div class="other-mode-main"><div><span class="other-mode-name">MEMORY SPD</span><span class="other-mode-cat">MEMORY / SIGN MATCH</span></div><span class="other-mode-toggle">VIEW RULES</span></div>
+            <div class="other-mode-copy">Match the hand sign, take the cards. Even different values can pair.</div>
+          </summary>
+          <div class="other-mode-detail"><div class="rules-small-copy">HOW TO PLAY</div><div class="mode-rule-text"><p>Place all 40 cards face down in the play area.</p><p>On their turn, a player selects two cards and turns them face up.</p><p>Even if their point values or colors are different, the cards form a pair if they show the same hand sign.</p><p>LUCK forms a pair only with another LUCK.</p><p>In MEMORY SPD, each LUCK card is worth 8 points. A LUCK pair is worth 16 points.</p><p>When a player finds a pair, they take those cards and immediately turn over two more cards.</p><p>If the two cards do not form a pair, they are turned face down again and play passes to the next player.</p><p>The game ends when no cards remain in the play area.</p><p>The player with the highest total value among the cards they have taken wins.</p></div><div class="mode-rule-note">Remember the shape.<br>Count the points after you take them.</div></div>
+        </details>
+        <details class="other-mode-card">
+          <summary aria-label="View MEMORY STD rules">
+            <div class="other-mode-main"><div><span class="other-mode-name">MEMORY STD</span><span class="other-mode-cat">MEMORY / EXACT MATCH</span></div><span class="other-mode-toggle">VIEW RULES</span></div>
+            <div class="other-mode-copy">Only cards with the same value and the same hand sign form a pair.</div>
+          </summary>
+          <div class="other-mode-detail"><div class="rules-small-copy">HOW TO PLAY</div><div class="mode-rule-text"><p>Place all 40 cards face down in the play area.</p><p>On their turn, a player selects two cards and turns them face up.</p><p>The cards form a pair only if their point value or color and their hand sign match exactly.</p><p>LUCK forms a pair only with another LUCK.</p><p>In MEMORY STD, each LUCK card is worth 5 points. A LUCK pair is worth 10 points.</p><p>When a player finds a pair, they take those cards and immediately turn over two more cards.</p><p>If the two cards do not form a pair, they are turned face down again and play passes to the next player.</p><p>The game ends when no cards remain in the play area.</p><p>The player with the highest total value among the cards they have taken wins.</p></div><div class="mode-rule-note">Exact memory.<br>Exact reward.</div></div>
+        </details>
       </div>
     </section>
-
-    <section class="rules-panel">
-      <div class="rules-panel-title">Basic Rules</div>
-      <div class="step-row"><div class="step-num">1</div><div class="step-body"><div class="step-title"><span class="jp-text">1人10枚</span><span class="en-text">10 cards each</span></div><div class="step-text"><span class="jp-text">各プレイヤーは10枚のカードを持ってスタート。</span><span class="en-text">Each player starts with 10 cards.</span></div></div></div>
-      <div class="step-row"><div class="step-num">2</div><div class="step-body"><div class="step-title"><span class="jp-text">同時に1枚出す</span><span class="en-text">Play 1 card</span></div><div class="step-text"><span class="jp-text">手札から1枚を選び、「SENO!」で同時に出す。</span><span class="en-text">Choose 1 card and reveal it together on "SENO!".</span></div></div></div>
-      <div class="step-row"><div class="step-num">3</div><div class="step-body"><div class="step-title"><span class="jp-text">手の強さで勝負</span><span class="en-text">Win the matchup</span></div><div class="step-text"><span class="jp-text">ROCK / PAPER / SCISSORS の三すくみと LUCK で判定。</span><span class="en-text">Use ROCK / PAPER / SCISSORS and LUCK to decide the result.</span></div></div></div>
-      <div class="step-row"><div class="step-num">4</div><div class="step-body"><div class="step-title"><span class="jp-text">勝者が場のカードを獲得</span><span class="en-text">Take the cards</span></div><div class="step-text"><span class="jp-text">勝ったプレイヤーが、そのターンで出されたカードを獲得。</span><span class="en-text">The winner takes the cards played that turn.</span></div></div></div>
-      <div class="step-row"><div class="step-num">5</div><div class="step-body"><div class="step-title"><span class="jp-text">合計点で勝敗</span><span class="en-text">Highest score wins</span></div><div class="step-text"><span class="jp-text">10ラウンド後、獲得カードの合計点が高い人の勝ち。</span><span class="en-text">After 10 rounds, the highest captured-card score wins.</span></div></div></div>
-    </section>
-  </div>
-
-  <section class="rules-panel rules-block">
-    <div class="rules-panel-title">Special Luck</div>
-    <div class="luck-cards">
-      <div class="luck-card"><b>LUCK BEATS ALL.</b><span><span class="jp-text">LUCKは三すくみのすべてに勝つ。得点は0点。</span><span class="en-text">LUCK beats every hand. 0 points.</span></span></div>
-      <div class="luck-card"><b>LUCK vs LUCK = DRAW</b><span><span class="jp-text">LUCK vs LUCK は DRAW。場のカードはPOTへ蓄積。</span><span class="en-text">LUCK vs LUCK is a draw. Cards stack in the POT.</span></span></div>
-    </div>
-    <div class="step-note"><span class="jp-text">3〜4人プレイでは、同じ手が重なった場合、または ROCK / PAPER / SCISSORS の3種類すべてが出た場合は DRAW。</span><span class="en-text">In a 3–4 player game, a round is a draw if matching hands appear or if ROCK, PAPER, and SCISSORS are all played.</span></div>
-  </section>
-
-  <section class="rules-panel rules-block">
-    <div class="rules-panel-title">Deck / Contents</div>
-    <div class="rules-facts">
-      <div class="rules-fact"><small>DECK</small><strong>1 DECK / 10 CARDS</strong></div>
-      <div class="rules-fact"><small>CONTENTS</small><strong>40 CARDS / 1 RULE SHEET</strong></div>
-      <div class="rules-fact"><small>INFO</small><strong>PLAYERS: 2-4<br>TIME: 1-10 MINUTES<br>AGE: 6+</strong></div>
-    </div>
-    <div class="deck-visual">
-      <img src="./assets/play/rules-deck-visual.png" alt="SENO deck visual: 10 cards per player">
-    </div>
-    <p style="font-size:11px;color:var(--dim);margin-top:8px;line-height:1.5;"><span class="jp-text">プレイ人数や遊び方に応じて使用するカードを選びます。</span><span class="en-text">Choose the cards to use depending on the number of players and play mode.</span></p>
-  </section>
   </div>
 
 </div>
