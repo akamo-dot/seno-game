@@ -275,6 +275,41 @@ header a { text-decoration:none; }
 @keyframes fall { to{ transform:translateY(110vh) rotate(720deg); opacity:0; } }
 .fireworks-wrap { position:fixed; inset:0; pointer-events:none; z-index:198; overflow:hidden; }
 .fireworks-wrap.hidden { display:none; }
+.fw-canvas { position:absolute; inset:0; width:100%; height:100%; opacity:.92; }
+.fw-flash {
+  position:absolute;
+  inset:0;
+  background:
+    radial-gradient(circle at 50% 38%,rgba(255,185,36,.32),transparent 34%),
+    radial-gradient(circle at 22% 48%,rgba(255,92,0,.20),transparent 28%),
+    radial-gradient(circle at 78% 50%,rgba(255,0,128,.16),transparent 30%);
+  animation:vegasFlash 2.65s ease-out forwards;
+}
+.fw-marquee {
+  position:absolute;
+  left:50%;
+  bottom:12%;
+  transform:translateX(-50%);
+  color:rgba(255,238,196,.78);
+  font-family:'Rajdhani',sans-serif;
+  font-weight:700;
+  font-size:clamp(34px,8vw,96px);
+  letter-spacing:8px;
+  text-shadow:0 0 14px rgba(255,92,0,.92),0 0 38px rgba(255,0,128,.35);
+  opacity:0;
+  animation:vegasMarquee 2.45s ease-out forwards;
+  white-space:nowrap;
+}
+@keyframes vegasFlash {
+  0% { opacity:0; }
+  9% { opacity:1; }
+  100% { opacity:0; }
+}
+@keyframes vegasMarquee {
+  0%,12% { opacity:0; transform:translateX(-50%) translateY(18px) scale(.94); }
+  24%,70% { opacity:.86; transform:translateX(-50%) translateY(0) scale(1); }
+  100% { opacity:0; transform:translateX(-50%) translateY(-10px) scale(1.02); }
+}
 .fw-burst {
   position:absolute; left:50%; top:50%; width:4px; height:4px;
   border-radius:50%; background:var(--orange);
@@ -375,6 +410,198 @@ header a { text-decoration:none; }
 .vr-label { font-family:'Rajdhani',sans-serif; font-weight:700; font-size:10px; letter-spacing:2px; color:var(--orange); white-space:nowrap; min-width:50px; padding-top:1px; }
 .vr-text { color:var(--mid); flex:1; }
 .vr-text strong { color:var(--white); }
+
+.rules-hero {
+  border:1px solid var(--border);
+  background:linear-gradient(180deg,#0d0d0d,#070707);
+  border-radius:8px;
+  padding:16px 14px;
+  margin-bottom:18px;
+}
+.rules-kicker {
+  font-family:'Rajdhani',sans-serif;
+  font-weight:700;
+  font-size:10px;
+  letter-spacing:4px;
+  color:var(--orange);
+  text-transform:uppercase;
+  margin-bottom:8px;
+}
+.rules-headline {
+  font-family:'Rajdhani',sans-serif;
+  font-weight:700;
+  font-size:34px;
+  line-height:.95;
+  letter-spacing:2px;
+  color:var(--white);
+}
+.rules-subline {
+  color:var(--mid);
+  font-size:12px;
+  line-height:1.6;
+  margin-top:8px;
+}
+.rules-grid-2 {
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:12px;
+  margin-bottom:18px;
+}
+.rules-panel {
+  border:1px solid var(--border);
+  background:var(--dark2);
+  border-radius:8px;
+  padding:14px;
+}
+.rules-panel-title {
+  font-family:'Rajdhani',sans-serif;
+  font-weight:700;
+  font-size:11px;
+  letter-spacing:4px;
+  color:var(--orange);
+  text-transform:uppercase;
+  padding-bottom:8px;
+  border-bottom:1px solid var(--border);
+  margin-bottom:12px;
+}
+.core-loop {
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:1px;
+  border:1px solid var(--border);
+  border-radius:8px;
+  overflow:hidden;
+  margin:14px 0 0;
+}
+.core-step {
+  background:#0c0c0c;
+  padding:12px 8px;
+  text-align:center;
+  min-height:76px;
+}
+.core-num {
+  width:22px;
+  height:22px;
+  border-radius:50%;
+  margin:0 auto 7px;
+  background:var(--white);
+  color:var(--black);
+  font-family:'Rajdhani',sans-serif;
+  font-weight:700;
+  line-height:22px;
+}
+.core-label {
+  font-family:'Rajdhani',sans-serif;
+  font-weight:700;
+  color:var(--white);
+  font-size:13px;
+  letter-spacing:1px;
+  line-height:1.15;
+}
+.matchup-diagram {
+  position:relative;
+  min-height:270px;
+  border:1px solid var(--border);
+  border-radius:8px;
+  background:
+    radial-gradient(circle at 50% 52%,rgba(255,92,0,.14),transparent 38%),
+    #060606;
+  overflow:hidden;
+}
+.match-node {
+  position:absolute;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  width:92px;
+  height:72px;
+  border:1px solid #2d2d2d;
+  background:#0e0e0e;
+  border-radius:8px;
+  color:var(--white);
+  font-family:'Rajdhani',sans-serif;
+  font-weight:700;
+  letter-spacing:2px;
+}
+.match-node strong { font-size:26px; line-height:1; color:var(--orange); }
+.match-node span { font-size:11px; margin-top:5px; }
+.match-node.rock { left:50%; top:18px; transform:translateX(-50%); }
+.match-node.scissors { left:18px; bottom:28px; }
+.match-node.paper { right:18px; bottom:28px; }
+.match-node.luck {
+  left:50%;
+  top:50%;
+  transform:translate(-50%,-42%);
+  border-color:rgba(255,92,0,.64);
+  box-shadow:0 0 28px rgba(255,92,0,.18);
+}
+.match-arrow {
+  position:absolute;
+  color:var(--white);
+  opacity:.9;
+  font-family:'Rajdhani',sans-serif;
+  font-size:30px;
+  line-height:1;
+}
+.match-arrow.a1 { left:33%; top:96px; transform:rotate(-26deg); }
+.match-arrow.a2 { right:33%; top:96px; transform:rotate(26deg); }
+.match-arrow.a3 { left:50%; bottom:78px; transform:translateX(-50%) rotate(90deg); }
+.luck-cards {
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+}
+.luck-card {
+  border:1px solid var(--border);
+  border-radius:8px;
+  background:#0b0b0b;
+  padding:12px;
+}
+.luck-card b {
+  display:block;
+  color:var(--orange);
+  font-family:'Rajdhani',sans-serif;
+  font-size:18px;
+  letter-spacing:2px;
+  margin-bottom:5px;
+}
+.luck-card span { color:var(--mid); font-size:12px; line-height:1.6; }
+.rules-facts {
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:8px;
+}
+.rules-fact {
+  border:1px solid var(--border);
+  border-radius:6px;
+  background:#0c0c0c;
+  padding:11px 8px;
+}
+.rules-fact small {
+  display:block;
+  color:var(--dim);
+  font-family:'Rajdhani',sans-serif;
+  font-weight:700;
+  letter-spacing:2px;
+  font-size:9px;
+  margin-bottom:5px;
+}
+.rules-fact strong {
+  color:var(--white);
+  font-family:'Rajdhani',sans-serif;
+  font-size:18px;
+  letter-spacing:1px;
+}
+@media (max-width:620px) {
+  .rules-grid-2 { grid-template-columns:1fr; }
+  .core-loop { grid-template-columns:1fr 1fr; }
+  .rules-facts { grid-template-columns:1fr; }
+  .matchup-diagram { min-height:248px; }
+  .match-node { width:82px; }
+  .match-node.scissors { left:8px; }
+  .match-node.paper { right:8px; }
+}
 
 
 /* === SENO GLOBAL MAP / orange emission dense HUD update === */
@@ -674,119 +901,66 @@ header a { text-decoration:none; }
     <button class="lang-btn" onclick="setLang('en')">EN</button>
   </div>
 
-  <div class="rules-block">
-    <div class="rules-title">Components</div>
-    <div class="info-chips">
-      <div class="info-chip">
-        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-4 0v2M8 7V5a2 2 0 0 0-4 0v2"/></svg>
-        <span>40 CARDS</span>
-      </div>
-      <div class="info-chip">
-        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="7" r="3"/><circle cx="15" cy="7" r="3"/><path d="M3 21v-2a6 6 0 0 1 6-6h6a6 6 0 0 1 6 6v2"/></svg>
-        <span>2–4 PLAYERS</span>
-      </div>
-      <div class="info-chip">
-        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>
-        <span>5–10 MIN</span>
-      </div>
-      <div class="info-chip">
-        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
-        <span>6+ AGES</span>
-      </div>
+  <section class="rules-hero">
+    <div class="rules-kicker">SENO BASIC RULES</div>
+    <div class="rules-headline">TRUST YOUR LUCK.</div>
+    <div class="rules-subline">
+      <span class="jp-text">1人10枚の手札から1枚を同時に出し、手の強さで勝負。最後に獲得カードの合計点を競います。</span>
+      <span class="en-text">Play one card at the same time, win the matchup, take the cards, and compete for the highest score.</span>
     </div>
-    <div style="font-size:11px;letter-spacing:1px;color:var(--dim);margin-bottom:8px;"><span class="jp-text">40 CARDS / 10枚 × 4セット入り</span><span class="en-text">40 CARDS / 10 CARDS × 4 SETS INCLUDED</span></div>
+    <div class="core-loop">
+      <div class="core-step"><div class="core-num">1</div><div class="core-label">PLAY<br>1 CARD</div></div>
+      <div class="core-step"><div class="core-num">2</div><div class="core-label">WIN THE<br>MATCHUP</div></div>
+      <div class="core-step"><div class="core-num">3</div><div class="core-label">TAKE THE<br>CARDS</div></div>
+      <div class="core-step"><div class="core-num">4</div><div class="core-label">HIGHEST<br>SCORE WINS</div></div>
+    </div>
+  </section>
+
+  <div class="rules-grid-2">
+    <section class="rules-panel">
+      <div class="rules-panel-title">Matchup System</div>
+      <div class="matchup-diagram" aria-label="ROCK PAPER SCISSORS and LUCK matchup diagram">
+        <div class="match-node rock"><strong>R</strong><span>ROCK</span></div>
+        <div class="match-node scissors"><strong>S</strong><span>SCISSORS</span></div>
+        <div class="match-node paper"><strong>P</strong><span>PAPER</span></div>
+        <div class="match-node luck"><strong>L</strong><span>LUCK</span></div>
+        <div class="match-arrow a1">↘</div>
+        <div class="match-arrow a2">↙</div>
+        <div class="match-arrow a3">↗</div>
+      </div>
+    </section>
+
+    <section class="rules-panel">
+      <div class="rules-panel-title">Basic Rules</div>
+      <div class="step-row"><div class="step-num">1</div><div class="step-body"><div class="step-title"><span class="jp-text">1人10枚</span><span class="en-text">10 cards each</span></div><div class="step-text"><span class="jp-text">各プレイヤーは10枚のカードを持ってスタート。</span><span class="en-text">Each player starts with 10 cards.</span></div></div></div>
+      <div class="step-row"><div class="step-num">2</div><div class="step-body"><div class="step-title"><span class="jp-text">同時に1枚出す</span><span class="en-text">Play 1 card</span></div><div class="step-text"><span class="jp-text">手札から1枚を選び、「SENO!」で同時に出す。</span><span class="en-text">Choose 1 card and reveal it together on "SENO!".</span></div></div></div>
+      <div class="step-row"><div class="step-num">3</div><div class="step-body"><div class="step-title"><span class="jp-text">手の強さで勝負</span><span class="en-text">Win the matchup</span></div><div class="step-text"><span class="jp-text">ROCK / PAPER / SCISSORS の三すくみと LUCK で判定。</span><span class="en-text">Use ROCK / PAPER / SCISSORS and LUCK to decide the result.</span></div></div></div>
+      <div class="step-row"><div class="step-num">4</div><div class="step-body"><div class="step-title"><span class="jp-text">勝者が場のカードを獲得</span><span class="en-text">Take the cards</span></div><div class="step-text"><span class="jp-text">勝ったプレイヤーが、そのターンで出されたカードを獲得。</span><span class="en-text">The winner takes the cards played that turn.</span></div></div></div>
+      <div class="step-row"><div class="step-num">5</div><div class="step-body"><div class="step-title"><span class="jp-text">合計点で勝敗</span><span class="en-text">Highest score wins</span></div><div class="step-text"><span class="jp-text">10ラウンド後、獲得カードの合計点が高い人の勝ち。</span><span class="en-text">After 10 rounds, the highest captured-card score wins.</span></div></div></div>
+    </section>
+  </div>
+
+  <section class="rules-panel rules-block">
+    <div class="rules-panel-title">Special Luck</div>
+    <div class="luck-cards">
+      <div class="luck-card"><b>LUCK BEATS ALL.</b><span><span class="jp-text">LUCKはすべての手に勝つ。得点は0点。</span><span class="en-text">LUCK beats every hand. 0 points.</span></span></div>
+      <div class="luck-card"><b>LUCK vs LUCK = DRAW</b><span><span class="jp-text">LUCK vs LUCK は DRAW。場のカードはPOTへ蓄積。</span><span class="en-text">LUCK vs LUCK is a draw. Cards stack in the POT.</span></span></div>
+    </div>
+    <div class="step-note"><span class="jp-text">3〜4人プレイでは、同じ手が重なった場合、または ROCK / PAPER / SCISSORS の3種類すべてが出た場合は DRAW。</span><span class="en-text">In a 3–4 player game, a round is a draw if matching hands appear or if ROCK, PAPER, and SCISSORS are all played.</span></div>
+  </section>
+
+  <section class="rules-panel rules-block">
+    <div class="rules-panel-title">Deck / Contents</div>
+    <div class="rules-facts">
+      <div class="rules-fact"><small>DECK</small><strong>1 DECK / 10 CARDS</strong></div>
+      <div class="rules-fact"><small>CONTENTS</small><strong>40 CARDS / 1 RULE SHEET</strong></div>
+      <div class="rules-fact"><small>INFO</small><strong>PLAYERS: 2-4<br>TIME: 1-10 MINUTES<br>AGE: 6+</strong></div>
+    </div>
     <div class="deck-visual">
-      <img src="./assets/play/rules-deck-visual.png" alt="1人分のデッキ 10枚（5点×3・3点×3・1点×3・LUCK×1）">
+      <img src="./assets/play/rules-deck-visual.png" alt="SENO deck visual: 10 cards per player">
     </div>
     <p style="font-size:11px;color:var(--dim);margin-top:8px;line-height:1.5;"><span class="jp-text">プレイ人数や遊び方に応じて使用するカードを選びます。</span><span class="en-text">Choose the cards to use depending on the number of players and play mode.</span></p>
-  </div>
-
-  <div class="rules-block">
-    <div class="rules-title">Luck Card</div>
-    <p style="font-size:13px;color:var(--mid);line-height:1.7;margin-bottom:10px;"><span class="jp-text">LUCKはこのゲームの「毒」であり「救い」である。場に出すだけで空気が変わる唯一無二の1枚。</span><span class="en-text">LUCK is both poison and salvation. One card that changes everything the moment it hits the table.</span></p>
-    <div class="luck-block">
-      <div class="luck-row"><span class="badge win">WIN</span><span><span class="jp-text">LUCKはすべての手に勝つ。ただし、得点は0点。</span><span class="en-text">LUCK BEATS EVERYTHING. 0 POINTS.</span></span></div>
-      <div class="luck-row"><span class="badge tie">TIE</span><span><span class="jp-text">LUCK vs LUCK は「あいこ」。カードはPOTへ蓄積。</span><span class="en-text">LUCK vs LUCK is a tie. Cards go to the POT.</span></span></div>
-    </div>
-  </div>
-
-  <div class="rules-block">
-    <div class="rules-title">How to Play -Over-</div>
-    <div class="step-row"><div class="step-num">1</div><div class="step-body"><div class="step-title"><span class="jp-text">準備</span><span class="en-text">Setup</span></div><div class="step-text"><span class="jp-text">1人10枚のカードを持ってスタート。</span><span class="en-text">Start with 10 cards per player.</span></div></div></div>
-    <div class="step-row"><div class="step-num">2</div><div class="step-body"><div class="step-title"><span class="jp-text">SELECT — カードを選ぶ</span><span class="en-text">SELECT — Choose a card</span></div><div class="step-text"><span class="jp-text">手札から1枚を選び、「SENO!」で同時に出す。</span><span class="en-text">Choose 1 card from your hand and play it simultaneously on "SENO!".</span></div></div></div>
-    <div class="step-row"><div class="step-num">3</div><div class="step-body"><div class="step-title"><span class="jp-text">勝敗判定</span><span class="en-text">Result</span></div><div class="step-text"><span class="jp-text">じゃんけんで勝ったプレイヤーが、そのターンで出されたカードを獲得。</span><span class="en-text">The player who wins the janken matchup takes the cards played that turn.</span></div><div class="step-note"><span class="jp-text">3〜4人プレイでは、同じ手が重なった場合、またはグー・チョキ・パーの3種類すべてが出た場合は、あいこになります。</span><span class="en-text">In a 3–4 player game, a round is a draw if matching hands appear or if ROCK, PAPER, and SCISSORS are all played.</span></div></div></div>
-    <div class="step-row"><div class="step-num">4</div><div class="step-body"><div class="step-title"><span class="jp-text">OVER — あいこ持ち越し</span><span class="en-text">OVER — Carry-over draw</span></div><div class="step-text"><span class="jp-text">あいこの場合、場のカードは持ち越され、次に勝ったプレイヤーがすべて獲得する。</span><span class="en-text">On a draw, the cards stay in the POT. The next winner takes everything.</span></div></div></div>
-    <div class="step-row"><div class="step-num">5</div><div class="step-body"><div class="step-title"><span class="jp-text">終了 — 10ラウンド後に集計</span><span class="en-text">End — Count up after 10 rounds</span></div><div class="step-text"><span class="jp-text">10ラウンド後、獲得したカードの合計点が最も高いプレイヤーの勝利。</span><span class="en-text">After 10 rounds, the player with the highest total score from captured cards wins.</span></div></div></div>
-  </div>
-
-  <div class="rules-block">
-    <div class="rules-title">Modes</div>
-
-    <div class="variant-item">
-      <div class="variant-head"><div class="variant-name">OVER</div><div class="variant-tag">MAIN MODE</div></div>
-      <div class="variant-desc"><span class="jp-text">基本モード / あいこ持ち越し</span><span class="en-text">Standard mode / Carry-over draw</span></div>
-      <div class="vr-row"><span class="vr-label"><span class="jp-text">準備</span><span class="en-text">Setup</span></span><span class="vr-text"><span class="jp-text">各プレイヤーは手札10枚を裏向きで持つ。</span><span class="en-text">Each player holds 10 cards face-down.</span></span></div>
-      <div class="vr-row"><span class="vr-label"><span class="jp-text">進行</span><span class="en-text">PLAY</span></span><span class="vr-text"><span class="jp-text">全員、伏せたまま1枚を選び、場の中央に裏向きで出す。「せーの！」の合図で全員同時に公開。これを手札がなくなるまで繰り返す。</span><span class="en-text">All players pick 1 card and place it face-down in the center. Reveal together on "SE-NO!". Repeat until hands are empty.</span></span></div>
-      <div class="vr-row"><span class="vr-label"><span class="jp-text">勝者</span><span class="en-text">WIN</span></span><span class="vr-text"><span class="jp-text">単独勝者がいる場合、その人が場の全カード＋POTに蓄積されたカードすべてを獲得。</span><span class="en-text">A sole winner takes every card in play plus everything stacked in the POT.</span></span></div>
-      <div class="vr-row"><span class="vr-label"><span class="jp-text">あいこ</span><span class="en-text">TIE</span></span><span class="vr-text"><span class="jp-text">出されたカードはPOT（共有プール）に蓄積され、次のラウンドに持ち越される。</span><span class="en-text">Tied cards stack in the POT (shared pool) and carry over to the next round.</span></span></div>
-    </div>
-
-    <div class="variant-item">
-      <div class="variant-head"><div class="variant-name">VANISH</div><div class="variant-tag">COLD MODE</div></div>
-      <div class="variant-desc"><span class="jp-text">あいこ消滅 / 冷徹モード</span><span class="en-text">Tie vanishes / Cold mode</span></div>
-      <div class="vr-row"><span class="vr-label"><span class="jp-text">進行</span><span class="en-text">PLAY</span></span><span class="vr-text"><span class="jp-text">進行はOVERと同じ。1枚を伏せて出し、「せーの！」で同時公開。</span><span class="en-text">Same as OVER. Play 1 card face-down, reveal together on "SE-NO!".</span></span></div>
-      <div class="vr-row"><span class="vr-label"><span class="jp-text">勝者</span><span class="en-text">WIN</span></span><span class="vr-text"><span class="jp-text">単独勝者がいる場合、その回に場に出たカードのみ獲得（POTは存在しない）。</span><span class="en-text">A sole winner takes only the cards played that round. There is no POT.</span></span></div>
-      <div class="vr-row"><span class="vr-label"><span class="jp-text">あいこ</span><span class="en-text">TIE</span></span><span class="vr-text"><span class="jp-text">出されたカードはすべて場から除外（捨て札）。強いカードをいつ切るか、意思決定が最も重くなるモード。</span><span class="en-text">All tied cards are discarded from play. The mode where deciding when to play your strong cards weighs heaviest.</span></span></div>
-    </div>
-
-    <div class="variant-item">
-      <div class="variant-head"><div class="variant-name">DARK</div><div class="variant-tag">FATE MODE</div></div>
-      <div class="variant-desc"><span class="jp-text">運命モード / 戦略ゼロ</span><span class="en-text">Fate mode / Zero strategy</span></div>
-      <div class="vr-row"><span class="vr-label"><span class="jp-text">準備</span><span class="en-text">Setup</span></span><span class="vr-text"><span class="jp-text">ゲーム開始時、自分の手札10枚をシャッフルし、裏向きの山にする。中身は確認できない。</span><span class="en-text">At the start, shuffle your 10 cards into a face-down pile. You cannot check its contents.</span></span></div>
-      <div class="vr-row"><span class="vr-label"><span class="jp-text">進行</span><span class="en-text">PLAY</span></span><span class="vr-text"><span class="jp-text">毎ラウンド、山の一番上の1枚をそのまま場に出す（選択権なし）。「せーの！」で同時公開。</span><span class="en-text">Each round, play the top card of your pile as-is — no choice. Reveal together on "SE-NO!".</span></span></div>
-      <div class="vr-row"><span class="vr-label"><span class="jp-text">判定</span><span class="en-text">RESULT</span></span><span class="vr-text"><span class="jp-text">勝敗判定はOVERと同じ（あいこはPOTへ蓄積）。</span><span class="en-text">Result is judged the same as OVER (ties stack in the POT).</span></span></div>
-    </div>
-
-    <div class="variant-item">
-      <div class="variant-head"><div class="variant-name">DUAL</div><div class="variant-tag">CHOICE MODE</div></div>
-      <div class="variant-desc"><span class="jp-text">二択モード / 完全情報の読み合い</span><span class="en-text">Two-choice mode / Full information mind game</span></div>
-      <div class="vr-row"><span class="vr-label"><span class="jp-text">準備</span><span class="en-text">Setup</span></span><span class="vr-text"><span class="jp-text">各プレイヤーは手札（10枚のデッキ）をシャッフルし、裏向きのまま台に設置。上から2枚を選び、表向きで自分の前に並べる（中身は全員に見える）。</span><span class="en-text">Each player shuffles their 10-card deck and sets it face-down. Draw the top 2 and lay them face-up in front of you — visible to everyone.</span></span></div>
-      <div class="vr-row"><span class="vr-label"><span class="jp-text">進行</span><span class="en-text">PLAY</span></span><span class="vr-text"><span class="jp-text">全員が他プレイヤーの2枚を確認できる状態で、「せーの！」の合図で並べた2枚のうち1枚を選んで場に出す。残った1枚はそのままキープ。勝敗判定はOVERと同じ（あいこはPOTへ蓄積）。</span><span class="en-text">With every player's 2 cards visible, on "SE-NO!" choose 1 of your 2 to play. The other stays as-is. Result is judged like OVER (ties stack in the POT).</span></span></div>
-      <div class="vr-row"><span class="vr-label"><span class="jp-text">LUCK</span><span class="en-text">LUCK</span></span><span class="vr-text"><span class="jp-text">LUCKは0点カード（どの手にも勝つが、LUCK同士はあいこ）。</span><span class="en-text">LUCK is a 0-point card: it beats any hand, but LUCK vs LUCK is a tie.</span></span></div>
-      <div class="vr-row"><span class="vr-label"><span class="jp-text">補充</span><span class="en-text">DRAW</span></span><span class="vr-text"><span class="jp-text">次のターンは、また手札の上から1枚を自分の前に出して2枚にする。</span><span class="en-text">Each next turn, draw 1 from the top of your deck to bring your front row back to 2.</span></span></div>
-      <div class="vr-row"><span class="vr-label"><span class="jp-text">最終</span><span class="en-text">FINAL</span></span><span class="vr-text"><span class="jp-text">第10ターン（最終ターン）は、手元に残った最後の1枚（選択肢なし）をそのまま出し合う。最終ターンであいこになった場合、POTのカードは誰も回収できず、そのままゲーム終了。</span><span class="en-text">On turn 10 (the final turn), everyone plays their single remaining card — no choice. If the final turn ties, the POT goes uncollected and the game ends.</span></span></div>
-      <div class="vr-row"><span class="vr-label"><span class="jp-text">勝利</span><span class="en-text">WIN</span></span><span class="vr-text"><span class="jp-text">手元にある獲得カードの点数合計が最も高いプレイヤーの勝利。</span><span class="en-text">The player with the highest total score among their won cards wins.</span></span></div>
-    </div>
-
-    <div class="variant-item">
-      <div class="variant-head"><div class="variant-name">SHOUT</div><div class="variant-tag">BLUFF MODE</div></div>
-      <div class="variant-desc"><span class="jp-text">宣言制 / 心理戦モード</span><span class="en-text">Declaration mode / Psychological warfare</span></div>
-      <div class="vr-row"><span class="vr-label"><span class="jp-text">準備</span><span class="en-text">Setup</span></span><span class="vr-text"><span class="jp-text">各プレイヤーは手札を持つ。手元で手札を見ながら、順番に「自分は何を出すか」を口頭で宣言していく。宣言内容は嘘でも構わない（例：チョキ / LUCK 等）。</span><span class="en-text">Each player holds a hand. Looking at your own cards, take turns declaring out loud what you will play. Lying is allowed (e.g. scissors / LUCK).</span></span></div>
-      <div class="vr-row"><span class="vr-label"><span class="jp-text">進行</span><span class="en-text">PLAY</span></span><span class="vr-text"><span class="jp-text">全員の宣言（1人1回）が終わったら、手札を周りに見えないように隠し、出すカードを1枚心の中で決める。「せーの！」の合図で、全員同時にカードを選んで場に出す。勝敗判定はOVERと同じ（あいこはPOTへ蓄積）。</span><span class="en-text">After everyone has declared once, hide your hand, decide your card in your head, and on "SE-NO!" all play simultaneously. Result is judged like OVER (ties stack in the POT).</span></span></div>
-      <div class="vr-row"><span class="vr-label"><span class="jp-text">雰囲気</span><span class="en-text">VIBE</span></span><span class="vr-text"><span class="jp-text">ジャンケンがポーカーになる瞬間。</span><span class="en-text">The moment janken becomes poker.</span></span></div>
-    </div>
-
-    <div class="variant-item">
-      <div class="variant-head"><div class="variant-name">MEMORY SPD</div><div class="variant-tag">PAIR RUSH</div></div>
-      <div class="variant-desc"><span class="jp-text">神経衰弱 / ペア速攻</span><span class="en-text">Memory / Pair rush</span></div>
-      <div class="vr-row"><span class="vr-label"><span class="jp-text">準備</span><span class="en-text">Setup</span></span><span class="vr-text"><span class="jp-text">40枚のカードをすべて裏向きのまま場に設置する。</span><span class="en-text">Lay all 40 cards face-down on the table.</span></span></div>
-      <div class="vr-row"><span class="vr-label"><span class="jp-text">進行</span><span class="en-text">PLAY</span></span><span class="vr-text"><span class="jp-text">手番プレイヤーは場から2枚を選び、表向きにする。数字や色が異なっても、手の形が同じであればペア獲得。</span><span class="en-text">On your turn, flip 2 cards face-up. Even if numbers or colors differ, a matching hand shape counts as a pair.</span></span></div>
-      <div class="vr-row"><span class="vr-label"><span class="jp-text">LUCK</span><span class="en-text">LUCK</span></span><span class="vr-text"><span class="jp-text">LUCKはLUCK同士のみペア成立（1枚<strong style="color:var(--orange)">8点</strong> / ペアで<strong style="color:var(--orange)">16点</strong>）。</span><span class="en-text">LUCK only pairs with LUCK (<strong style="color:var(--orange)">8 pts</strong> each / <strong style="color:var(--orange)">16 pts</strong> per pair).</span></span></div>
-      <div class="vr-row"><span class="vr-label"><span class="jp-text">継続</span><span class="en-text">TURN</span></span><span class="vr-text"><span class="jp-text">ペア成立時はそのままキープし、続けてもう一度2枚めくる。不成立時は裏向きに戻し、次のプレイヤーのターンになる。</span><span class="en-text">On a match, keep the pair and flip again. On a miss, turn them back and pass to the next player.</span></span></div>
-      <div class="vr-row"><span class="vr-label"><span class="jp-text">勝利</span><span class="en-text">WIN</span></span><span class="vr-text"><span class="jp-text">場のカードがすべてなくなったら終了。手元のカードの点数合計が最も高い人の勝利。</span><span class="en-text">Game ends when the table is empty. Highest total score wins.</span></span></div>
-    </div>
-
-    <div class="variant-item">
-      <div class="variant-head"><div class="variant-name">MEMORY STD</div><div class="variant-tag">EXACT MATCH</div></div>
-      <div class="variant-desc"><span class="jp-text">神経衰弱 / 完全一致</span><span class="en-text">Memory / Exact match</span></div>
-      <div class="vr-row"><span class="vr-label"><span class="jp-text">準備</span><span class="en-text">Setup</span></span><span class="vr-text"><span class="jp-text">40枚のカードをすべて裏向きのまま場に設置する。</span><span class="en-text">Lay all 40 cards face-down on the table.</span></span></div>
-      <div class="vr-row"><span class="vr-label"><span class="jp-text">進行</span><span class="en-text">PLAY</span></span><span class="vr-text"><span class="jp-text">手番プレイヤーは場から2枚を選び、表向きにする。数字（色）と手の形が完全に一致している場合のみペア獲得。</span><span class="en-text">On your turn, flip 2 cards face-up. A pair counts only when both the number (color) and the hand shape match exactly.</span></span></div>
-      <div class="vr-row"><span class="vr-label"><span class="jp-text">LUCK</span><span class="en-text">LUCK</span></span><span class="vr-text"><span class="jp-text">LUCKはLUCK同士のみペア成立（1枚<strong style="color:var(--orange)">5点</strong> / ペアで<strong style="color:var(--orange)">10点</strong>）。</span><span class="en-text">LUCK only pairs with LUCK (<strong style="color:var(--orange)">5 pts</strong> each / <strong style="color:var(--orange)">10 pts</strong> per pair).</span></span></div>
-      <div class="vr-row"><span class="vr-label"><span class="jp-text">継続</span><span class="en-text">TURN</span></span><span class="vr-text"><span class="jp-text">ペア成立時はそのままキープし、続けてもう一度2枚めくる。不成立時は裏向きに戻し、次のプレイヤーのターンになる。</span><span class="en-text">On a match, keep the pair and flip again. On a miss, turn them back and pass to the next player.</span></span></div>
-      <div class="vr-row"><span class="vr-label"><span class="jp-text">勝利</span><span class="en-text">WIN</span></span><span class="vr-text"><span class="jp-text">場のカードがすべてなくなったら終了。手元のカードの点数合計が最も高い人の勝利。</span><span class="en-text">Game ends when the table is empty. Highest total score wins.</span></span></div>
-    </div>
-
-  </div>
+  </section>
 
 </div>
 
@@ -1338,29 +1512,103 @@ function launchWinFireworks(p, value) {
   if (!wrap) return;
   wrap.innerHTML = '';
   wrap.classList.remove('hidden');
-  const anchors = [
-    [50, 34], [28, 42], [72, 42], [40, 58], [60, 58]
+  const flash = document.createElement('div');
+  flash.className = 'fw-flash';
+  const marquee = document.createElement('div');
+  marquee.className = 'fw-marquee';
+  marquee.textContent = getPlayerName(p).toUpperCase() + ' / ' + value + ' WINS';
+  const canvas = document.createElement('canvas');
+  canvas.className = 'fw-canvas';
+  wrap.appendChild(canvas);
+  wrap.appendChild(flash);
+  wrap.appendChild(marquee);
+
+  const ctx = canvas.getContext('2d');
+  const dpr = Math.max(1, window.devicePixelRatio || 1);
+  const resize = () => {
+    canvas.width = Math.floor(window.innerWidth * dpr);
+    canvas.height = Math.floor(window.innerHeight * dpr);
+    canvas.style.width = window.innerWidth + 'px';
+    canvas.style.height = window.innerHeight + 'px';
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  };
+  resize();
+
+  const palette = ['#ff7a1a', '#f5b700', '#ffd166', '#ff3b1f', '#ff2d95'];
+  const bursts = [
+    [0, .50, .30, 72], [160, .22, .42, 54], [260, .78, .42, 54],
+    [470, .38, .58, 58], [620, .62, .56, 58], [900, .50, .22, 68],
+    [1160, .18, .30, 50], [1320, .82, .30, 50]
   ];
-  anchors.forEach((pos, burstIndex) => {
-    const burst = document.createElement('div');
-    burst.className = 'fw-burst';
-    burst.style.left = pos[0] + '%';
-    burst.style.top = pos[1] + '%';
-    const sparks = 14;
-    for (let i=0; i<sparks; i++) {
-      const s = document.createElement('i');
-      s.className = 'fw-spark';
-      s.style.setProperty('--r', ((360 / sparks) * i + burstIndex * 7) + 'deg');
-      s.style.setProperty('--d', (46 + (i % 4) * 10 + value) + 'px');
-      s.style.setProperty('--spark', ['#ff7a1a','#f5b700','#ff3b1f','#ffd166'][i % 4]);
-      burst.appendChild(s);
+  const particles = [];
+  let started = performance.now();
+
+  function addBurst(cxRatio, cyRatio, count) {
+    const cx = window.innerWidth * cxRatio;
+    const cy = window.innerHeight * cyRatio;
+    for (let i=0; i<count; i++) {
+      const angle = (Math.PI * 2 * i / count) + Math.random() * .18;
+      const speed = 2.2 + Math.random() * 4.8;
+      const color = palette[(i + Math.floor(Math.random() * palette.length)) % palette.length];
+      particles.push({
+        x:cx, y:cy,
+        vx:Math.cos(angle) * speed,
+        vy:Math.sin(angle) * speed - Math.random() * 1.8,
+        life:0,
+        max:56 + Math.random() * 34,
+        size:1.2 + Math.random() * 2.2,
+        color,
+        trail:[]
+      });
     }
-    wrap.appendChild(burst);
-  });
+  }
+
+  function tick(now) {
+    const elapsed = now - started;
+    bursts.forEach(b => {
+      if (!b.done && elapsed >= b[0]) {
+        b.done = true;
+        addBurst(b[1], b[2], b[3]);
+      }
+    });
+    ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
+    ctx.globalCompositeOperation = 'lighter';
+    for (let i=particles.length-1; i>=0; i--) {
+      const spark = particles[i];
+      spark.life++;
+      spark.trail.push([spark.x, spark.y]);
+      if (spark.trail.length > 8) spark.trail.shift();
+      spark.x += spark.vx;
+      spark.y += spark.vy;
+      spark.vy += .055;
+      spark.vx *= .988;
+      spark.vy *= .988;
+      const alpha = Math.max(0, 1 - spark.life / spark.max);
+      ctx.strokeStyle = spark.color;
+      ctx.globalAlpha = alpha * .55;
+      ctx.lineWidth = spark.size;
+      ctx.beginPath();
+      spark.trail.forEach((pt, index) => {
+        if (index === 0) ctx.moveTo(pt[0], pt[1]);
+        else ctx.lineTo(pt[0], pt[1]);
+      });
+      ctx.stroke();
+      ctx.globalAlpha = alpha;
+      ctx.fillStyle = spark.color;
+      ctx.beginPath();
+      ctx.arc(spark.x, spark.y, spark.size * 1.15, 0, Math.PI * 2);
+      ctx.fill();
+      if (spark.life > spark.max) particles.splice(i, 1);
+    }
+    ctx.globalAlpha = 1;
+    if (elapsed < 2700 || particles.length) requestAnimationFrame(tick);
+  }
+
+  requestAnimationFrame(tick);
   setTimeout(() => {
     wrap.classList.add('hidden');
     wrap.innerHTML = '';
-  }, 1800);
+  }, 2900);
 }
 function registerWin(p, pointsArray, label) {
   storeSnapshot(label);
