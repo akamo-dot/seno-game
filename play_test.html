@@ -275,7 +275,7 @@ header a { text-decoration:none; }
 @keyframes fall { to{ transform:translateY(110vh) rotate(720deg); opacity:0; } }
 .fireworks-wrap { position:fixed; inset:0; pointer-events:none; z-index:198; overflow:hidden; }
 .fireworks-wrap.hidden { display:none; }
-.fw-canvas { position:absolute; inset:0; width:100%; height:100%; opacity:.92; }
+.fw-canvas { position:absolute; inset:0; width:100%; height:100%; opacity:.98; }
 .fw-flash {
   position:absolute;
   inset:0;
@@ -284,7 +284,7 @@ header a { text-decoration:none; }
     radial-gradient(circle at 22% 34%,rgba(255,92,0,.30),transparent 28%),
     radial-gradient(circle at 78% 36%,rgba(255,0,128,.22),transparent 30%),
     linear-gradient(180deg,rgba(255,122,26,.13),transparent 62%);
-  animation:vegasFlash 3.2s ease-out forwards;
+  animation:vegasFlash 4.15s ease-out forwards;
 }
 .fw-marquee {
   position:absolute;
@@ -298,7 +298,7 @@ header a { text-decoration:none; }
   letter-spacing:8px;
   text-shadow:0 0 14px rgba(255,92,0,.92),0 0 38px rgba(255,0,128,.35);
   opacity:0;
-  animation:vegasMarquee 3.05s ease-out forwards;
+  animation:vegasMarquee 4.05s ease-out forwards;
   white-space:nowrap;
 }
 @keyframes vegasFlash {
@@ -319,7 +319,7 @@ header a { text-decoration:none; }
   background:linear-gradient(180deg,transparent,rgba(255,122,26,.18),rgba(255,255,255,.08));
   filter:blur(10px);
   opacity:.72;
-  animation:vegasHaze 3.1s ease-out forwards;
+  animation:vegasHaze 4.1s ease-out forwards;
 }
 @keyframes vegasHaze {
   0% { opacity:0; transform:translateY(18px); }
@@ -398,6 +398,17 @@ header a { text-decoration:none; }
 .card-chart { display:grid; grid-template-columns:repeat(4,1fr); gap:8px; margin:10px 0; }
 .deck-visual { margin:10px 0; }
 .deck-visual img { display:block; width:100%; height:auto; }
+.rule-diagram-visual { margin:12px 0 14px; }
+.rule-diagram-visual img {
+  display:block;
+  width:100%;
+  max-width:420px;
+  margin:0 auto;
+  height:auto;
+  border:1px solid var(--border);
+  border-radius:8px;
+  background:#050505;
+}
 
 .step-row { display:flex; gap:14px; align-items:flex-start; margin-bottom:14px; }
 .step-num { font-family:'Rajdhani',sans-serif; font-weight:700; font-size:26px; color:var(--orange); min-width:22px; line-height:1.1; }
@@ -693,6 +704,104 @@ header a { text-decoration:none; }
   font-size:12px;
   letter-spacing:2px;
 }
+.other-modes-intro { margin-bottom:14px; }
+.other-mode-stack { display:grid; gap:9px; margin-top:14px; }
+.other-mode-card {
+  border:1px solid var(--border);
+  border-radius:8px;
+  background:#0b0b0b;
+  overflow:hidden;
+}
+.other-mode-card[open] { border-color:rgba(255,92,0,.42); }
+.other-mode-card summary {
+  list-style:none;
+  cursor:pointer;
+  padding:13px 14px;
+}
+.other-mode-card summary::-webkit-details-marker { display:none; }
+.other-mode-main {
+  display:grid;
+  grid-template-columns:minmax(0,1fr) auto;
+  gap:12px;
+  align-items:start;
+}
+.other-mode-name {
+  display:block;
+  color:var(--orange);
+  font-family:'Rajdhani',sans-serif;
+  font-weight:700;
+  font-size:23px;
+  letter-spacing:3px;
+  line-height:1;
+  text-transform:uppercase;
+}
+.other-mode-cat {
+  display:block;
+  margin-top:5px;
+  color:var(--mid);
+  font-size:12px;
+  line-height:1.5;
+}
+.other-mode-toggle {
+  color:var(--dim);
+  border:1px solid var(--border);
+  border-radius:3px;
+  padding:4px 7px;
+  font-family:'Rajdhani',sans-serif;
+  font-weight:700;
+  font-size:10px;
+  letter-spacing:2px;
+  white-space:nowrap;
+}
+.other-mode-card[open] .other-mode-toggle {
+  color:var(--orange);
+  border-color:rgba(255,92,0,.42);
+}
+.other-mode-copy {
+  color:var(--white);
+  font-size:14px;
+  line-height:1.7;
+  margin-top:10px;
+}
+.other-mode-sub {
+  color:var(--dim);
+  font-size:12px;
+  line-height:1.7;
+  margin-top:4px;
+}
+.other-mode-detail {
+  border-top:1px solid var(--border);
+  padding:13px 14px 14px;
+}
+.mode-rule-row {
+  display:grid;
+  grid-template-columns:70px minmax(0,1fr);
+  gap:10px;
+  padding:8px 0;
+  border-bottom:1px solid #181818;
+}
+.mode-rule-row:last-child { border-bottom:none; }
+.mode-rule-row b {
+  color:var(--orange);
+  font-family:'Rajdhani',sans-serif;
+  font-size:11px;
+  letter-spacing:2px;
+  text-transform:uppercase;
+}
+.mode-rule-row span {
+  color:var(--mid);
+  font-size:13px;
+  line-height:1.75;
+}
+.mode-rule-note {
+  margin-top:10px;
+  padding:10px 11px;
+  border-left:2px solid var(--orange);
+  background:#080808;
+  color:var(--mid);
+  font-size:12px;
+  line-height:1.75;
+}
 @media (max-width:620px) {
   .rules-grid-2 { grid-template-columns:1fr; }
   .core-loop { grid-template-columns:1fr 1fr; }
@@ -701,6 +810,9 @@ header a { text-decoration:none; }
   .match-node { width:82px; }
   .match-node.scissors { left:8px; }
   .match-node.paper { right:8px; }
+  .other-mode-main { grid-template-columns:1fr; gap:9px; }
+  .other-mode-toggle { width:max-content; }
+  .mode-rule-row { grid-template-columns:1fr; gap:4px; }
 }
 
 
@@ -1036,6 +1148,9 @@ header a { text-decoration:none; }
       <section class="rules-panel">
         <div class="rules-panel-title">Matchup</div>
         <div class="rules-copy-lead">勝てば、場のカードを奪う。</div>
+        <div class="rule-diagram-visual">
+          <img src="./assets/play/rule-diagram.png" alt="ROCK / SCISSORS / PAPER / LUCK の勝敗図">
+        </div>
         <p class="rules-copy">勝敗の基本は、<span class="rules-term">ROCK / SCISSORS / PAPER</span> の三すくみ。</p>
         <p class="rules-copy">各プレイヤーは手札から1枚を選び、同時に公開します。</p>
         <p class="rules-copy">勝ったプレイヤーは、そのターンに場へ出されたカードをすべて獲得します。</p>
@@ -1069,9 +1184,122 @@ header a { text-decoration:none; }
 
     <section class="rules-panel rules-block">
       <div class="rules-panel-title">Other Modes</div>
-      <p class="rules-copy">同じ40枚が、異なる読み合いを生む。</p>
-      <div class="rules-mode-list">
-        <span>VANISH</span><span>DARK</span><span>DUAL</span><span>SHOUT</span><span>MEMORY SPD</span><span>MEMORY</span>
+      <div class="rules-copy-lead">同じ40枚が、異なる読み合いを生む。</div>
+      <div class="other-modes-intro">
+        <p class="rules-copy">OVERのほかにも、SENOには異なる緊張を生むプレイモードがあります。</p>
+        <p class="rules-copy">運に委ねるか。声で揺さぶるか。記憶で奪うか。</p>
+        <p class="rules-copy">選ぶモードで、同じカードの意味が変わります。</p>
+      </div>
+      <div class="other-mode-stack">
+        <details class="other-mode-card">
+          <summary>
+            <div class="other-mode-main">
+              <div><span class="other-mode-name">VANISH</span><span class="other-mode-cat">あいこ消滅 / 消滅モード</span></div>
+              <span class="other-mode-toggle">VIEW RULES</span>
+            </div>
+            <div class="other-mode-copy">あいこになったカードは、得点になることなく消える。</div>
+            <div class="other-mode-sub">奪えなければ、価値そのものが失われる。</div>
+          </summary>
+          <div class="other-mode-detail">
+            <div class="rules-small-copy">HOW TO PLAY</div>
+            <div class="mode-rule-row"><b>進行</b><span>進行はOVERと同じ。1枚を伏せて出し、「せーの！」で同時公開。</span></div>
+            <div class="mode-rule-row"><b>勝者</b><span>単独勝者がいる場合、その回に場に出たカードのみ獲得（POTは存在しない）。</span></div>
+            <div class="mode-rule-row"><b>あいこ</b><span>出されたカードはすべて場から除外（捨て札）。強いカードをいつ切るか、意思決定が最も重くなるモード。</span></div>
+            <div class="mode-rule-note"><strong>RULE NOTE</strong><br>POTは存在しません。あいこになったカードは場から除外されます。</div>
+          </div>
+        </details>
+
+        <details class="other-mode-card">
+          <summary>
+            <div class="other-mode-main">
+              <div><span class="other-mode-name">DARK</span><span class="other-mode-cat">運命モード / 戦略ゼロ</span></div>
+              <span class="other-mode-toggle">VIEW RULES</span>
+            </div>
+            <div class="other-mode-copy">伏せた山札から出される一枚。選ぶことさえできない。</div>
+            <div class="other-mode-sub">読むのは相手ではなく、運命かもしれない。</div>
+          </summary>
+          <div class="other-mode-detail">
+            <div class="rules-small-copy">HOW TO PLAY</div>
+            <div class="mode-rule-row"><b>準備</b><span>ゲーム開始時、自分の手札10枚をシャッフルし、裏向きの山にする。中身は確認できない。</span></div>
+            <div class="mode-rule-row"><b>進行</b><span>毎ラウンド、山の一番上の1枚をそのまま場に出す（選択権なし）。「せーの！」で同時公開。</span></div>
+            <div class="mode-rule-row"><b>判定</b><span>勝敗判定はOVERと同じ（あいこはPOTへ蓄積）。</span></div>
+          </div>
+        </details>
+
+        <details class="other-mode-card">
+          <summary>
+            <div class="other-mode-main">
+              <div><span class="other-mode-name">DUAL</span><span class="other-mode-cat">二択モード / 完全情報の読み合い</span></div>
+              <span class="other-mode-toggle">VIEW RULES</span>
+            </div>
+            <div class="other-mode-copy">見えている選択肢から、相手が選ぶ一枚を読む。</div>
+            <div class="other-mode-sub">隠れていないからこそ、逃げ場がない。</div>
+          </summary>
+          <div class="other-mode-detail">
+            <div class="rules-small-copy">HOW TO PLAY</div>
+            <div class="mode-rule-row"><b>準備</b><span>各プレイヤーは手札（10枚のデッキ）をシャッフルし、裏向きのまま台に設置。上から2枚を選び、表向きで自分の前に並べる（中身は全員に見える）。</span></div>
+            <div class="mode-rule-row"><b>進行</b><span>全員が他プレイヤーの2枚を確認できる状態で、「せーの！」の合図で並べた2枚のうち1枚を選んで場に出す。残った1枚はそのままキープ。勝敗判定はOVERと同じ（あいこはPOTへ蓄積）。</span></div>
+            <div class="mode-rule-row"><b>LUCK</b><span>LUCKは0点カード（どの手にも勝つが、LUCK同士はあいこ）。</span></div>
+            <div class="mode-rule-row"><b>補充</b><span>次のターンは、また手札の上から1枚を自分の前に出して2枚にする。</span></div>
+            <div class="mode-rule-row"><b>最終</b><span>第10ターン（最終ターン）は、手元に残った最後の1枚（選択肢なし）をそのまま出し合う。最終ターンであいこになった場合、POTのカードは誰も回収できず、そのままゲーム終了。</span></div>
+            <div class="mode-rule-row"><b>勝利</b><span>手元にある獲得カードの点数合計が最も高いプレイヤーの勝利。</span></div>
+          </div>
+        </details>
+
+        <details class="other-mode-card">
+          <summary>
+            <div class="other-mode-main">
+              <div><span class="other-mode-name">SHOUT</span><span class="other-mode-cat">言霊制 / 心理戦モード</span></div>
+              <span class="other-mode-toggle">VIEW RULES</span>
+            </div>
+            <div class="other-mode-copy">出すカードを宣言する。真実を言う必要はない。</div>
+            <div class="other-mode-sub">声が、相手の一手を揺らす。</div>
+          </summary>
+          <div class="other-mode-detail">
+            <div class="rules-small-copy">HOW TO PLAY</div>
+            <div class="mode-rule-row"><b>準備</b><span>各プレイヤーは手札を持つ。手元で手札を見ながら、順番に「自分は何を出すか」を口頭で宣言していく。宣言内容は嘘でも構わない（例：チョキ / LUCK 等）。</span></div>
+            <div class="mode-rule-row"><b>進行</b><span>全員の宣言（1人1回）が終わったら、手札を周りに見えないように隠し、出すカードを1枚心の中で決める。「せーの！」の合図で、全員同時にカードを選んで場に出す。勝敗判定はOVERと同じ（あいこはPOTへ蓄積）。</span></div>
+            <div class="mode-rule-row"><b>雰囲気</b><span>ジャンケンがポーカーになる瞬間。</span></div>
+          </div>
+        </details>
+
+        <details class="other-mode-card">
+          <summary>
+            <div class="other-mode-main">
+              <div><span class="other-mode-name">MEMORY SPD</span><span class="other-mode-cat">神経衰弱 / ペア選択</span></div>
+              <span class="other-mode-toggle">VIEW RULES</span>
+            </div>
+            <div class="other-mode-copy">記憶したカードから、勝てる組み合わせを奪い取る。</div>
+            <div class="other-mode-sub">見つけるだけでは、勝ちにならない。</div>
+          </summary>
+          <div class="other-mode-detail">
+            <div class="rules-small-copy">HOW TO PLAY</div>
+            <div class="mode-rule-row"><b>準備</b><span>40枚のカードをすべて裏向きのまま場に設置する。</span></div>
+            <div class="mode-rule-row"><b>進行</b><span>手番プレイヤーは場から2枚を選び、表向きにする。数字や色が異なっても、手の形が同じであればペア獲得。</span></div>
+            <div class="mode-rule-row"><b>LUCK</b><span>LUCKはLUCK同士のみペア成立（1枚<strong style="color:var(--orange)">8点</strong> / ペアで<strong style="color:var(--orange)">16点</strong>）。</span></div>
+            <div class="mode-rule-row"><b>継続</b><span>ペア成立時はそのままキープし、続けてもう一度2枚めくる。不成立時は裏向きに戻し、次のプレイヤーのターンになる。</span></div>
+            <div class="mode-rule-row"><b>勝利</b><span>場のカードがすべてなくなったら終了。手元のカードの点数合計が最も高い人の勝利。</span></div>
+          </div>
+        </details>
+
+        <details class="other-mode-card">
+          <summary>
+            <div class="other-mode-main">
+              <div><span class="other-mode-name">MEMORY</span><span class="other-mode-cat">神経衰弱 / 完全一致</span></div>
+              <span class="other-mode-toggle">VIEW RULES</span>
+            </div>
+            <div class="other-mode-copy">同じカードを見つけ、確実に得点へ変える。</div>
+            <div class="other-mode-sub">記憶が、そのまま勝敗になる。</div>
+          </summary>
+          <div class="other-mode-detail">
+            <div class="rules-small-copy">HOW TO PLAY</div>
+            <div class="mode-rule-row"><b>準備</b><span>40枚のカードをすべて裏向きのまま場に設置する。</span></div>
+            <div class="mode-rule-row"><b>進行</b><span>手番プレイヤーは場から2枚を選び、表向きにする。数字（色）と手の形が完全に一致している場合のみペア獲得。</span></div>
+            <div class="mode-rule-row"><b>LUCK</b><span>LUCKはLUCK同士のみペア成立（1枚<strong style="color:var(--orange)">5点</strong> / ペアで<strong style="color:var(--orange)">10点</strong>）。</span></div>
+            <div class="mode-rule-row"><b>継続</b><span>ペア成立時はそのままキープし、続けてもう一度2枚めくる。不成立時は裏向きに戻し、次のプレイヤーのターンになる。</span></div>
+            <div class="mode-rule-row"><b>勝利</b><span>場のカードがすべてなくなったら終了。手元のカードの点数合計が最も高い人の勝利。</span></div>
+          </div>
+        </details>
       </div>
     </section>
   </div>
@@ -1714,14 +1942,19 @@ function launchWinFireworks(p, value) {
   };
   resize();
 
-  const palette = ['#ff7a1a', '#f5b700', '#ffd166', '#ff3b1f', '#ff2d95', '#fff0c2', '#6ec6ff'];
+  const palette = ['#ff7a1a', '#f5b700', '#ffd166', '#ff3b1f', '#ff2d95', '#fff0c2', '#6ec6ff', '#ffffff', '#ffb347'];
   const bursts = [
-    [0, .50, .24, 180, 1.18], [70, .18, .35, 138, 1.02], [110, .82, .34, 138, 1.02],
-    [250, .36, .28, 150, 1.10], [310, .64, .28, 150, 1.10],
-    [520, .26, .52, 112, .88], [560, .74, .52, 112, .88], [680, .50, .48, 150, 1.05],
-    [900, .12, .23, 112, .90], [960, .88, .24, 112, .90], [1120, .40, .18, 138, 1.05],
-    [1200, .60, .18, 138, 1.05], [1440, .30, .38, 116, .90], [1500, .70, .38, 116, .90],
-    [1780, .50, .20, 200, 1.20], [2050, .22, .28, 130, .95], [2100, .78, .28, 130, .95]
+    [0, .50, .22, 260, 1.32], [60, .16, .30, 190, 1.08], [95, .84, .29, 190, 1.08],
+    [210, .31, .24, 210, 1.18], [250, .69, .24, 210, 1.18], [330, .50, .38, 170, 1.05],
+    [480, .22, .48, 150, .96], [520, .78, .48, 150, .96], [620, .40, .17, 180, 1.12],
+    [660, .60, .17, 180, 1.12], [780, .10, .21, 150, .96], [830, .90, .22, 150, .96],
+    [950, .28, .34, 170, 1.02], [990, .72, .34, 170, 1.02], [1110, .50, .16, 240, 1.28],
+    [1260, .18, .41, 145, .92], [1300, .82, .41, 145, .92], [1420, .36, .27, 185, 1.10],
+    [1470, .64, .27, 185, 1.10], [1640, .50, .50, 190, 1.08], [1780, .12, .33, 145, .95],
+    [1830, .88, .33, 145, .95], [2020, .30, .18, 210, 1.18], [2070, .70, .18, 210, 1.18],
+    [2260, .22, .55, 150, .92], [2300, .78, .55, 150, .92], [2480, .43, .31, 180, 1.05],
+    [2530, .57, .31, 180, 1.05], [2750, .50, .20, 280, 1.36], [3050, .26, .26, 170, 1.04],
+    [3100, .74, .26, 170, 1.04]
   ];
   const comets = [];
   const particles = [];
@@ -1735,7 +1968,7 @@ function launchWinFireworks(p, value) {
       tx:window.innerWidth * targetX,
       ty:window.innerHeight * targetY,
       life:0,
-      max:32 + Math.random() * 18,
+      max:26 + Math.random() * 15,
       color:palette[Math.floor(Math.random() * palette.length)],
       trail:[]
     });
@@ -1748,34 +1981,50 @@ function launchWinFireworks(p, value) {
     const cy = window.innerHeight * cyRatio;
     for (let i=0; i<count; i++) {
       const angle = (Math.PI * 2 * i / count) + Math.random() * .18;
-      const speed = (2.8 + Math.random() * 7.6) * power;
+      const speed = (3.4 + Math.random() * 9.4) * power;
       const color = palette[(i + Math.floor(Math.random() * palette.length)) % palette.length];
       particles.push({
         x:cx, y:cy,
         vx:Math.cos(angle) * speed,
         vy:Math.sin(angle) * speed - Math.random() * 2.5,
         life:0,
-        max:78 + Math.random() * 58,
-        size:.8 + Math.random() * 2.4,
+        max:92 + Math.random() * 70,
+        size:.9 + Math.random() * 2.9,
         color,
         trail:[],
         flicker:Math.random() > .72,
         glitter:Math.random() > .50
       });
     }
-    for (let i=0; i<Math.floor(count * .35); i++) {
+    for (let i=0; i<Math.floor(count * .58); i++) {
       particles.push({
         x:cx + (Math.random() - .5) * 28,
         y:cy + (Math.random() - .5) * 28,
         vx:(Math.random() - .5) * 2.4,
         vy:(Math.random() - .5) * 2.4,
         life:0,
-        max:34 + Math.random() * 28,
-        size:.6 + Math.random() * 1.1,
+        max:42 + Math.random() * 34,
+        size:.7 + Math.random() * 1.35,
         color:'#fff6d6',
         trail:[],
         flicker:true,
         glitter:true
+      });
+    }
+    for (let i=0; i<Math.floor(count * .16); i++) {
+      const side = Math.random() > .5 ? 1 : -1;
+      particles.push({
+        x:cx + (Math.random() - .5) * 42,
+        y:cy + (Math.random() - .5) * 42,
+        vx:side * (1.4 + Math.random() * 3.6),
+        vy:1.4 + Math.random() * 3.8,
+        life:0,
+        max:92 + Math.random() * 64,
+        size:.75 + Math.random() * 1.45,
+        color:palette[Math.floor(Math.random() * palette.length)],
+        trail:[],
+        flicker:true,
+        glitter:Math.random() > .35
       });
     }
   }
@@ -1788,7 +2037,7 @@ function launchWinFireworks(p, value) {
         addBurst(b[1], b[2], b[3], b[4]);
       }
     });
-    ctx.fillStyle = 'rgba(0,0,0,.18)';
+    ctx.fillStyle = 'rgba(0,0,0,.135)';
     ctx.fillRect(0, 0, window.innerWidth, window.innerHeight);
     ctx.globalCompositeOperation = 'lighter';
     comets.forEach(comet => {
@@ -1797,12 +2046,12 @@ function launchWinFireworks(p, value) {
       const t = comet.life / comet.max;
       const ease = 1 - Math.pow(1 - t, 2.6);
       comet.trail.push([comet.x, comet.y]);
-      if (comet.trail.length > 12) comet.trail.shift();
-      comet.x = comet.x + (comet.tx - comet.x) * .085;
-      comet.y = comet.y + (comet.ty - comet.y) * .11 - 1.5 * (1 - ease);
-      ctx.globalAlpha = .72 * (1 - t);
+      if (comet.trail.length > 18) comet.trail.shift();
+      comet.x = comet.x + (comet.tx - comet.x) * .105;
+      comet.y = comet.y + (comet.ty - comet.y) * .13 - 2.1 * (1 - ease);
+      ctx.globalAlpha = .92 * (1 - t);
       ctx.strokeStyle = comet.color;
-      ctx.lineWidth = 2.2;
+      ctx.lineWidth = 2.8;
       ctx.beginPath();
       comet.trail.forEach((pt, index) => {
         if (index === 0) ctx.moveTo(pt[0], pt[1]);
@@ -1815,16 +2064,16 @@ function launchWinFireworks(p, value) {
       const spark = particles[i];
       spark.life++;
       spark.trail.push([spark.x, spark.y]);
-      if (spark.trail.length > 8) spark.trail.shift();
+      if (spark.trail.length > 12) spark.trail.shift();
       spark.x += spark.vx;
       spark.y += spark.vy;
-      spark.vy += .055;
-      spark.vx *= .988;
-      spark.vy *= .988;
+      spark.vy += .046;
+      spark.vx *= .991;
+      spark.vy *= .991;
       let alpha = Math.max(0, 1 - spark.life / spark.max);
       if (spark.flicker) alpha *= .55 + Math.random() * .65;
       ctx.strokeStyle = spark.color;
-      ctx.globalAlpha = alpha * .74;
+      ctx.globalAlpha = alpha * .88;
       ctx.lineWidth = spark.size;
       ctx.beginPath();
       spark.trail.forEach((pt, index) => {
@@ -1845,14 +2094,14 @@ function launchWinFireworks(p, value) {
       if (spark.life > spark.max) particles.splice(i, 1);
     }
     ctx.globalAlpha = 1;
-    if (elapsed < 3600 || particles.length) requestAnimationFrame(tick);
+    if (elapsed < 4400 || particles.length) requestAnimationFrame(tick);
   }
 
   requestAnimationFrame(tick);
   setTimeout(() => {
     wrap.classList.add('hidden');
     wrap.innerHTML = '';
-  }, 3800);
+  }, 4600);
 }
 function registerWin(p, pointsArray, label) {
   storeSnapshot(label);
