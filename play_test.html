@@ -302,10 +302,10 @@ header a { text-decoration:none; }
   position:absolute;
   inset:0;
   background:
-    radial-gradient(circle at 50% 34%,rgba(255,92,0,.075),transparent 26%),
-    radial-gradient(circle at 24% 38%,rgba(245,183,0,.052),transparent 30%),
-    radial-gradient(circle at 78% 36%,rgba(232,0,58,.045),transparent 30%),
-    linear-gradient(180deg,rgba(255,122,26,.038),transparent 68%);
+    radial-gradient(circle at 50% 34%,rgba(255,92,0,.032),transparent 24%),
+    radial-gradient(circle at 24% 38%,rgba(245,183,0,.026),transparent 28%),
+    radial-gradient(circle at 78% 36%,rgba(232,0,58,.022),transparent 28%),
+    linear-gradient(180deg,rgba(255,122,26,.018),transparent 64%);
   animation:vegasFlash 3.55s ease-out forwards;
 }
 .fw-marquee {
@@ -363,8 +363,8 @@ header a { text-decoration:none; }
 }
 @keyframes vegasFlash {
   0% { opacity:0; }
-  8% { opacity:.14; }
-  38% { opacity:.075; }
+  7% { opacity:.075; }
+  30% { opacity:.035; }
   100% { opacity:0; }
 }
 @keyframes vegasMarquee {
@@ -376,14 +376,14 @@ header a { text-decoration:none; }
   position:absolute;
   inset:auto 0 0;
   height:42%;
-  background:linear-gradient(180deg,transparent,rgba(255,92,0,.052),rgba(245,183,0,.032));
+  background:linear-gradient(180deg,transparent,rgba(255,92,0,.022),rgba(245,183,0,.016));
   filter:blur(12px);
-  opacity:.24;
+  opacity:.18;
   animation:vegasHaze 3.6s ease-out forwards;
 }
 @keyframes vegasHaze {
   0% { opacity:0; transform:translateY(18px); }
-  18%,70% { opacity:.13; transform:translateY(0); }
+  18%,70% { opacity:.075; transform:translateY(0); }
   100% { opacity:0; transform:translateY(12px); }
 }
 .fw-burst {
@@ -2079,69 +2079,106 @@ function maybeFireWinMilestone(p) {
 function launchWinFireworks(p, value) {
   const wrap = document.getElementById('fireworksWrap');
   if (!wrap) return;
-  const level = value >= 20 ? 4 : value >= 15 ? 3 : value >= 10 ? 2 : 1;
-  const levelCopy = ['','NICE PLAY.','INCREDIBLE.','UNBELIEVABLE.','LEGENDARY.'][level];
+  const level = Math.min(6, Math.max(1, Math.floor(value / 5)));
+  const levelCopy = ['', 'NICE PLAY.', 'INCREDIBLE.', 'UNBELIEVABLE.', 'LEGENDARY.', 'UNSTOPPABLE.', 'PHENOMENAL.'][level];
   const levelConfig = {
     1: {
-      duration: 2000,
-      hideAfter: 2250,
-      trailAlpha: .28,
-      dotAlpha: .16,
-      glitterAlpha: .13,
-      cometAlpha: .36,
-      sparkleRatio: .045,
-      showerRatio: .025,
+      duration: 1850,
+      hideAfter: 2150,
+      trailAlpha: .20,
+      dotAlpha: .09,
+      glitterAlpha: .09,
+      cometAlpha: .16,
+      sparkleRatio: .10,
+      showerRatio: .04,
       bursts: [
-        [0, .30, .27, 42, .72], [220, .70, .27, 46, .76],
-        [760, .50, .38, 34, .62]
+        [0, .30, .27, 74, .58], [220, .70, .27, 78, .60],
+        [720, .50, .38, 62, .50]
       ]
     },
     2: {
-      duration: 2400,
-      hideAfter: 2700,
-      trailAlpha: .34,
-      dotAlpha: .19,
-      glitterAlpha: .16,
-      cometAlpha: .42,
-      sparkleRatio: .06,
-      showerRatio: .04,
+      duration: 2300,
+      hideAfter: 2550,
+      trailAlpha: .24,
+      dotAlpha: .105,
+      glitterAlpha: .105,
+      cometAlpha: .18,
+      sparkleRatio: .115,
+      showerRatio: .05,
       bursts: [
-        [0, .28, .25, 54, .82], [120, .72, .24, 58, .84],
-        [440, .50, .34, 44, .72], [900, .20, .43, 34, .60],
-        [1020, .80, .42, 34, .60], [1480, .58, .20, 54, .78]
+        [0, .28, .25, 88, .64], [120, .72, .24, 94, .66],
+        [420, .50, .34, 76, .56], [820, .20, .43, 64, .48],
+        [930, .80, .42, 64, .48], [1420, .58, .20, 86, .60]
       ]
     },
     3: {
-      duration: 2900,
+      duration: 2750,
       hideAfter: 3000,
-      trailAlpha: .39,
-      dotAlpha: .22,
-      glitterAlpha: .19,
-      cometAlpha: .48,
-      sparkleRatio: .08,
-      showerRatio: .055,
+      trailAlpha: .27,
+      dotAlpha: .12,
+      glitterAlpha: .12,
+      cometAlpha: .20,
+      sparkleRatio: .13,
+      showerRatio: .06,
       bursts: [
-        [0, .25, .25, 62, .86], [120, .74, .23, 66, .88],
-        [360, .50, .31, 54, .78], [760, .18, .43, 42, .66],
-        [880, .82, .42, 42, .66], [1240, .40, .18, 58, .82],
-        [1360, .62, .19, 58, .82], [1980, .50, .24, 70, .88]
+        [0, .25, .25, 104, .68], [120, .74, .23, 108, .70],
+        [360, .50, .31, 92, .62], [720, .18, .43, 76, .52],
+        [840, .82, .42, 76, .52], [1180, .40, .18, 98, .64],
+        [1300, .62, .19, 98, .64], [1880, .50, .24, 112, .68]
       ]
     },
     4: {
+      duration: 2850,
+      hideAfter: 3050,
+      trailAlpha: .30,
+      dotAlpha: .13,
+      glitterAlpha: .135,
+      cometAlpha: .22,
+      sparkleRatio: .145,
+      showerRatio: .07,
+      bursts: [
+        [0, .23, .25, 118, .72], [80, .77, .24, 122, .74],
+        [300, .50, .31, 102, .64], [600, .16, .43, 86, .54],
+        [720, .84, .42, 86, .54], [980, .38, .18, 112, .68],
+        [1080, .63, .18, 112, .68], [1540, .30, .34, 96, .58],
+        [1640, .70, .33, 96, .58], [2080, .50, .22, 128, .72]
+      ]
+    },
+    5: {
+      duration: 2920,
+      hideAfter: 3050,
+      trailAlpha: .32,
+      dotAlpha: .14,
+      glitterAlpha: .145,
+      cometAlpha: .24,
+      sparkleRatio: .16,
+      showerRatio: .08,
+      bursts: [
+        [0, .22, .25, 126, .74], [70, .78, .24, 130, .76],
+        [240, .50, .30, 112, .66], [500, .15, .43, 94, .56],
+        [610, .85, .42, 94, .56], [850, .36, .17, 122, .70],
+        [960, .64, .17, 122, .70], [1260, .25, .35, 104, .60],
+        [1380, .75, .34, 104, .60], [1700, .47, .21, 128, .72],
+        [2100, .33, .28, 100, .58], [2200, .67, .28, 100, .58]
+      ]
+    },
+    6: {
       duration: 3000,
       hideAfter: 3050,
-      trailAlpha: .44,
-      dotAlpha: .24,
-      glitterAlpha: .21,
-      cometAlpha: .52,
-      sparkleRatio: .095,
-      showerRatio: .065,
+      trailAlpha: .34,
+      dotAlpha: .15,
+      glitterAlpha: .16,
+      cometAlpha: .25,
+      sparkleRatio: .18,
+      showerRatio: .09,
       bursts: [
-        [0, .23, .25, 68, .90], [80, .77, .24, 70, .92],
-        [320, .50, .31, 58, .82], [620, .16, .43, 46, .70],
-        [740, .84, .42, 46, .70], [1020, .38, .18, 64, .86],
-        [1120, .63, .18, 64, .86], [1620, .30, .34, 52, .76],
-        [1700, .70, .33, 52, .76], [2180, .50, .22, 76, .92]
+        [0, .20, .25, 136, .76], [60, .80, .24, 140, .78],
+        [210, .50, .30, 124, .68], [430, .14, .43, 104, .58],
+        [520, .86, .42, 104, .58], [760, .34, .17, 132, .72],
+        [860, .66, .17, 132, .72], [1120, .25, .35, 112, .62],
+        [1220, .75, .34, 112, .62], [1480, .47, .21, 136, .74],
+        [1740, .58, .26, 122, .68], [1980, .30, .22, 112, .64],
+        [2080, .70, .22, 112, .64], [2360, .50, .18, 144, .78]
       ]
     }
   }[level];
@@ -2153,7 +2190,7 @@ function launchWinFireworks(p, value) {
     "'":'&#39;'
   }[ch]));
   wrap.innerHTML = '';
-  wrap.classList.remove('fw-level-1', 'fw-level-2', 'fw-level-3', 'fw-level-4');
+  wrap.classList.remove('fw-level-1', 'fw-level-2', 'fw-level-3', 'fw-level-4', 'fw-level-5', 'fw-level-6');
   wrap.classList.remove('hidden');
   wrap.classList.add('fw-level-' + level);
   const flash = document.createElement('div');
@@ -2200,7 +2237,7 @@ function launchWinFireworks(p, value) {
       tx:window.innerWidth * targetX,
       ty:window.innerHeight * targetY,
       life:0,
-      max:32 + Math.random() * 18,
+      max:38 + Math.random() * 20,
       color:cometPalette[Math.floor(Math.random() * cometPalette.length)],
       trail:[]
     });
@@ -2213,15 +2250,15 @@ function launchWinFireworks(p, value) {
     const cy = window.innerHeight * cyRatio;
     for (let i=0; i<count; i++) {
       const angle = (Math.PI * 2 * i / count) + Math.random() * .12;
-      const speed = (2.2 + Math.random() * 5.6) * power;
+      const speed = (1.75 + Math.random() * 4.15) * power;
       const color = palette[(i + Math.floor(Math.random() * palette.length)) % palette.length];
       particles.push({
         x:cx, y:cy,
         vx:Math.cos(angle) * speed,
-        vy:Math.sin(angle) * speed - Math.random() * 2.5,
+        vy:Math.sin(angle) * speed - Math.random() * 1.65,
         life:0,
-        max:88 + Math.random() * 64,
-        size:.28 + Math.random() * .72,
+        max:78 + Math.random() * 58,
+        size:.12 + Math.random() * .36,
         color,
         trail:[],
         flicker:Math.random() > .72,
@@ -2232,11 +2269,11 @@ function launchWinFireworks(p, value) {
       particles.push({
         x:cx + (Math.random() - .5) * 28,
         y:cy + (Math.random() - .5) * 28,
-        vx:(Math.random() - .5) * 2.4,
-        vy:(Math.random() - .5) * 2.4,
+        vx:(Math.random() - .5) * 2.1,
+        vy:(Math.random() - .5) * 2.1,
         life:0,
-        max:34 + Math.random() * 24,
-        size:.25 + Math.random() * .42,
+        max:34 + Math.random() * 22,
+        size:.11 + Math.random() * .25,
         color:'#ffe0aa',
         trail:[],
         flicker:true,
@@ -2248,11 +2285,11 @@ function launchWinFireworks(p, value) {
       particles.push({
         x:cx + (Math.random() - .5) * 42,
         y:cy + (Math.random() - .5) * 42,
-        vx:side * (1.4 + Math.random() * 3.6),
-        vy:1.4 + Math.random() * 3.8,
+        vx:side * (1.2 + Math.random() * 2.8),
+        vy:1.2 + Math.random() * 3.0,
         life:0,
-        max:82 + Math.random() * 50,
-        size:.28 + Math.random() * .55,
+        max:72 + Math.random() * 44,
+        size:.11 + Math.random() * .30,
         color:palette[Math.floor(Math.random() * palette.length)],
         trail:[],
         flicker:true,
@@ -2269,7 +2306,7 @@ function launchWinFireworks(p, value) {
         addBurst(b[1], b[2], b[3], b[4]);
       }
     });
-    ctx.fillStyle = 'rgba(5,3,1,.34)';
+    ctx.fillStyle = 'rgba(0,0,0,.43)';
     ctx.fillRect(0, 0, window.innerWidth, window.innerHeight);
     ctx.globalCompositeOperation = 'lighter';
     comets.forEach(comet => {
@@ -2278,12 +2315,12 @@ function launchWinFireworks(p, value) {
       const t = comet.life / comet.max;
       const ease = 1 - Math.pow(1 - t, 2.6);
       comet.trail.push([comet.x, comet.y]);
-      if (comet.trail.length > 16) comet.trail.shift();
+      if (comet.trail.length > 8) comet.trail.shift();
       comet.x = comet.x + (comet.tx - comet.x) * .095;
       comet.y = comet.y + (comet.ty - comet.y) * .12 - 1.8 * (1 - ease);
       ctx.globalAlpha = levelConfig.cometAlpha * (1 - t);
       ctx.strokeStyle = comet.color;
-      ctx.lineWidth = 1.05;
+      ctx.lineWidth = .34;
       ctx.beginPath();
       comet.trail.forEach((pt, index) => {
         if (index === 0) ctx.moveTo(pt[0], pt[1]);
@@ -2296,17 +2333,17 @@ function launchWinFireworks(p, value) {
       const spark = particles[i];
       spark.life++;
       spark.trail.push([spark.x, spark.y]);
-      if (spark.trail.length > 18) spark.trail.shift();
+      if (spark.trail.length > 22) spark.trail.shift();
       spark.x += spark.vx;
       spark.y += spark.vy;
-      spark.vy += .034;
-      spark.vx *= .993;
-      spark.vy *= .993;
+      spark.vy += .026;
+      spark.vx *= .994;
+      spark.vy *= .994;
       let alpha = Math.max(0, 1 - spark.life / spark.max);
       if (spark.flicker) alpha *= .55 + Math.random() * .65;
       ctx.strokeStyle = spark.color;
       ctx.globalAlpha = alpha * levelConfig.trailAlpha;
-      ctx.lineWidth = spark.size;
+      ctx.lineWidth = Math.max(.18, spark.size);
       ctx.beginPath();
       spark.trail.forEach((pt, index) => {
         if (index === 0) ctx.moveTo(pt[0], pt[1]);
@@ -2316,12 +2353,12 @@ function launchWinFireworks(p, value) {
       ctx.globalAlpha = alpha * levelConfig.dotAlpha;
       ctx.fillStyle = spark.color;
       ctx.beginPath();
-      ctx.arc(spark.x, spark.y, Math.max(.45, spark.size * .72), 0, Math.PI * 2);
+      ctx.arc(spark.x, spark.y, Math.max(.18, spark.size * .58), 0, Math.PI * 2);
       ctx.fill();
       if (spark.glitter && spark.life % 13 === 0) {
         ctx.globalAlpha = alpha * levelConfig.glitterAlpha;
         ctx.fillStyle = '#ffe8bc';
-        ctx.fillRect(spark.x - .45, spark.y - .45, .9, .9);
+        ctx.fillRect(spark.x - .32, spark.y - .32, .64, .64);
       }
       if (spark.life > spark.max) particles.splice(i, 1);
     }
