@@ -5,4 +5,4 @@ pages_build_output_dir = "."
 [[d1_databases]]
 binding = "SENO_DB"
 database_name = "seno-counter"
-database_id = "REPLACE_WITH_D1_DATABASE_ID"
+database_id = "5a1e8da2-c164-4dcc-a1c6-d590a9ccf717"
