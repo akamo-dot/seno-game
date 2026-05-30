@@ -57,7 +57,7 @@ The counter does not store IP addresses, device information, User-Agent strings,
 - D1 database name placeholder: `seno-counter`
 - D1 database ID placeholder: `REPLACE_WITH_D1_DATABASE_ID`
 
-Before using Wrangler for deployment, replace the database ID placeholder with the actual D1 database ID. Do not commit secrets or account tokens.
+Before using Wrangler for deployment, replace the database ID placeholder with the actual D1 database ID. Do not commit secrets, admin passcodes, or account tokens.
 
 ## Create the D1 database
 
@@ -85,21 +85,37 @@ Before using Wrangler for deployment, replace the database ID placeholder with t
 7. Redeploy the Pages project.
 8. Check the Functions logs if `/api/counter` returns `D1 binding SENO_DB is not configured`.
 
-## Protect admin access
+## Configure the admin token
 
-`admin/` and `/api/admin-stats` must be protected with Cloudflare Access before production use.
+Cloudflare Access is not required for the current simple admin setup. Instead, `/api/admin-stats` requires a Bearer token from the environment variable `ADMIN_TOKEN`.
 
-- URL secrecy is not admin protection.
-- Only the owner account should be allowed to open `admin/`.
-- Only the owner account should be allowed to call `/api/admin-stats`.
-- Do not replace the production `/play` page until Access protection is confirmed.
+The `admin/` page itself can be public, but it cannot load real stats unless the correct admin passcode is entered. The browser sends it as:
 
-Recommended Access applications:
+```http
+Authorization: Bearer <ADMIN_TOKEN>
+```
 
-1. Protect path `/admin/*`.
-2. Protect path `/api/admin-stats`.
-3. Allow only the owner email or trusted identity provider group.
-4. Test in a private browser session before sharing the URL.
+Important:
+
+- Use a long random value for `ADMIN_TOKEN`.
+- Do not commit `ADMIN_TOKEN` to GitHub.
+- Do not put `ADMIN_TOKEN` in `wrangler.toml`.
+- The admin page stores the passcode only in `sessionStorage`, so it is kept for the current browser tab session.
+- If `ADMIN_TOKEN` is missing, `/api/admin-stats` returns a configuration error and does not return stats.
+- If the token is missing or wrong, `/api/admin-stats` returns `401` and does not return stats.
+
+Set `ADMIN_TOKEN` in Cloudflare Pages:
+
+1. Open the Cloudflare Pages project.
+2. Go to Settings.
+3. Open Environment variables.
+4. Add a production variable named `ADMIN_TOKEN`.
+5. Enter a long random passcode value.
+6. Save and redeploy the Pages project.
+
+If you use Wrangler, set the secret with Cloudflare's secret command for the Pages project instead of committing it to the repository. Confirm the value is available to Pages Functions as `context.env.ADMIN_TOKEN`.
+
+Cloudflare Access can still be added later as an extra layer, but it is optional for this setup.
 
 ## Test URL checks
 
@@ -113,8 +129,9 @@ On the test URL, confirm:
 - DRAW records send `{ "mode": "over", "outcome": "draw" }`.
 - API failure does not create fake counter increments.
 - Admin stats show visits, plays, country totals, daily totals, outcomes, and recent plays.
-- `admin/` is blocked for unauthorized users.
-- `/api/admin-stats` is blocked for unauthorized users.
+- Opening `admin/` shows the private stats shell and asks for the admin passcode.
+- Calling `/api/admin-stats` without `Authorization: Bearer <ADMIN_TOKEN>` returns `401`.
+- Entering the correct passcode in `admin/` loads the private stats.
 
 ## Before replacing production `play.html`
 
@@ -122,9 +139,10 @@ Confirm:
 
 - Cloudflare Pages is serving the test page.
 - D1 binding `SENO_DB` works.
+- Environment variable `ADMIN_TOKEN` is set in Cloudflare Pages.
 - `schema.sql` has been applied.
-- `admin/` is protected by Cloudflare Access.
-- `/api/admin-stats` is protected by Cloudflare Access.
+- `/api/admin-stats` rejects requests without the Bearer token.
+- `admin/` loads stats only after the correct passcode is entered.
 - The public GLOBAL counter shows real play totals only.
 - Local preview or API failure does not increase the counter.
 - Visit records and play records appear in D1.
