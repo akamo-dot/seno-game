@@ -41,6 +41,60 @@
       letter-spacing:.16em;
       text-align:right;
     }
+    .auth-panel {
+      background:linear-gradient(180deg,#171717,#101010);
+      border:1px solid var(--line);
+      border-radius:8px;
+      padding:16px;
+      margin-bottom:14px;
+      display:grid;
+      grid-template-columns:1fr auto auto;
+      gap:10px;
+      align-items:end;
+    }
+    .auth-label {
+      color:var(--muted);
+      display:block;
+      font-size:10px;
+      font-weight:700;
+      letter-spacing:.18em;
+      margin-bottom:8px;
+    }
+    .auth-input {
+      width:100%;
+      min-height:42px;
+      background:#080808;
+      color:var(--text);
+      border:1px solid var(--line);
+      border-radius:5px;
+      padding:10px 12px;
+      font-size:15px;
+      outline:none;
+    }
+    .auth-input:focus { border-color:rgba(255,92,0,.72); }
+    .auth-btn {
+      min-height:42px;
+      border:1px solid var(--line);
+      border-radius:5px;
+      padding:0 16px;
+      background:#0b0b0b;
+      color:var(--text);
+      font-size:11px;
+      font-weight:700;
+      letter-spacing:.16em;
+      cursor:pointer;
+    }
+    .auth-btn.primary {
+      border-color:rgba(255,92,0,.64);
+      color:var(--orange);
+    }
+    .auth-note {
+      grid-column:1 / -1;
+      color:var(--dim);
+      font-size:12px;
+      line-height:1.6;
+      margin:0;
+    }
     .grid { display:grid; grid-template-columns:repeat(2, minmax(0, 1fr)); gap:14px; }
     .metric-row { display:grid; grid-template-columns:repeat(2, minmax(0, 1fr)); gap:14px; margin-bottom:14px; }
     .panel {
@@ -80,6 +134,7 @@
     @media (max-width:720px) {
       header { display:block; }
       .status { text-align:left; margin-top:8px; }
+      .auth-panel { grid-template-columns:1fr; }
       .grid, .metric-row { grid-template-columns:1fr; }
       h1 { font-size:18px; }
     }
@@ -89,8 +144,18 @@
   <main>
     <header>
       <h1>SENO / PRIVATE STATS</h1>
-      <div class="status" id="status">LOADING</div>
+      <div class="status" id="status">LOCKED / TOKEN REQUIRED</div>
     </header>
+
+    <section class="auth-panel" aria-label="Admin authentication">
+      <label>
+        <span class="auth-label">ADMIN PASSCODE</span>
+        <input class="auth-input" id="adminToken" type="password" autocomplete="current-password" placeholder="Enter admin passcode">
+      </label>
+      <button class="auth-btn primary" id="unlockBtn" type="button">UNLOCK</button>
+      <button class="auth-btn" id="clearBtn" type="button">CLEAR</button>
+      <p class="auth-note">Stats data is loaded only after a valid admin passcode is sent as a Bearer token. The passcode is kept in this browser tab session only.</p>
+    </section>
 
     <section class="metric-row">
       <div class="panel metric">
@@ -114,7 +179,11 @@
   </main>
 
   <script>
+    const TOKEN_STORAGE_KEY = 'seno_admin_token';
     const statusEl = document.getElementById('status');
+    const tokenInput = document.getElementById('adminToken');
+    const unlockBtn = document.getElementById('unlockBtn');
+    const clearBtn = document.getElementById('clearBtn');
 
     function setText(id, value) {
       document.getElementById(id).textContent = String(value || 0);
@@ -131,11 +200,36 @@
       table.innerHTML = head + body;
     }
 
+    function getToken() {
+      return tokenInput.value.trim();
+    }
+
+    function clearToken() {
+      sessionStorage.removeItem(TOKEN_STORAGE_KEY);
+      tokenInput.value = '';
+      statusEl.textContent = 'LOCKED / TOKEN REQUIRED';
+    }
+
     async function loadStats() {
+      const token = getToken();
+      if (!token) {
+        statusEl.textContent = 'LOCKED / TOKEN REQUIRED';
+        return;
+      }
+
+      statusEl.textContent = 'LOADING';
       try {
-        const res = await fetch('/api/admin-stats', { headers:{ 'Accept':'application/json' }, cache:'no-store' });
+        const res = await fetch('/api/admin-stats', {
+          headers:{
+            'Accept':'application/json',
+            'Authorization':'Bearer ' + token
+          },
+          cache:'no-store'
+        });
+        if (res.status === 401) throw new Error('unauthorized');
         if (!res.ok) throw new Error('stats unavailable');
         const data = await res.json();
+        sessionStorage.setItem(TOKEN_STORAGE_KEY, token);
         setText('visitsTotal', data.visitsTotal);
         setText('playsTotal', data.playsTotal);
         renderTable('visitCountries', data.visitCountries, [{ key:'code', label:'COUNTRY' }, { key:'count', label:'COUNT' }]);
@@ -144,12 +238,19 @@
         renderTable('dailyPlays', data.dailyPlays, [{ key:'day', label:'DAY' }, { key:'count', label:'COUNT' }]);
         renderTable('outcomes', data.outcomes, [{ key:'outcome', label:'RESULT' }, { key:'count', label:'COUNT' }]);
         renderTable('recentPlays', data.recentPlays, [{ key:'code', label:'COUNTRY' }, { key:'createdAt', label:'TIME' }]);
-        statusEl.textContent = 'LIVE / ACCESS REQUIRED';
+        statusEl.textContent = 'LIVE / AUTHORIZED';
       } catch (e) {
-        statusEl.textContent = 'PREVIEW / API NOT CONNECTED';
+        statusEl.textContent = e.message === 'unauthorized' ? 'LOCKED / INVALID TOKEN' : 'PREVIEW / API NOT CONNECTED';
       }
     }
 
+    unlockBtn.addEventListener('click', loadStats);
+    clearBtn.addEventListener('click', clearToken);
+    tokenInput.addEventListener('keydown', event => {
+      if (event.key === 'Enter') loadStats();
+    });
+
+    tokenInput.value = sessionStorage.getItem(TOKEN_STORAGE_KEY) || '';
     loadStats();
   </script>
 </body>
