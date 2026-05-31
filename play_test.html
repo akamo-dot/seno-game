@@ -1609,13 +1609,15 @@ function setCounterStatus(state) {
       : 'PREVIEW / API NOT CONNECTED';
 }
 
+// x/y are percentages on assets/play/world-map.png.
+// This map places the Americas on the right and Asia near the center.
 const COUNTRY_POINTS = {
-  JP:[87.8,39.5], KR:[85.7,39.0], CN:[78.4,43.2], TW:[82.8,50.0], HK:[81.8,51.0],
-  SG:[77.9,61.6], TH:[76.9,55.2], VN:[78.3,54.6], ID:[79.5,66.8], MY:[77.4,60.4],
-  PH:[82.6,55.6], IN:[69.5,52.8], AU:[82.6,76.5], NZ:[91.4,82.6], US:[21.5,42.5],
-  CA:[19.8,29.0], MX:[19.9,54.4], BR:[34.3,67.3], GB:[49.7,35.2], FR:[50.7,40.6],
-  DE:[52.1,37.2], ES:[48.3,43.6], IT:[52.0,43.5], NL:[51.0,36.4], SE:[53.6,28.6],
-  NO:[51.3,27.4], FI:[56.1,27.1], PL:[54.3,37.6], TR:[58.9,45.3], AE:[65.3,51.7], ZA:[55.2,78.8]
+  JP:{ x:44.7, y:36.2 }, KR:{ x:41.6, y:37.0 }, CN:{ x:36.8, y:42.8 }, TW:{ x:42.4, y:46.8 }, HK:{ x:40.8, y:46.0 },
+  SG:{ x:38.5, y:61.2 }, TH:{ x:37.2, y:53.8 }, VN:{ x:39.4, y:54.2 }, ID:{ x:43.6, y:65.2 }, MY:{ x:38.7, y:59.0 },
+  PH:{ x:45.0, y:54.4 }, IN:{ x:29.6, y:52.0 }, AU:{ x:45.8, y:80.0 }, NZ:{ x:58.8, y:85.0 }, US:{ x:76.0, y:41.2 },
+  CA:{ x:75.0, y:27.2 }, MX:{ x:76.0, y:52.4 }, BR:{ x:85.8, y:68.5 }, GB:{ x:9.6, y:33.0 }, FR:{ x:12.0, y:39.4 },
+  DE:{ x:13.2, y:36.5 }, ES:{ x:9.8, y:42.6 }, IT:{ x:14.1, y:43.2 }, NL:{ x:12.0, y:35.6 }, SE:{ x:15.8, y:27.6 },
+  NO:{ x:13.0, y:25.8 }, FI:{ x:18.5, y:26.8 }, PL:{ x:16.4, y:36.5 }, TR:{ x:21.2, y:45.0 }, AE:{ x:27.2, y:51.0 }, ZA:{ x:18.0, y:78.2 }
 };
 
 function renderCountryPulses(countries = [], recent = []) {
@@ -1629,13 +1631,13 @@ function renderCountryPulses(countries = [], recent = []) {
   const max = Math.max(...valid.map(c => c.count), 1);
   const recentSet = new Set((recent || []).map(r => String(r.code || '').toUpperCase()));
   valid.forEach(c => {
-    const [x,y] = COUNTRY_POINTS[c.code];
+    const point = COUNTRY_POINTS[c.code];
     const strength = Math.min(1, Math.log(c.count + 1) / Math.log(max + 1));
     const dot = document.createElement('i');
     dot.className = 'country-pulse' + (strength > .58 ? ' hot' : '') + (recentSet.has(c.code) ? ' recent' : '');
     dot.title = c.code + ' / ' + c.count;
-    dot.style.setProperty('--x', x + '%');
-    dot.style.setProperty('--y', y + '%');
+    dot.style.setProperty('--x', point.x + '%');
+    dot.style.setProperty('--y', point.y + '%');
     dot.style.setProperty('--s', (2 + strength * 2.2).toFixed(2) + 'px');
     dot.style.setProperty('--a', (.40 + strength * .36).toFixed(2));
     layer.appendChild(dot);
